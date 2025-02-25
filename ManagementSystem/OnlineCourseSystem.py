@@ -240,10 +240,14 @@ class PaymentMethod:
         pass
 
 class CreditCard(PaymentMethod):
-    def __init__(self, payment_id, card_number):
+    def __init__(self, payment_id, card_number, expiry_date, cvv, name_on_card):
         super().__init__(payment_id)
         self.__card_number = card_number
-
+        self.__expiry_date = expiry_date
+        self.__cvv = cvv
+        self.__name_on_card = name_on_card
+    def add_(self, card_number, expiry_date, cvv, name_on_card):
+        self.__add_card_number.append(card_number, expiry_date, cvv, name_on_card)
 
 class Notification:
     def __init__(self, notification_id, notification_content):
