@@ -262,3 +262,4 @@ class FAQ:
     def __add_answer(self, answer):
         pass
 
+print("hello")
