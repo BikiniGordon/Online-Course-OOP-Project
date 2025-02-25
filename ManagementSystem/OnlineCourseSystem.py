@@ -6,14 +6,14 @@ class OnlineCourseManagement:
         self.__enrollment_list = []
         self.__faq_list = []
 
-    def add_student_list(self, username, password, email):
-        pass
+    def add_student_list(self, id, username, password, email):
+        self.__student_list.append(Student(id, username, password, email, None, None, None))
 
     def add_teacher_list(self, student):
         pass
 
-    def add_course_list(self, course):
-        pass
+    def add_course_list(self, id, name, price):
+        self.__course_list.append(Course(id, name, price))
 
     def add_enrollment_list(self, enrollment):
         pass
@@ -22,28 +22,77 @@ class OnlineCourseManagement:
         pass
         
     def get_course(self, course_id):
-        pass
+        for course in self.__course_list:
+            if course.check_course_id(course_id):
+                return course
+            return None
 
     def get_account(self, account_id):
-        pass
+        for account in self.__student_list:
+            if account.check_account_id(account_id):
+                return account
+            return None
 
     def get_account_cart(self, account_id):
-        pass
+        account = self.get_account(account_id)
+        return account.get_cart()
 
-    def add_to_cart(self, course):
-        pass
+    def add_to_cart(self, account_id, course_id):
+        account = self.get_account(account_id)
+        course = self.get_course(course_id)
+        if account is None or course is None:
+            return "Failed to add course to cart"
+        if account.add_item_to_cart(course):
+            return "Added item to cart"
+        return "Failed to add course to cart"
 
     def create_noti(self, content):
         pass
+    
+    def search_course(self, keyword):
+        for course in self.__course_list:
+            if keyword in course.get_course_detail():
+                return course
+        return None
+
+    def search_course_by_keyword(self, keyword):
+        matching_courses = []
+        for course in self.__course_list:
+            if keyword.lower() in course.get_course_detail().lower():
+                matching_courses.append(course)
+        return matching_courses
+
+    def search_course_by_category(self, category):
+        matching_courses = []
+        for course in self.__course_list:
+            if course.get_course_category().lower() == category.lower():
+                matching_courses.append(course)
+        return matching_courses
+
+    def search_course_by_keyword_and_category(self, keyword, category):
+        matching_courses = []
+        for course in self.__course_list:
+            if keyword.lower() in course.get_course_detail().lower() and course.get_course_category().lower() == category.lower():
+                matching_courses.append(course)
+        return matching_courses
+
+    def login(self, username, password):
+        for account in self.__student_list + self.__teacher_list:
+            if account.get_username() == username and account.get_password() == password:
+                return account
+        return None
 
 class Course:
-    def __init__(self, course_id, course_name, course_price):
+    def __init__(self, course_id, course_name, course_price, course_category):
         self.__course_id = course_id
         self.__course_name = course_name
         self.__course_price = course_price
+        self.__course_category = course_category
     
     def check_course_id(self, course_id):
-        pass
+        if self.__course_id == course_id:
+            return True
+        return False
     
     def add_chapter(self, chapter_id):
         pass
@@ -56,6 +105,9 @@ class Course:
 
     def get_course_price(self):
         return self.__course_price
+    
+    def get_course_category(self):
+        return self.__course_category
 
 class Chapter:
     def __init__(self, chapter_id):
@@ -95,6 +147,7 @@ class Cart:
 
     def add_item(self, course):
         self.__cart.append(course)
+        return "Success"
 
     def remove_item(self, course):
         self.__cart.pop(course)
@@ -129,10 +182,23 @@ class Account:
         pass
     
     def check_account_id(self, account_id):
-        pass
+        if self.__account_id == account_id:
+            return True
+        return False
 
+    def get_cart(self):
+        return self.__account_cart
+    
     def add_item_to_cart(self, course):
-        pass
+        self.__account_cart.add_item(course)
+        return "Success"
+        
+
+    def get_username(self):
+        return self.__account_name
+
+    def get_password(self):
+        return self.__account_password
 
     def set_account_order(self, order):
         self.__account_order = order
