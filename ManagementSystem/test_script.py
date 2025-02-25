@@ -4,6 +4,7 @@ from OnlineCourseSystem import OnlineCourseManagement
 from OnlineCourseSystem import Course
 from OnlineCourseSystem import Account
 from OnlineCourseSystem import Cart
+from OnlineCourseSystem import Course
 
 class TestAddToCart(unittest.TestCase):
     def setUp(self):
@@ -12,7 +13,7 @@ class TestAddToCart(unittest.TestCase):
         self.mock_system = Mock(spec=OnlineCourseManagement)
         
         # Create test data
-        self.test_course = Course("CS101", "Introduction to Programming", 99.99)
+        self.test_course = Course("CS101", "Introduction to Programming", 99.99, "Computer Science")
         self.test_account = Account("A123", "testuser", "password", "test@example.com", None, None, None)
         
         # Configure mock behavior
@@ -45,6 +46,51 @@ class TestAddToCart(unittest.TestCase):
 
         result2 = self.mock_system.add_to_cart("A123", "INVALID")
         self.assertEqual(result2, "Failed to add course to cart")
+
+class TestSearchFeature(unittest.TestCase):
+    def setUp(self):
+        """Set up test fixtures before each test method is run."""
+        # Create a mock system
+        self.mock_system = Mock(spec=OnlineCourseManagement)
+        
+        # Create test data
+        self.test_courses = [
+            Course("CS101", "Introduction to Programming", 99.99, "Computer Science"),
+            Course("CS102", "Data Structures", 79.99, "Computer Science"),
+            Course("CS103", "Algorithms", 89.99, "Computer Science"),
+            Course("CS104", "Machine Learning", 109.99, "Computer Science")
+        ]
+        
+        # Configure mock behavior
+        self.mock_system.search_course_by_keyword.side_effect = lambda keyword: [course for course in self.test_courses if keyword.lower() in course.get_course_detail().lower()]
+        self.mock_system.search_course_by_category.side_effect = lambda category: [course for course in self.test_courses if course.get_course_category().lower() == category.lower()]
+        self.mock_system.search_course_by_keyword_and_category.side_effect = lambda keyword, category: [course for course in self.test_courses if keyword.lower() in course.get_course_detail().lower() and course.get_course_category().lower() == category.lower()]
+
+    def test_search_course_by_keyword(self):
+        """Test searching courses by keyword."""
+        result = self.mock_system.search_course_by_keyword("Programming")
+        
+        # Verify the method was called with correct parameters
+        self.mock_system.search_course_by_keyword.assert_called_with("Programming")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].get_course_detail(), "Introduction to Programming")
+
+    def test_search_course_by_category(self):
+        """Test searching courses by category."""
+        result = self.mock_system.search_course_by_category("Computer Science")
+        
+        # Verify the method was called with correct parameters
+        self.mock_system.search_course_by_category.assert_called_with("Computer Science")
+        self.assertEqual(len(result), 4)
+
+    def test_search_course_by_keyword_and_category(self):
+        """Test searching courses by keyword and category."""
+        result = self.mock_system.search_course_by_keyword_and_category("Machine", "Computer Science")
+        
+        # Verify the method was called with correct parameters
+        self.mock_system.search_course_by_keyword_and_category.assert_called_with("Machine", "Computer Science")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].get_course_detail(), "Machine Learning")
 
 if __name__ == "__main__":
     unittest.main()
