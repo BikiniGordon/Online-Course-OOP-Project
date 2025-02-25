@@ -103,6 +103,9 @@ class Course:
     def get_course_detail(self):
         pass
 
+    def get_course_price(self):
+        return self.__course_price
+    
     def get_course_category(self):
         return self.__course_category
 
@@ -138,7 +141,8 @@ class Lesson:
         pass
     
 class Cart:
-    def __init__(self):
+    def __init__(self, account):
+        self.__account = account
         self.__cart = []
 
     def add_item(self, course):
@@ -146,19 +150,29 @@ class Cart:
         return "Success"
 
     def remove_item(self, course):
-        pass
+        self.__cart.pop(course)
 
-    def checkout(self):
-        pass
+    def calculate_total(self):
+        total_price = 0
+        for course_item in self.__cart:
+            total_price += course_item.get_course_price()
+        return total_price
+
+    def create_enrollment(self):
+        paid_enrollment = []
+        for course_item in self.__cart:
+            enroll = Enrollment(self.__account, course_item, 0)
+            paid_enrollment.append(enroll)
+        return paid_enrollment
 
 class Account:
-    def __init__(self, account_id, account_username, account_password, account_email, account_payment_method, account_cart, account_order):
+    def __init__(self, account_id, account_username, account_password, account_email):
         self.__account_id = account_id
         self.__account_name = account_username
         self.__account_password = account_password
         self.__account_email = account_email
+        self.__account_cart = Cart(self)
         self.__account_payment_method = None
-        self.__account_cart = Cart()
         self.__account_order = None
 
     def login(self):
@@ -185,6 +199,12 @@ class Account:
 
     def get_password(self):
         return self.__account_password
+
+    def set_account_order(self, order):
+        self.__account_order = order
+
+    def get_account_order(self):
+        return self.__account_order
 
 class Person:
     def __init__(self, name, surname, age, account: Account):
@@ -228,9 +248,10 @@ class Enrollment:
         pass
 
 class Order:
-    def __init__(self, order_account: Account):
+    def __init__(self, order_account: Account, paid_enrollment):
         self.__order_account = order_account
-        self.__paid_enrollment = []
+        self.__paid_enrollment = paid_enrollment
+        
 
 class PaymentMethod:
     def __init__(self, payment_id):
