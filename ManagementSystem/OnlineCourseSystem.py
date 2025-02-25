@@ -6,14 +6,14 @@ class OnlineCourseManagement:
         self.__enrollment_list = []
         self.__faq_list = []
 
-    def add_student_list(self, username, password, email):
-        pass
+    def add_student_list(self, id, username, password, email):
+        self.__student_list.append(Student(id, username, password, email, None, None, None))
 
     def add_teacher_list(self, student):
         pass
 
-    def add_course_list(self, course):
-        pass
+    def add_course_list(self, id, name, price):
+        self.__course_list.append(Course(id, name, price))
 
     def add_enrollment_list(self, enrollment):
         pass
@@ -22,16 +22,29 @@ class OnlineCourseManagement:
         pass
         
     def get_course(self, course_id):
-        pass
+        for course in self.__course_list:
+            if course.check_course_id(course_id):
+                return course
+            return None
 
     def get_account(self, account_id):
-        pass
+        for account in self.__student_list:
+            if account.check_account_id(account_id):
+                return account
+            return None
 
     def get_account_cart(self, account_id):
-        pass
+        account = self.get_account(account_id)
+        return account.get_cart()
 
-    def add_to_cart(self, course):
-        pass
+    def add_to_cart(self, account_id, course_id):
+        account = self.get_account(account_id)
+        course = self.get_course(course_id)
+        if account is None or course is None:
+            return "Failed to add course to cart"
+        if account.add_item_to_cart(course):
+            return "Added item to cart"
+        return "Failed to add course to cart"
 
     def create_noti(self, content):
         pass
@@ -77,7 +90,9 @@ class Course:
         self.__course_category = course_category
     
     def check_course_id(self, course_id):
-        pass
+        if self.__course_id == course_id:
+            return True
+        return False
     
     def add_chapter(self, chapter_id):
         pass
@@ -127,7 +142,8 @@ class Cart:
         self.__cart = []
 
     def add_item(self, course):
-        pass
+        self.__cart.append(course)
+        return "Success"
 
     def remove_item(self, course):
         pass
@@ -142,7 +158,7 @@ class Account:
         self.__account_password = account_password
         self.__account_email = account_email
         self.__account_payment_method = None
-        self.__account_cart = None
+        self.__account_cart = Cart()
         self.__account_order = None
 
     def login(self):
@@ -152,10 +168,17 @@ class Account:
         pass
     
     def check_account_id(self, account_id):
-        pass
+        if self.__account_id == account_id:
+            return True
+        return False
 
+    def get_cart(self):
+        return self.__account_cart
+    
     def add_item_to_cart(self, course):
-        pass
+        self.__account_cart.add_item(course)
+        return "Success"
+        
 
     def get_username(self):
         return self.__account_name
@@ -238,3 +261,4 @@ class FAQ:
 
     def __add_answer(self, answer):
         pass
+
