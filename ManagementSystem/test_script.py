@@ -14,10 +14,10 @@ class TestAddToCart(unittest.TestCase):
         
         # Create test data
         self.test_course = Course("CS101", "Introduction to Programming", 99.99, "Computer Science")
-        self.test_account = Account("A123", "testuser", "password", "test@example.com", None, None, None)
+        self.test_account = Account("A123", "testuser", "password", "test@example.com")
         
         # Configure mock behavior
-        self.mock_system.get_account_cart.return_value = Cart()
+        self.mock_system.get_account_cart.return_value = Cart(self.test_account)
         self.mock_system.add_to_cart.return_value = "Added item to cart"
         
     def test_add_to_cart_via_system(self):
@@ -95,6 +95,31 @@ class TestSearchFeature(unittest.TestCase):
         self.mock_system.search_course_by_keyword_and_category.assert_called_with("Machine", "Computer Science")
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].get_course_detail(), "Machine Learning")
+
+class TestCartCalculateTotal(unittest.TestCase):
+    def setUp(self):
+        """Set up test fixtures before each test method is run."""
+        # Create a mock system
+        self.mock_system = Mock(spec=OnlineCourseManagement)
+        
+        # Create test data
+        self.test_account = Account("A123", "testuser", "password", "test@example.com")
+        self.test_course1 = Course("CS101", "Introduction to Programming", 99.99, "Computer Science")
+        self.test_course2 = Course("CS102", "Data Structures", 79.99, "Computer Science")
+        self.test_cart = Cart(self.test_account)
+        self.test_cart.add_item(self.test_course1)
+        self.test_cart.add_item(self.test_course2)
+        
+        # Configure mock behavior
+        self.mock_system.get_account_cart.return_value = self.test_cart
+        
+    def test_calculate_total(self):
+        """Test calculating the total price of items in the cart."""
+        cart = self.mock_system.get_account_cart("A123")
+        total = cart.calculate_total()
+        
+        # Verify the total price calculation
+        self.assertEqual(total, 179.98)
 
 if __name__ == "__main__":
     unittest.main()
