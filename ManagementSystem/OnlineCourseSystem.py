@@ -35,12 +35,46 @@ class OnlineCourseManagement:
 
     def create_noti(self, content):
         pass
+    
+    def search_course(self, keyword):
+        for course in self.__course_list:
+            if keyword in course.get_course_detail():
+                return course
+        return None
+
+    def search_course_by_keyword(self, keyword):
+        matching_courses = []
+        for course in self.__course_list:
+            if keyword.lower() in course.get_course_detail().lower():
+                matching_courses.append(course)
+        return matching_courses
+
+    def search_course_by_category(self, category):
+        matching_courses = []
+        for course in self.__course_list:
+            if course.get_course_category().lower() == category.lower():
+                matching_courses.append(course)
+        return matching_courses
+
+    def search_course_by_keyword_and_category(self, keyword, category):
+        matching_courses = []
+        for course in self.__course_list:
+            if keyword.lower() in course.get_course_detail().lower() and course.get_course_category().lower() == category.lower():
+                matching_courses.append(course)
+        return matching_courses
+
+    def login(self, username, password):
+        for account in self.__student_list + self.__teacher_list:
+            if account.get_username() == username and account.get_password() == password:
+                return account
+        return None
 
 class Course:
-    def __init__(self, course_id, course_name, course_price):
+    def __init__(self, course_id, course_name, course_price, course_category):
         self.__course_id = course_id
         self.__course_name = course_name
         self.__course_price = course_price
+        self.__course_category = course_category
     
     def check_course_id(self, course_id):
         pass
@@ -53,6 +87,9 @@ class Course:
     
     def get_course_detail(self):
         pass
+
+    def get_course_category(self):
+        return self.__course_category
 
 class Chapter:
     def __init__(self, chapter_id):
@@ -119,6 +156,12 @@ class Account:
 
     def add_item_to_cart(self, course):
         pass
+
+    def get_username(self):
+        return self.__account_name
+
+    def get_password(self):
+        return self.__account_password
 
 class Person:
     def __init__(self, name, surname, age, account: Account):
