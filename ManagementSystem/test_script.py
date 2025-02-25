@@ -1,10 +1,6 @@
 import unittest
 from unittest.mock import Mock
-from OnlineCourseSystem import OnlineCourseManagement
-from OnlineCourseSystem import Course
-from OnlineCourseSystem import Account
-from OnlineCourseSystem import Cart
-from OnlineCourseSystem import Course
+from OnlineCourseSystem import *
 
 class TestAddToCart(unittest.TestCase):
     def setUp(self):
@@ -120,6 +116,68 @@ class TestCartCalculateTotal(unittest.TestCase):
         
         # Verify the total price calculation
         self.assertEqual(total, 179.98)
+
+class TestViewLesson(unittest.TestCase):
+    def setUp(self):
+        """Set up test fixtures before each test method is run."""
+        # Create a mock system
+        self.mock_system = Mock(spec=OnlineCourseManagement)
+        
+        # Create test data
+        self.test_lesson = Lesson(
+            "01",
+            "Introduction to Python",
+            "Python is a programming language...",
+            "Learn the basics of Python",
+            "python_basics.pdf"
+        )
+        
+        self.test_chapter = Chapter("01")
+        self.test_chapter._Chapter__lesson_list = [self.test_lesson]
+        
+        self.test_course = Course("CPE", "Python Programming", 1000, "Programming")
+        self.test_course._Course__chapter_list = [self.test_chapter]
+        
+        self.test_account = Account("STD01", "student1", "password123", "student@test.com")
+        
+        # Configure mock behavior
+        self.mock_system.get_course.return_value = self.test_course
+        self.mock_system.get_account.return_value = self.test_account
+        
+        # Set up enrollment
+        paid_enrollment = [Enrollment(self.test_account, self.test_course, 0)]
+        test_order = Order(self.test_account, paid_enrollment)
+        self.test_account.set_account_order([test_order])
+        
+    def test_view_lesson(self):
+        """Test viewing a lesson through the system."""
+        # Get account from system
+        account = self.mock_system.get_account("STD01")
+        
+        # View lesson
+        viewed_lesson = account.view_lesson("CPE-01-01")
+        
+        # Verify the lesson details
+        self.assertIsNotNone(viewed_lesson)
+        self.assertEqual(viewed_lesson.get_lesson_id(), "01")
+        
+    def test_view_nonexistent_lesson(self):
+        """Test viewing a lesson that doesn't exist."""
+        account = self.mock_system.get_account("STD01")
+        viewed_lesson = account.view_lesson("CPE-02-01")  # Non-existent chapter
+        
+        self.assertIsNone(viewed_lesson)
+        
+    def test_view_lesson_without_enrollment(self):
+        """Test viewing a lesson without being enrolled."""
+        # Create new account without enrollment
+        unenrolled_account = Account("STD02", "student2", "password123", "student2@test.com")
+        self.mock_system.get_account.return_value = unenrolled_account
+        
+        account = self.mock_system.get_account("STD02")
+        viewed_lesson = account.view_lesson("CPE-01-01")
+        
+        self.assertIsNone(viewed_lesson)
 
 if __name__ == "__main__":
     unittest.main()
