@@ -97,6 +97,12 @@ class Course:
     def add_chapter(self, chapter_id):
         pass
 
+    def get_chapter(self, chapter_id):
+        for chapter in self.__chapter_list:
+            if chapter.get_chapter_id() == chapter_id:
+                return chapter
+        return None
+
     def add_course_description(self):
         pass
     
@@ -114,9 +120,18 @@ class Chapter:
         self.__chapter_id = chapter_id
         self.__lesson_list = []
     
+    def get_chapter_id(self):
+        return self.__chapter_id
+    
     def add_lesson(self, lesson_id, lesson_name, lesson_content, lesson_description, lesson_material):
         pass
     
+    def get_lesson(self, lesson_id):
+        for lesson in self.__lesson_list:
+            if lesson.get_lesson_id() == lesson_id:
+                return lesson
+        return None
+
     def get_chapter_detail(self):
         pass
 
@@ -128,6 +143,9 @@ class Lesson:
         self.__lesson_description = lesson_description 
         self.__lesson_material = lesson_material
     
+    def get_lesson_id(self):
+        return self.__lesson_id
+
     def add_lesson_name(self, lesson_name):
         pass
 
@@ -173,7 +191,7 @@ class Account:
         self.__account_email = account_email
         self.__account_cart = Cart(self)
         self.__account_payment_method = None
-        self.__account_order = None
+        self.__account_order = []
 
     def login(self):
         pass
@@ -205,6 +223,18 @@ class Account:
 
     def get_account_order(self):
         return self.__account_order
+    
+    def view_lesson(self, lesson_id):
+        #ex: lesson_id = "CPE-01-01"
+        course_id, chapter_id, lesson_id = lesson_id.split("-")
+        for order in self.__account_order:
+            for enrollment in order.get_paid_enrollment():
+                if enrollment.enroll_course().check_course_id(course_id):
+                    chapter = enrollment.enroll_course().get_chapter(chapter_id)
+                    if chapter:
+                        lesson = chapter.get_lesson(lesson_id)
+                        return lesson
+        return None
 
 class Person:
     def __init__(self, name, surname, age, account: Account):
@@ -243,7 +273,10 @@ class Enrollment:
         self.__student = student
         self.__course = course
         self.__progression = progression
-        
+    
+    def enroll_course(self):
+        return self.__course
+    
     def update_progression(self):
         pass
 
@@ -251,6 +284,9 @@ class Order:
     def __init__(self, order_account: Account, paid_enrollment):
         self.__order_account = order_account
         self.__paid_enrollment = paid_enrollment
+
+    def get_paid_enrollment(self):
+        return self.__paid_enrollment
         
 
 class PaymentMethod:
