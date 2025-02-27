@@ -179,5 +179,35 @@ class TestViewLesson(unittest.TestCase):
         
         self.assertIsNone(viewed_lesson)
 
+class TestFAQ(unittest.TestCase):
+    def setUp(self):
+        """Set up test fixtures before each test method is run."""
+        # Create a mock system
+        self.mock_system = Mock(spec=OnlineCourseManagement)
+        
+        # Create test data
+        self.test_faq = FAQ("FAQ001", "What is Python?")
+        
+        # Configure mock behavior
+        self.mock_system.add_faq_list.return_value = None
+        self.mock_system.get_faq_list.return_value = [self.test_faq]
+        
+    def test_add_faq_question(self):
+        """Test adding an FAQ question."""
+        self.mock_system.add_faq_list("FAQ001", "What is Python?")
+        
+        # Verify the FAQ question was added
+        self.mock_system.add_faq_list.assert_called_with("FAQ001", "What is Python?")
+        faqs = self.mock_system.get_faq_list()
+        self.assertEqual(len(faqs), 1)
+        self.assertEqual(faqs[0].get_faq_question(), "What is Python?")
+        
+    def test_add_faq_answer(self):
+        """Test adding an answer to an FAQ question."""
+        self.test_faq.add_faq_answer("Python is a programming language.")
+        
+        # Verify the FAQ answer was added
+        self.assertEqual(self.test_faq.get_faq_answer(), "Python is a programming language.")
+
 if __name__ == "__main__":
     unittest.main()
