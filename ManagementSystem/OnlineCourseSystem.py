@@ -25,17 +25,19 @@ class OnlineCourseManagement:
         for course in self.__course_list:
             if course.check_course_id(course_id):
                 return course
-            return None
+        return None
 
     def get_account(self, account_id):
         for account in self.__student_list:
             if account.check_account_id(account_id):
                 return account
-            return None
+        return None
 
     def get_account_cart(self, account_id):
         account = self.get_account(account_id)
-        return account.get_cart()
+        if account:
+            return account.get_cart()
+        return None
 
     def add_to_cart(self, account_id, course_id):
         account = self.get_account(account_id)
