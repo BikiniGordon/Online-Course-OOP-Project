@@ -18,8 +18,11 @@ class OnlineCourseManagement:
     def add_enrollment_list(self, enrollment):
         pass
     
-    def add_faq_list(self, faq):
-        pass
+    def add_faq_list(self, faq_id, faq_question):
+        self.__faq_list.append(FAQ(faq_id, faq_question))
+
+    def get_faq_list(self):
+        return self.__faq_list
         
     def get_course(self, course_id):
         for course in self.__course_list:
@@ -356,6 +359,12 @@ class FAQ:
         self.__faq_question = faq_question
         self.__faq_answer = None
 
-    def __add_answer(self, answer):
-        pass
+    def add_faq_answer(self, answer):
+        self.__faq_answer = answer
+
+    def get_faq_question(self):
+        return self.__faq_question
+    
+    def get_faq_answer(self):
+        return self.__faq_answer
 
