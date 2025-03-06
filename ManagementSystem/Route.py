@@ -30,7 +30,7 @@ def add_data():
 
 test = add_data()
 
-@rt('{account_id}/course/{course_id}')
+@rt('/{account_id}/course/{course_id}')
 def get(account_id: str ,course_id: str):
     course = test.get_course(course_id)
     return Container(
@@ -51,7 +51,7 @@ def get(account_id: str ,course_id: str):
                 H1("This is an image."),
                 H4("{}฿".format(course.get_course_price())),
                 Button("Add to Cart", 
-                      hx_post= account_id + "/addtocart/" + course_id,
+                      hx_post= "/" + account_id + "/addtocart/" + course_id,
                       hx_target="#cart-message")
             )
         ),
@@ -73,7 +73,7 @@ def add_course_to_cart(account_id: str, course_id: str):
                           style="background: none; border: none; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
                     P("This course is already added!", style="color: #dc3545;"),
                     Button("View Cart", 
-                          onclick="window.location.href='/cart/{}'".format(account_id),
+                          onclick=f"window.location.href='/{account_id}/cart'",
                           style="background-color: #5996B2; color: white;"),
                     columns=1
                 ),
@@ -92,7 +92,7 @@ def add_course_to_cart(account_id: str, course_id: str):
                           style="background: none; border: none; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
                     P("Course added to cart successfully!"),
                     Button("View Cart", 
-                          onclick="window.location.href='/cart/{}'".format(account_id),
+                          onclick=f"window.location.href='/cart/{account_id}'",
                           style="background-color: #5996B2; color: white;"),
                     columns=1
                 ),
@@ -127,12 +127,20 @@ def get(account_id: str):
             *cart_items,
             P(f"Total: {cart.calculate_total()}฿"),
             Button("Checkout", 
-                  onclick="window.location.href='/checkout'",
+                  onclick=f"window.location.href='/{account_id}/checkout'",
                   style="background-color: #28a745; color: white;"),
             Button("Continue Shopping", 
-                  onclick="window.location.href='/course1'",
+                  onclick=f"window.location.href='/{account_id}/course/1'",
                   style="background-color: #5996B2; color: white;")
         )
+    )
+
+@rt('/{account_id}/checkout')
+def get(account_id: str):
+    # Add checkout logic here
+    return Container(
+        H1("Checkout Page"),
+        # Add checkout content
     )
 
 @rt('/{account_id}/enrolled/{course_id}')
@@ -190,9 +198,13 @@ def view_lesson(account_id: str, lesson_id: str):
     if lesson:
         return Container(
             Card(
-                H1(lesson.get_lesson_content()),
+                H2(lesson.get_lesson_name()),
+                H3("Lesson Content"),
+                P(lesson.get_lesson_content()),
                 style="margin-bottom: 20px;"
-            )
+            ),
+            H3(f"Course: {lesson.get_course_name()}", 
+               style="margin-top: 20px; text-align: center;")
         )
     return P("Lesson not found", style="color: #dc3545;")
 
