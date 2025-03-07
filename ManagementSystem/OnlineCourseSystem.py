@@ -1,16 +1,20 @@
 class OnlineCourseManagement:
     def __init__(self):
+        self.__account_list = []
         self.__student_list = []
         self.__teacher_list = []
         self.__course_list = []
         self.__enrollment_list = []
         self.__faq_list = []
 
-    def add_student_list(self, id, username, password, email):
-        self.__student_list.append(Account(id, username, password, email))
+    def add_account_list(self, id, username, password, email):
+        self.__account_list.append(Account(id, username, password, email))
 
-    def add_teacher_list(self, student):
-        pass
+    def add_student_list(self, name, surname, age, account):
+        self.__student_list.append(Student(name, surname, age, account))
+
+    def add_teacher_list(self, name, surname, age, account):
+        self.__teacher_list.append(Teacher(name, surname, age, account))
 
     def add_course_list(self, id, name, price, category):
         self.__course_list.append(Course(id, name, price, category))
@@ -31,9 +35,16 @@ class OnlineCourseManagement:
         return None
 
     def get_account(self, account_id):
-        for account in self.__student_list:
+        for account in self.__account_list:
             if account.check_account_id(account_id):
                 return account
+        return None
+    
+    def get_student(self, account_id):
+        for student in self.__student_list:
+            student_account = student.get_student_account()
+            if student_account and student_account.check_account_id(account_id):
+                return student
         return None
 
     def get_account_cart(self, account_id):
@@ -85,7 +96,7 @@ class OnlineCourseManagement:
         return matching_courses
 
     def login(self, username, password):
-        for account in self.__student_list + self.__teacher_list:
+        for account in self.__account_list:
             if account.get_username() == username and account.get_password() == password:
                 return account
         return None
@@ -207,6 +218,9 @@ class Cart:
     def remove_item(self, course):
         self.__cart.pop(course)
 
+    def clear_item(self):
+        self.__cart.clear()
+
     def calculate_total(self):
         total_price = 0
         for course_item in self.__cart:
@@ -251,12 +265,20 @@ class Account:
             return "Course already in cart"
         return "Failed to add course to cart"
         
-
     def get_username(self):
         return self.__account_name
 
     def get_password(self):
         return self.__account_password
+    
+    def set_account_payment_method(self, payment_method):
+        self.__account_payment_method = payment_method
+        
+    def get_account_payment_method(self):
+        if self.__account_payment_method:
+            return self.__account_payment_method
+        else:
+            return None
 
     def set_account_order(self, order):
         self.__account_order = order
@@ -291,11 +313,17 @@ class Person:
 
     def view_profile(self):
         pass
+
+    def get_account(self):
+        return self.__account
         
 class Student(Person):
     def __init__(self, name, surname, age, account: Account):
         super().__init__(name, surname, age, account)
-        self.__enrollment_list = [] 
+        self.__enrollment_list = []
+
+    def get_student_account(self):
+        return self.get_account()
 
 class Teacher(Person):
     def __init__(self, name, surname, age, account: Account):
@@ -312,7 +340,7 @@ class Teacher(Person):
         pass
 
 class Enrollment:
-    def __init__(self, student, course, progression):
+    def __init__(self, student: Student, course, progression):
         self.__student = student
         self.__course = course
         self.__progression = progression
@@ -343,6 +371,15 @@ class CreditCard(PaymentMethod):
     def __init__(self, payment_id, card_number):
         super().__init__(payment_id)
         self.__card_number = card_number
+        self.__balance = 1000000
+
+    def pay(self, amount):
+        if self.__balance >= amount:
+            self.__balance -= amount
+            return True
+        
+    def get_balance(self):
+        return self.__balance
 
 
 class Notification:
