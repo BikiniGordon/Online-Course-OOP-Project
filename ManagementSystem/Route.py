@@ -8,8 +8,8 @@ payment_id = 1
 def add_data():
     imeow = OnlineCourseManagement()
     
-    imeow.add_course_list("1", "Python Programming", 100, "Programming")
-    imeow.add_course_list("2", "Java Programming", 150, "Programming")
+    imeow.add_course_list("1", "Python Programming", "This is Python Programming detail.", 100, "Programming")
+    imeow.add_course_list("2", "Java Programming", "This is Java Programming detail.", 150, "Programming")
 
     chapter1_1 = Chapter("1")
     chapter1_1.add_lesson("1", "Variables and Data Types", "Lesson 1 content", "Understanding variables and basic data types", "Variables are containers for storing data values...")
@@ -40,7 +40,7 @@ def add_data():
     imeow.add_enrollment_list(Enrollment1)
     Order1 = Order("1", Enrollment1)
     account.add_account_order(Order1)
-    imeow.add_student_list("Name", "Surname", "69", account)
+    imeow.add_student_list(1, "Name", "Surname", "69", "admin", "password", "test@example.com")
     return imeow
 
 test = add_data()
@@ -271,6 +271,104 @@ def get_style():
             padding: 0;
         }
     """    
+@rt('/login', methods=['GET'])
+def get_login():
+    return Container(
+        H1("Login", style="text-align: center; margin-bottom: 20px;"),
+        Form(
+            Div(
+                Label("Username", 
+                    Input(
+                        type="text", 
+                        id="username",
+                        name="username",
+                        required=True,
+                        placeholder="Enter your username",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Password", 
+                    Input(
+                        type="password", 
+                        id="password",
+                        name="password",
+                        required=True,
+                        placeholder="Enter your password",
+                        style="width: 100%;"
+                    )
+                ),
+                style="max-width: 300px;"
+            ),
+            
+            Button(
+                "Login", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #007bff; 
+                    color: white;
+                """
+            ),
+            
+            method="post",
+            action="/login",
+            style="padding: 20px;"
+        ),
+        style="""
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        """
+    )
 
+@rt('/login', methods=['POST'])
+def post_login(username: str, password: str):
+    account = test.login(username, password)
+    if account:
+        return Container(
+            H1(f"Welcome, {account.get_username()}!", style="text-align: center; color: green;"),
+            P("You have successfully logged in.")
+        )
+    else:
+        return Container(
+            H1("Login Failed", style="text-align: center; color: red;"),
+            P("Invalid username or password."),
+            A("Go back", href="/login", style="display: block; text-align: center; margin-top: 20px;")
+        )
+
+@rt('/search', methods=['GET'])
+def get_search():
+    results = test.search_courses("")
+    
+    return Titled("Search Online Courses",
+        Form(
+            Input(id="search", placeholder="Search courses...", hx_get="/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
+            style="margin-bottom: 20px;"
+        ),
+        Div(
+            *[
+                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"))
+                for c in results
+            ],
+            id="results",
+            style="margin-top: 20px;"
+        )
+    )
+
+@rt('/searchresult', methods=['GET'])
+def get_search_result(search: str):
+    results = test.search_courses(search)
+    
+    return Div(
+        *[
+            Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"))
+            for c in results
+        ] if results else [P("No courses found.")],
+        style="margin-top: 10px;"
+    )
 serve()
 
