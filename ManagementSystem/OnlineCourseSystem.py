@@ -20,7 +20,7 @@ class OnlineCourseManagement:
         self.__course_list.append(Course(id, name, price, category))
 
     def add_enrollment_list(self, enrollment):
-        pass
+        self.__enrollment_list.append(enrollment)
     
     def add_faq_list(self, faq_id, faq_question):
         self.__faq_list.append(FAQ(faq_id, faq_question))
@@ -32,6 +32,16 @@ class OnlineCourseManagement:
         for course in self.__course_list:
             if course.check_course_id(course_id):
                 return course
+        return None
+    
+    def get_enrolled_course(self, student_id, course_id):
+        account = self.get_account(student_id)
+        if account:
+            order = account.get_account_order()
+            for order in order:
+                enrollment = order.get_paid_enrollment()
+                if enrollment.enroll_course().check_course_id(course_id):
+                    return enrollment.enroll_course()
         return None
 
     def get_account(self, account_id):
@@ -340,10 +350,13 @@ class Teacher(Person):
         pass
 
 class Enrollment:
-    def __init__(self, student: Student, course, progression):
+    def __init__(self, student, course, progression):
         self.__student = student
         self.__course = course
         self.__progression = progression
+    
+    def get_account(self):
+        return self.__student
     
     def enroll_course(self):
         return self.__course

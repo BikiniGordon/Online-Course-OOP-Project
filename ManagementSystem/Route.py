@@ -11,21 +11,34 @@ def add_data():
     imeow.add_course_list("1", "Python Programming", 100, "Programming")
     imeow.add_course_list("2", "Java Programming", 150, "Programming")
 
-    chapter1 = Chapter("1")
-    chapter1.add_lesson("1", "Variables and Data Types", "Lesson 1 content", "Understanding variables and basic data types", "Variables are containers for storing data values...")
+    chapter1_1 = Chapter("1")
+    chapter1_1.add_lesson("1", "Variables and Data Types", "Lesson 1 content", "Understanding variables and basic data types", "Variables are containers for storing data values...")
     
-    chapter2 = Chapter("2")
-    chapter2.add_lesson("2", "Control Structures", "Lesson 2 content", "Learn about if statements and loops", "Control structures help you control the flow...")
+    chapter2_1 = Chapter("2")
+    chapter2_1.add_lesson("2", "Control Structures", "Lesson 2 content", "Learn about if statements and loops", "Control structures help you control the flow...")
 
     course1 = imeow.get_course("1")
-    course1.add_chapter(chapter1)
-    course1.add_chapter(chapter2)
+    course1.add_chapter(chapter1_1)
+    course1.add_chapter(chapter2_1)
+
+    chapter1_2 = Chapter("1")
+    chapter1_2.add_lesson("1", "Variables and Data Types", "Lesson 1 content", "Understanding variables and basic data types", "Variables are containers for storing data values...")
+    chapter2_2 = Chapter("2")
+    chapter2_2.add_lesson("2", "Control Structures", "Lesson 2 content", "Learn about if statements and loops", "Control structures help you control the flow...")
+    chapter3_2 = Chapter("3")
+    chapter3_2.add_lesson("3", "Functions", "Lesson 3 content", "Learn about functions", "Functions are a block of code which only runs when it is called...")
+
+    course2 = imeow.get_course("2")
+    course2.add_chapter(chapter1_2)
+    course2.add_chapter(chapter2_2)
+    course2.add_chapter(chapter3_2)
     
     # Add a test account
     imeow.add_account_list("1", "testuser", "password", "test@example.com")
-    Enrollment1 = Enrollment("1", course1, 0)
-    Order1 = Order("1", Enrollment1)
     account = imeow.get_account("1")
+    Enrollment1 = Enrollment(account, course1, 0)
+    imeow.add_enrollment_list(Enrollment1)
+    Order1 = Order("1", Enrollment1)
     account.add_account_order(Order1)
     imeow.add_student_list("Name", "Surname", "69", account)
     return imeow
@@ -63,7 +76,6 @@ def get(account_id: str ,course_id: str):
 @rt('/{account_id}/addtocart/{course_id}')
 def add_course_to_cart(account_id: str, course_id: str):
     result = test.add_to_cart(account_id, course_id)
-    
     # If course is already in cart
     if result == "Course already in cart":
         return Container(
@@ -191,8 +203,7 @@ def pay(account_id: str, card_number: str):
 
 @rt('/{account_id}/enrolled/{course_id}')
 def get(account_id: str, course_id: str):
-    account = test.get_account(account_id)
-    course = test.get_course(course_id)
+    course = test.get_enrolled_course(account_id, course_id)
     return Container(
         Grid(
             # Left side - Lesson content
@@ -243,14 +254,11 @@ def view_lesson(account_id: str, lesson_id: str):
     
     if lesson:
         return Container(
+            H2(lesson.get_lesson_name()),
             Card(
-                H2(lesson.get_lesson_name()),
-                H3("Lesson Content"),
                 P(lesson.get_lesson_content()),
                 style="margin-bottom: 20px;"
-            ),
-            H3(f"Course: {lesson.get_course_name()}", 
-               style="margin-top: 20px; text-align: center;")
+            )
         )
     return P("Lesson not found", style="color: #dc3545;")
 
