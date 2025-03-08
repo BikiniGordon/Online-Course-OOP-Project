@@ -3,6 +3,8 @@ from OnlineCourseSystem import *
 
 app, rt = fast_app()
 
+payment_id = 1
+
 def add_data():
     imeow = OnlineCourseManagement()
     
@@ -20,12 +22,12 @@ def add_data():
     course1.add_chapter(chapter2)
     
     # Add a test account
-    imeow.add_student_list("1", "testuser", "password", "test@example.com")
+    imeow.add_account_list("1", "testuser", "password", "test@example.com")
     Enrollment1 = Enrollment("1", course1, 0)
     Order1 = Order("1", Enrollment1)
-    student = imeow.get_account("1")
-    student.add_account_order(Order1)
-
+    account = imeow.get_account("1")
+    account.add_account_order(Order1)
+    imeow.add_student_list("Name", "Surname", "69", account)
     return imeow
 
 test = add_data()
@@ -73,7 +75,7 @@ def add_course_to_cart(account_id: str, course_id: str):
                           style="background: none; border: none; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
                     P("This course is already added!", style="color: #dc3545;"),
                     Button("View Cart", 
-                          onclick=f"window.location.href='/{account_id}/cart'",
+                          onclick=f"window.location.href='/cart/{account_id}'",
                           style="background-color: #5996B2; color: white;"),
                     columns=1
                 ),
@@ -126,8 +128,11 @@ def get(account_id: str):
             H1("Your Cart"),
             *cart_items,
             P(f"Total: {cart.calculate_total()}฿"),
-            Button("Checkout", 
-                  onclick=f"window.location.href='/{account_id}/checkout'",
+            Button("Checkout with Credit card", 
+                  onclick=f"window.location.href='/{account_id}/checkout/credit_card'",
+                  style="background-color: #28a745; color: white;"),
+            Button("Checkout by other ways", 
+                  onclick=f"window.location.href='/{account_id}/checkout/others'",
                   style="background-color: #28a745; color: white;"),
             Button("Continue Shopping", 
                   onclick=f"window.location.href='/{account_id}/course/1'",
@@ -135,13 +140,54 @@ def get(account_id: str):
         )
     )
 
-@rt('/{account_id}/checkout')
-def get(account_id: str):
-    # Add checkout logic here
+@rt('/{account_id}/checkout/others')
+def others(account_id: str):
     return Container(
-        H1("Checkout Page"),
-        # Add checkout content
+        H1("We don't have such thing, please pay with credit card. [I beg you]"),
+        Form(
+            Button("Back to Cart"),
+            method="/get",
+            action=f"/cart/{account_id}"
+        )
     )
+
+@rt('/{account_id}/checkout/credit_card')
+def credit_card(account_id: str):
+    return Container(
+        H1("Credit Card Payment"),
+        Form(
+            Label("Card number:", id="card_number"),
+            Input(placeholder = "Example: 1234 5678 1234 [If you paid once, you don't need to be worry, type anything.]",type="text", name="card_number"),
+            Button("Pay"),
+            method="post",
+            action=f"/{account_id}/pay"
+        )
+    )
+
+@rt('/{account_id}/pay')
+def pay(account_id: str, card_number: str):
+    global payment_id
+    account = test.get_account(account_id)
+    student = test.get_student(account_id)
+    cart = account.get_cart()
+    if account.get_account_payment_method() == None:
+        card = CreditCard(payment_id, card_number)
+        account.set_account_payment_method(card)
+    else:
+        card = account.get_account_payment_method()
+    card.pay(cart.calculate_total())
+    payment_id += 1
+    for item in cart.get_content():
+        enroll = Enrollment(student, item, 0)
+        order_item = Order(account, enroll)
+        account.add_account_order(order_item)
+    cart.clear_item()
+    
+    return Container(
+        H1(f"Payment Successful! Your course(s) will be available in your account. Balance: {card.get_balance()}"),
+        Button("Back to main"), 
+              onclick=f"window.location.href='/cart/{account_id}'", # Redirect to main page [not available at the moment]
+        )
 
 @rt('/{account_id}/enrolled/{course_id}')
 def get(account_id: str, course_id: str):
