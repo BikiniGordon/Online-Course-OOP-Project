@@ -351,7 +351,7 @@ def get_search():
         ),
         Div(
             *[
-                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"))
+                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
                 for c in results
             ],
             id="results",
@@ -365,10 +365,10 @@ def get_search_result(search: str):
     
     return Div(
         *[
-            Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"))
+            Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"
     )
-serve()
 
+serve()
