@@ -38,6 +38,7 @@ def add_data():
     
     # Add Pet Care Course
     imeow.add_course_list("3", "Pet Care Basics", "Essential guide for taking care of your pets", 80, "Pet")
+
     
     chapter1_pet = Chapter("1")
     chapter1_pet.add_lesson("1", "Understanding Your Pet", "Pet Basics", 
