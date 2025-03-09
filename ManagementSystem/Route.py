@@ -271,6 +271,7 @@ def get_style():
             padding: 0;
         }
     """    
+    
 @rt('/login', methods=['GET'])
 def get_login():
     return Container(
