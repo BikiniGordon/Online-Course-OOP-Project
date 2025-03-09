@@ -29,6 +29,9 @@ class OnlineCourseManagement:
 
     def get_faq_list(self):
         return self.__faq_list
+    
+    def get_course_list(self):
+        return self.__course_list
         
     def get_course(self, course_id):
         for course in self.__course_list:
@@ -240,6 +243,9 @@ class Account:
     def logout(self):
         pass
     
+    def get_account_username(self):
+        return self.__account_name
+    
     def check_account_id(self, account_id):
         if self.__account_id == account_id:
             return True
@@ -278,6 +284,13 @@ class Account:
 
     def get_account_order(self):
         return self.__account_order
+    
+    def view_enrolled_course(self):
+        enrolled_course = []
+        for order in self.__account_order:
+            enrollment = order.get_paid_enrollment()
+            enrolled_course.append(enrollment.enroll_course())
+        return enrolled_course
     
     def view_lesson(self, lesson_id):
         #ex: lesson_id = "CPE-01-01"

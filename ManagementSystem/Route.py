@@ -13,6 +13,8 @@ def add_data():
 
     chapter1_1 = Chapter("1")
     chapter1_1.add_lesson("1", "Variables and Data Types", "Lesson 1 content", "Understanding variables and basic data types", "Variables are containers for storing data values...")
+    chapter1_1.add_lesson("2", "Operators", "Lesson 2 content", "Learn about operators", "Operators are used to perform operations on variables and values...")
+    chapter1_1.add_lesson("3", "Strings", "Lesson 3 content", "Learn about strings", "Strings are used for storing text...")
     
     chapter2_1 = Chapter("2")
     chapter2_1.add_lesson("2", "Control Structures", "Lesson 2 content", "Learn about if statements and loops", "Control structures help you control the flow...")
@@ -33,21 +35,185 @@ def add_data():
     course2.add_chapter(chapter2_2)
     course2.add_chapter(chapter3_2)
     
+    # Add Pet Care Course
+    imeow.add_course_list("3", "Pet Care Basics", 80, "Pet")
+    
+    chapter1_pet = Chapter("1")
+    chapter1_pet.add_lesson("1", "Understanding Your Pet", "Pet Basics", 
+                          "Learn about pet behavior and needs", 
+                          "Understanding your pet's behavior is key to being a good pet owner...")
+    chapter1_pet.add_lesson("2", "Pet Nutrition", "Nutrition Guide", 
+                          "Learn about proper pet nutrition", 
+                          "Proper nutrition is essential for your pet's health...")
+    
+    chapter2_pet = Chapter("2")
+    chapter2_pet.add_lesson("1", "Basic Pet Care", "Daily Care Guide", 
+                          "Learn daily pet care routines", 
+                          "Daily care routines help keep your pet healthy and happy...")
+    
+    course3 = imeow.get_course("3")
+    course3.add_chapter(chapter1_pet)
+    course3.add_chapter(chapter2_pet)
+
+    # Add Cooking Course
+    imeow.add_course_list("4", "Basic Cooking Skills", 120, "Cooking")
+    
+    chapter1_cooking = Chapter("1")
+    chapter1_cooking.add_lesson("1", "Kitchen Basics", "Kitchen Introduction", 
+                              "Learn kitchen tools and equipment", 
+                              "Understanding your kitchen tools is the first step to becoming a good cook...")
+    chapter1_cooking.add_lesson("2", "Knife Skills", "Basic Cutting Techniques", 
+                              "Master basic cutting techniques", 
+                              "Proper knife skills are essential for food preparation...")
+    
+    chapter2_cooking = Chapter("2")
+    chapter2_cooking.add_lesson("1", "Basic Cooking Methods", "Cooking Techniques", 
+                              "Learn fundamental cooking methods", 
+                              "Understanding different cooking methods will improve your cooking skills...")
+    
+    course4 = imeow.get_course("4")
+    course4.add_chapter(chapter1_cooking)
+    course4.add_chapter(chapter2_cooking)
+    
     # Add a test account
     imeow.add_account_list("1", "testuser", "password", "test@example.com")
     account = imeow.get_account("1")
     Enrollment1 = Enrollment(account, course1, 0)
     imeow.add_enrollment_list(Enrollment1)
-    Order1 = Order("1", Enrollment1)
+    Order1 = Order(account, Enrollment1)
     account.add_account_order(Order1)
     imeow.add_student_list(1, "Name", "Surname", "69", "admin", "password", "test@example.com")
     return imeow
 
 test = add_data()
 
+@rt('/{account_id}/main')
+def main(account_id: str):
+    account = test.get_account(account_id)
+    enrolled_courses = account.view_enrolled_course()
+    enrolled_course_card = []
+    recommended_courses = []
+    recommended_courses_based_on_interest = []
+    
+    all_courses = test.get_course_list()
+    enrolled_ids = [course.get_course_id() for course in enrolled_courses]
+    enrolled_categories = [course.get_course_category() for course in enrolled_courses]
+    
+    # Create cards for enrolled courses
+    for course in enrolled_courses:
+        course_id = course.get_course_id()
+        enrolled_course_card.append(
+            Card(
+                H3(course.get_course_name()),
+                P(course.get_course_category(), style='color: #5996B2;'),
+                P("This course is about Python Programming"),
+                Button("Start Learning",
+                       onclick=f"window.location.href='enrolled/{course_id}'"),
+                style="min-width: 250px; margin: 10px;"
+            )
+        )
+    
+    # Create cards for recommended courses
+    for course in all_courses:
+        if course.get_course_id() not in enrolled_ids:
+            if course.get_course_category() in enrolled_categories:
+                recommended_courses_based_on_interest.append(
+                    Card(
+                        H3(course.get_course_name()),
+                        P(course.get_course_category(), style='color: #5996B2;'),
+                        P("This course is about Python Programming"),
+                        P(f"Price: {course.get_course_price()}฿"),
+                        Button("View Course",
+                            onclick=f"window.location.href='course/{course.get_course_id()}'"),
+                        style="min-width: 250px; margin: 10px;"
+                    )
+                )
+            else:
+                recommended_courses.append(
+                    Card(
+                        H3(course.get_course_name()),
+                        P(course.get_course_category(), style='color: #5996B2;'),
+                        P("This course is about Python Programming"),
+                        P(f"Price: {course.get_course_price()}฿"),
+                        Button("View Course",
+                            onclick=f"window.location.href='course/{course.get_course_id()}'"),
+                        style="min-width: 250px; margin: 10px;"
+                    )
+                )
+
+    # Add other categories section
+    other_categories = {}
+    
+    # Group courses by category
+    for course in all_courses:
+        if (course.get_course_id() not in enrolled_ids and 
+            course.get_course_category() not in enrolled_categories):
+            category = course.get_course_category()
+            if category not in other_categories:
+                other_categories[category] = []
+            other_categories[category].append(
+                Card(
+                    H3(course.get_course_name()),
+                    P(category, style='color: #5996B2;'),
+                    P(f"Price: {course.get_course_price()}฿"),
+                    Button("View Course",
+                           onclick=f"window.location.href='course/{course.get_course_id()}'"),
+                    style="min-width: 250px; margin: 10px;"
+                )
+            )
+
+    # Create category sections
+    category_sections = []
+    for category, courses in other_categories.items():
+        if courses:
+            category_sections.extend([
+                H2(f"Explore {category} Courses", style="margin-top: 50px;"),
+                Div(
+                    Grid(
+                        *courses,
+                        columns=len(courses),
+                        style="display: flex; overflow-x: auto;"
+                    ),
+                    style="margin: 20px 0;"
+                )
+            ])
+
+    return Container(
+        Titled("Welcome! {}".format(account.get_account_username()), 
+               style="margin-top: 20px;"),
+        
+        # Enrolled Courses Section
+        H2("My Enrolled Courses", style="margin-top: 50px;"),
+        Div(
+            Grid(
+                *enrolled_course_card if enrolled_course_card else P("You haven't enrolled in any courses yet."),
+                columns=len(enrolled_course_card) if enrolled_course_card else 1,
+                style="display: flex; overflow-x: auto;"
+            ),
+            style="margin: 20px 0;"
+        ),
+        
+        # Recommended Courses Section
+        H2("Recommended Courses", style="margin-top: 50px;"),
+        P("Based on your interests", style="color: #666;"),
+        Div(
+            Grid(
+                *recommended_courses_based_on_interest if recommended_courses_based_on_interest else P("No recommendations available."),
+                columns=len(recommended_courses_based_on_interest) if recommended_courses_based_on_interest else 1,
+                style="display: flex; overflow-x: auto;"
+            ),
+            style="margin: 20px 0;"
+        ),
+        
+        # Other Categories Sections
+        *category_sections
+    )
+
 @rt('/{account_id}/course/{course_id}')
-def get(account_id: str ,course_id: str):
+def view_course(account_id: str ,course_id: str):
     course = test.get_course(course_id)
+    chapter_num = len(course.get_chapter_list())
+    lesson_num = sum([len(chapter.get_lesson_list()) for chapter in course.get_chapter_list()])
     return Container(
         Grid(
             Card(
@@ -56,8 +222,8 @@ def get(account_id: str ,course_id: str):
                 P("This course is about Python Programming"),
                 Card(
                     H5("This course includes", style='text-align: center;'),
-                    P("5 chapters"),
-                    P("20 lessons"),
+                    P("{} chapters".format(chapter_num)),
+                    P("{} lessons".format(lesson_num)),
                     P("1 downloadable resource"),
                     P("Certificate of completion"),
                 )
@@ -118,11 +284,11 @@ def add_course_to_cart(account_id: str, course_id: str):
     return result
 
 @rt('/close-popup')
-def post():
+def close_popup():
     return ""  # Returns empty string to clear the popup content
 
 @rt('/cart/{account_id}')
-def get(account_id: str):
+def view_cart(account_id: str):
     account = test.get_account(account_id)
     cart = account.get_cart()
     cart_items = []
@@ -198,53 +364,52 @@ def pay(account_id: str, card_number: str):
     return Container(
         H1(f"Payment Successful! Your course(s) will be available in your account. Balance: {card.get_balance()}"),
         Button("Back to main"), 
-              onclick=f"window.location.href='/cart/{account_id}'", # Redirect to main page [not available at the moment]
+              onclick=f"window.location.href='/{account_id}/main'", # Redirect to main page [not available at the moment]
         )
 
 @rt('/{account_id}/enrolled/{course_id}')
-def get(account_id: str, course_id: str):
+def view_enrolled_course(account_id: str, course_id: str):
     course = test.get_enrolled_course(account_id, course_id)
-    return Container(
-        Grid(
-            # Left side - Lesson content
-            Div(
+    if course:
+        return Container(
+            Grid(
                 Div(
-                    P("Select a lesson to view content", 
-                        style="text-align: center; color: #666;"),
-                    id="lesson-content",
-                    cls="main-content"
+                    Div(
+                        P("Select a lesson to view content", 
+                            style="text-align: center; color: #666;"),
+                        id="lesson-content",
+                        cls="main-content"
+                    ),
+                    H3(f"Course: {course.get_course_name()}", 
+                        style="margin-top: 20px;")
                 ),
-                # Course name moved to bottom
-                H3(f"Course: {course.get_course_name()}", 
-                    style="margin-top: 20px;")
-            ),
-            # Right side - Navigation
-            Div(
-                H2("Course Navigation"),
-                *[
-                    Card(
-                        H3(f"Chapter {chapter.get_chapter_id()}"),
-                        *[
-                            Div(
-                                H4(f"Lesson {lesson.get_lesson_id()}: {lesson.get_lesson_name()}"),
-                                P(lesson.get_lesson_description()),
-                                Button(
-                                    "View Lesson",
-                                    hx_get=f"/{account_id}/lesson/{course_id}-{chapter.get_chapter_id()}-{lesson.get_lesson_id()}",
-                                    hx_target="#lesson-content",
-                                    hx_swap="innerHTML"
-                                ),
-                                cls="lesson-box"
-                            ) for lesson in chapter.get_lesson_list()
-                        ],
-                        cls="chapter-box"
-                    ) for chapter in course.get_chapter_list()
-                ],
-                cls="sidebar"
-            ),
-            columns=2
+                Div(
+                    H2("Course Navigation"),
+                    *[
+                        Card(
+                            H3(f"Chapter {chapter.get_chapter_id()}"),
+                            *[
+                                Div(
+                                    H4(f"Lesson {lesson.get_lesson_id()}: {lesson.get_lesson_name()}"),
+                                    P(lesson.get_lesson_description()),
+                                    Button(
+                                        "View Lesson",
+                                        hx_get=f"/{account_id}/lesson/{course_id}-{chapter.get_chapter_id()}-{lesson.get_lesson_id()}",
+                                        hx_target="#lesson-content",
+                                        hx_swap="innerHTML"
+                                    ),
+                                    cls="lesson-box", style = "margin-bottom: 20px;"
+                                ) for lesson in chapter.get_lesson_list()
+                            ],
+                            cls="chapter-box"
+                        ) for chapter in course.get_chapter_list()
+                    ],
+                    cls="sidebar"
+                ),
+                columns=2
+            )
         )
-    )
+    return H1("Course not found", style="color: #dc3545;")
 
 # Add this new route to handle lesson content display
 @rt('/{account_id}/lesson/{lesson_id}')
