@@ -8,8 +8,9 @@ payment_id = 1
 def add_data():
     imeow = OnlineCourseManagement()
     
-    imeow.add_course_list("1", "Python Programming", "This is Python Programming detail.", 100, "Programming")
-    imeow.add_course_list("2", "Java Programming", "This is Java Programming detail.", 150, "Programming")
+    # Programming Courses
+    imeow.add_course_list("1", "Python Programming", "Learn Python programming from basics to advanced concepts", 100, "Programming")
+    imeow.add_course_list("2", "Java Programming", "Master Java programming language and OOP principles", 150, "Programming")
 
     chapter1_1 = Chapter("1")
     chapter1_1.add_lesson("1", "Variables and Data Types", "Lesson 1 content", "Understanding variables and basic data types", "Variables are containers for storing data values...")
@@ -36,7 +37,7 @@ def add_data():
     course2.add_chapter(chapter3_2)
     
     # Add Pet Care Course
-    imeow.add_course_list("3", "Pet Care Basics", 80, "Pet")
+    imeow.add_course_list("3", "Pet Care Basics", "Essential guide for taking care of your pets", 80, "Pet")
     
     chapter1_pet = Chapter("1")
     chapter1_pet.add_lesson("1", "Understanding Your Pet", "Pet Basics", 
@@ -56,7 +57,7 @@ def add_data():
     course3.add_chapter(chapter2_pet)
 
     # Add Cooking Course
-    imeow.add_course_list("4", "Basic Cooking Skills", 120, "Cooking")
+    imeow.add_course_list("4", "Basic Cooking Skills", "Learn fundamental cooking techniques and kitchen essentials", 120, "Cooking")
     
     chapter1_cooking = Chapter("1")
     chapter1_cooking.add_lesson("1", "Kitchen Basics", "Kitchen Introduction", 
@@ -106,7 +107,7 @@ def main(account_id: str):
             Card(
                 H3(course.get_course_name()),
                 P(course.get_course_category(), style='color: #5996B2;'),
-                P("This course is about Python Programming"),
+                P(course.get_course_detail()),
                 Button("Start Learning",
                        onclick=f"window.location.href='enrolled/{course_id}'"),
                 style="min-width: 250px; margin: 10px;"
@@ -121,7 +122,7 @@ def main(account_id: str):
                     Card(
                         H3(course.get_course_name()),
                         P(course.get_course_category(), style='color: #5996B2;'),
-                        P("This course is about Python Programming"),
+                        P(course.get_course_detail()),
                         P(f"Price: {course.get_course_price()}฿"),
                         Button("View Course",
                             onclick=f"window.location.href='course/{course.get_course_id()}'"),
@@ -133,7 +134,7 @@ def main(account_id: str):
                     Card(
                         H3(course.get_course_name()),
                         P(course.get_course_category(), style='color: #5996B2;'),
-                        P("This course is about Python Programming"),
+                        P(course.get_course_detail()),
                         P(f"Price: {course.get_course_price()}฿"),
                         Button("View Course",
                             onclick=f"window.location.href='course/{course.get_course_id()}'"),
@@ -155,6 +156,7 @@ def main(account_id: str):
                 Card(
                     H3(course.get_course_name()),
                     P(category, style='color: #5996B2;'),
+                    P(course.get_course_detail()),
                     P(f"Price: {course.get_course_price()}฿"),
                     Button("View Course",
                            onclick=f"window.location.href='course/{course.get_course_id()}'"),
@@ -219,7 +221,7 @@ def view_course(account_id: str ,course_id: str):
             Card(
                 P(course.get_course_category(), style='color: #5996B2;'),
                 H3(course.get_course_name()),
-                P("This course is about Python Programming"),
+                P(course.get_course_detail()),
                 Card(
                     H5("This course includes", style='text-align: center;'),
                     P("{} chapters".format(chapter_num)),
