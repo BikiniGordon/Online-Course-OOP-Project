@@ -10,14 +10,16 @@ class OnlineCourseManagement:
     def add_account_list(self, id, username, password, email):
         self.__account_list.append(Account(id, username, password, email))
 
-    def add_student_list(self, name, surname, age, account):
-        self.__student_list.append(Student(name, surname, age, account))
-
+    def add_student_list(self, id, name, surname, age, username, password, email):
+        account = Account(id, username, password, email)
+        student = Student(name, surname, age, account)
+        self.__student_list.append(student)
+        
     def add_teacher_list(self, name, surname, age, account):
         self.__teacher_list.append(Teacher(name, surname, age, account))
 
-    def add_course_list(self, id, name, price, category):
-        self.__course_list.append(Course(id, name, price, category))
+    def add_course_list(self, id, name, detail, price, category):
+        self.__course_list.append(Course(id, name, detail, price, category))
 
     def add_enrollment_list(self, enrollment):
         self.__enrollment_list.append(enrollment)
@@ -81,43 +83,24 @@ class OnlineCourseManagement:
     def create_noti(self, content):
         pass
     
-    def search_course(self, keyword):
-        for course in self.__course_list:
-            if keyword in course.get_course_detail():
-                return course
-        return None
-
-    def search_course_by_keyword(self, keyword):
-        matching_courses = []
-        for course in self.__course_list:
-            if keyword.lower() in course.get_course_detail().lower():
-                matching_courses.append(course)
-        return matching_courses
-
-    def search_course_by_category(self, category):
-        matching_courses = []
-        for course in self.__course_list:
-            if course.get_course_category().lower() == category.lower():
-                matching_courses.append(course)
-        return matching_courses
-
-    def search_course_by_keyword_and_category(self, keyword, category):
-        matching_courses = []
-        for course in self.__course_list:
-            if keyword.lower() in course.get_course_detail().lower() and course.get_course_category().lower() == category.lower():
-                matching_courses.append(course)
-        return matching_courses
+    def search_courses(self, search: str):
+        return [
+            c for c in self.__course_list
+            if search.lower() in c.get_course_detail().lower() or search.lower() in c.get_course_category().lower()
+        ]
 
     def login(self, username, password):
-        for account in self.__account_list:
+        for student in self.__student_list:
+            account = student.get_account()
             if account.get_username() == username and account.get_password() == password:
                 return account
         return None
 
 class Course:
-    def __init__(self, course_id, course_name, course_price, course_category):
+    def __init__(self, course_id, course_name, course_detail, course_price, course_category):
         self.__course_id = course_id
         self.__course_name = course_name
+        self.__course_detail = course_detail
         self.__course_price = course_price
         self.__course_category = course_category
         self.__chapter_list = []
@@ -138,12 +121,9 @@ class Course:
     
     def get_chapter_list(self):
         return self.__chapter_list
-
-    def add_course_description(self):
-        pass
     
     def get_course_detail(self):
-        return
+        return self.__course_detail
     
     def get_course_id(self):
         return self.__course_id
@@ -347,6 +327,9 @@ class Student(Person):
 
     def get_student_account(self):
         return self.get_account()
+    
+    def get_account(self):
+        return self._Person__account
 
 class Teacher(Person):
     def __init__(self, name, surname, age, account: Account):
