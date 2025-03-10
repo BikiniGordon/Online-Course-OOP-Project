@@ -1,10 +1,6 @@
 import unittest
 from unittest.mock import Mock
-from OnlineCourseSystem import OnlineCourseManagement
-from OnlineCourseSystem import Course
-from OnlineCourseSystem import Account
-from OnlineCourseSystem import Cart
-from OnlineCourseSystem import Course
+from OnlineCourseSystem import *
 
 class TestAddToCart(unittest.TestCase):
     def setUp(self):
@@ -14,10 +10,10 @@ class TestAddToCart(unittest.TestCase):
         
         # Create test data
         self.test_course = Course("CS101", "Introduction to Programming", 99.99, "Computer Science")
-        self.test_account = Account("A123", "testuser", "password", "test@example.com", None, None, None)
+        self.test_account = Account("A123", "testuser", "password", "test@example.com")
         
         # Configure mock behavior
-        self.mock_system.get_account_cart.return_value = Cart()
+        self.mock_system.get_account_cart.return_value = Cart(self.test_account)
         self.mock_system.add_to_cart.return_value = "Added item to cart"
         
     def test_add_to_cart_via_system(self):
@@ -95,6 +91,123 @@ class TestSearchFeature(unittest.TestCase):
         self.mock_system.search_course_by_keyword_and_category.assert_called_with("Machine", "Computer Science")
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].get_course_detail(), "Machine Learning")
+
+class TestCartCalculateTotal(unittest.TestCase):
+    def setUp(self):
+        """Set up test fixtures before each test method is run."""
+        # Create a mock system
+        self.mock_system = Mock(spec=OnlineCourseManagement)
+        
+        # Create test data
+        self.test_account = Account("A123", "testuser", "password", "test@example.com")
+        self.test_course1 = Course("CS101", "Introduction to Programming", 99.99, "Computer Science")
+        self.test_course2 = Course("CS102", "Data Structures", 79.99, "Computer Science")
+        self.test_cart = Cart(self.test_account)
+        self.test_cart.add_item(self.test_course1)
+        self.test_cart.add_item(self.test_course2)
+        
+        # Configure mock behavior
+        self.mock_system.get_account_cart.return_value = self.test_cart
+        
+    def test_calculate_total(self):
+        """Test calculating the total price of items in the cart."""
+        cart = self.mock_system.get_account_cart("A123")
+        total = cart.calculate_total()
+        
+        # Verify the total price calculation
+        self.assertEqual(total, 179.98)
+
+class TestViewLesson(unittest.TestCase):
+    def setUp(self):
+        """Set up test fixtures before each test method is run."""
+        # Create a mock system
+        self.mock_system = Mock(spec=OnlineCourseManagement)
+        
+        # Create test data
+        self.test_lesson = Lesson(
+            "01",
+            "Introduction to Python",
+            "Python is a programming language...",
+            "Learn the basics of Python",
+            "python_basics.pdf"
+        )
+        
+        self.test_chapter = Chapter("01")
+        self.test_chapter._Chapter__lesson_list = [self.test_lesson]
+        
+        self.test_course = Course("CPE", "Python Programming", 1000, "Programming")
+        self.test_course._Course__chapter_list = [self.test_chapter]
+        
+        self.test_account = Account("STD01", "student1", "password123", "student@test.com")
+        
+        # Configure mock behavior
+        self.mock_system.get_course.return_value = self.test_course
+        self.mock_system.get_account.return_value = self.test_account
+        
+        # Set up enrollment
+        paid_enrollment = [Enrollment(self.test_account, self.test_course, 0)]
+        test_order = Order(self.test_account, paid_enrollment)
+        self.test_account.set_account_order([test_order])
+        
+    def test_view_lesson(self):
+        """Test viewing a lesson through the system."""
+        # Get account from system
+        account = self.mock_system.get_account("STD01")
+        
+        # View lesson
+        viewed_lesson = account.view_lesson("CPE-01-01")
+        
+        # Verify the lesson details
+        self.assertIsNotNone(viewed_lesson)
+        self.assertEqual(viewed_lesson.get_lesson_id(), "01")
+        
+    def test_view_nonexistent_lesson(self):
+        """Test viewing a lesson that doesn't exist."""
+        account = self.mock_system.get_account("STD01")
+        viewed_lesson = account.view_lesson("CPE-02-01")  # Non-existent chapter
+        
+        self.assertIsNone(viewed_lesson)
+        
+    def test_view_lesson_without_enrollment(self):
+        """Test viewing a lesson without being enrolled."""
+        # Create new account without enrollment
+        unenrolled_account = Account("STD02", "student2", "password123", "student2@test.com")
+        self.mock_system.get_account.return_value = unenrolled_account
+        
+        account = self.mock_system.get_account("STD02")
+        viewed_lesson = account.view_lesson("CPE-01-01")
+        
+        self.assertIsNone(viewed_lesson)
+
+class TestFAQ(unittest.TestCase):
+    def setUp(self):
+        """Set up test fixtures before each test method is run."""
+        # Create a mock system
+        self.mock_system = Mock(spec=OnlineCourseManagement)
+        
+        # Create test data
+        self.test_faq = FAQ("FAQ001", "What is Python?")
+        
+        # Configure mock behavior
+        self.mock_system.add_faq_list.return_value = None
+        self.mock_system.get_faq_list.return_value = [self.test_faq]
+        
+    def test_add_faq_question(self):
+        """Test adding an FAQ question."""
+        self.mock_system.add_faq_list("FAQ001", "What is Python?")
+        
+        # Verify the FAQ question was added
+        self.mock_system.add_faq_list.assert_called_with("FAQ001", "What is Python?")
+        faqs = self.mock_system.get_faq_list()
+        self.assertEqual(len(faqs), 1)
+        self.assertEqual(faqs[0].get_faq_question(), "What is Python?")
+        
+    def test_add_faq_answer(self):
+        """Test adding an answer to an FAQ question."""
+        self.test_faq.add_faq_answer("Python is a programming language.")
+        
+        # Verify the FAQ answer was added
+        self.assertEqual(self.test_faq.get_faq_answer(), "Python is a programming language.")
 
 if __name__ == "__main__":
     unittest.main()
