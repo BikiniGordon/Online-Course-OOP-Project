@@ -104,11 +104,19 @@ def main(account_id: str):
     # Create cards for enrolled courses
     for course in enrolled_courses:
         course_id = course.get_course_id()
+        # Get enrollment to check progress
+        enrollment = next((order.get_paid_enrollment() for order in account.get_account_order() 
+                         if order.get_paid_enrollment().enroll_course().get_course_id() == course_id), None)
+        progress = enrollment.get_progress() if enrollment else 0
+        
         enrolled_course_card.append(
             Card(
                 H3(course.get_course_name()),
                 P(course.get_course_category(), style='color: #5996B2;'),
                 P(course.get_course_detail()),
+                # Add progress bar
+                P(f"Progress: {progress}%", 
+                      style="color: #28a745; text-align: left;"),
                 Button("Start Learning",
                        onclick=f"window.location.href='enrolled/{course_id}'"),
                 style="min-width: 250px; margin: 10px;"
@@ -292,8 +300,7 @@ def close_popup():
 
 @rt('/cart/{account_id}')
 def view_cart(account_id: str):
-    account = test.get_account(account_id)
-    cart = account.get_cart()
+    cart = test.get_account_cart(account_id)
     cart_items = []
     for course in cart.get_content():
         cart_items.append(
@@ -322,7 +329,7 @@ def view_cart(account_id: str):
     )
 
 @rt('/{account_id}/checkout/others')
-def others(account_id: str):
+def via_others(account_id: str):
     return Container(
         H1("We don't have such thing, please pay with credit card. [I beg you]"),
         Form(
@@ -333,7 +340,18 @@ def others(account_id: str):
     )
 
 @rt('/{account_id}/checkout/credit_card')
-def credit_card(account_id: str):
+def via_credit_card(account_id: str):
+    account = test.get_account(account_id)
+    card_number = account.get_card()
+    if card_number:
+        return Container(
+            H1("Credit Card Payment"),
+            Form(
+                Button("Pay with saved card"),
+                method="post",
+                action=f"/{account_id}/pay"
+            )
+        )
     return Container(
         H1("Credit Card Payment"),
         Form(
@@ -346,22 +364,23 @@ def credit_card(account_id: str):
     )
 
 @rt('/{account_id}/pay')
-def pay(account_id: str, card_number: str):
+def pay(account_id: str, card_number: str = None):
     global payment_id
     account = test.get_account(account_id)
     student = test.get_student(account_id)
     cart = account.get_cart()
     if account.get_account_payment_method() == None:
-        card = CreditCard(payment_id, card_number)
+        card = test.create_card(payment_id, card_number)
         account.set_account_payment_method(card)
     else:
         card = account.get_account_payment_method()
     card.pay(cart.calculate_total())
     payment_id += 1
     for item in cart.get_content():
-        enroll = Enrollment(student, item, 0)
-        order_item = Order(account, enroll)
+        enroll = test.create_enrollment(student, item, 0)
+        order_item = test.create_order(account, enroll)
         account.add_account_order(order_item)
+        test.create_noti(account, f"Successfully enrolled to {item.get_course_name()}.")
     cart.clear_item()
     
     return Container(
@@ -375,6 +394,21 @@ def view_enrolled_course(account_id: str, course_id: str):
     course = test.get_enrolled_course(account_id, course_id)
     if course:
         return Container(
+            Div(
+                Button(
+                    "← Back", 
+                    onclick=f"window.location.href='/{account_id}/main'",
+                    style="""
+                        background-color: #5996B2;
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                    """
+                ),
+                style="""
+                    margin-bottom: 40px;
+                """
+            ),
             Grid(
                 Div(
                     Div(
@@ -410,7 +444,8 @@ def view_enrolled_course(account_id: str, course_id: str):
                     cls="sidebar"
                 ),
                 columns=2
-            )
+            ),
+            style="padding: 20px;"
         )
     return H1("Course not found", style="color: #dc3545;")
 
@@ -418,17 +453,51 @@ def view_enrolled_course(account_id: str, course_id: str):
 @rt('/{account_id}/lesson/{lesson_id}')
 def view_lesson(account_id: str, lesson_id: str):
     account = test.get_account(account_id)
-    lesson = account.view_lesson(lesson_id)
-    
-    if lesson:
-        return Container(
-            H2(lesson.get_lesson_name()),
-            Card(
-                P(lesson.get_lesson_content()),
-                style="margin-bottom: 20px;"
-            )
-        )
-    return P("Lesson not found", style="color: #dc3545;")
+    try:
+        course_id, chapter_id, lesson_num = lesson_id.split('-')
+        lesson = account.view_lesson(lesson_id)
+        
+        if lesson:
+            enrollment = next((order.get_paid_enrollment() for order in account.get_account_order() 
+                            if order.get_paid_enrollment().enroll_course().get_course_id() == course_id), None)
+            
+            if enrollment:
+                course = enrollment.enroll_course()
+                total_lessons = sum(len(chapter.get_lesson_list()) for chapter in course.get_chapter_list())
+                current_progress = enrollment.get_progress()
+                
+                if not enrollment.is_lesson_completed(lesson_id):
+                    # Calculate progress per lesson more precisely
+                    progress_per_lesson = 100 / total_lessons
+                    completed_lessons = len(enrollment._Enrollment__completed_lessons) + 1  # Include current lesson
+                    new_progress = round((completed_lessons * progress_per_lesson))
+                    # Ensure 100% is reached when all lessons are completed
+                    new_progress = 100 if completed_lessons == total_lessons else new_progress
+                    
+                    enrollment.set_progress(new_progress)
+                    enrollment.mark_lesson_complete(lesson_id)
+                    is_completed = True
+                else:
+                    is_completed = True
+                    new_progress = current_progress
+            
+            return Container(
+                H2(lesson.get_lesson_name()),
+                Card(
+                    P(lesson.get_lesson_content()),
+                    style="margin-bottom: 20px;"
+                ),
+                Div(
+                    P(f"Progress: {new_progress}%", 
+                      style="color: #28a745; text-align: left;")
+                    ),
+                    id="completion-status"
+                )
+        return P("Lesson not found", style="color: #dc3545;")
+    except ValueError:
+        return P("Invalid lesson ID format", style="color: #dc3545;")
+
+
 
 def get_style():
     return """
@@ -538,10 +607,7 @@ def get_search_result(search: str):
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"
-    )
-
-# @rt('/editprofile', methods=['POST'])  
-# def 
+    ) 
 
 @rt('/{account_id}/editprofile', methods=['GET'])
 def get_editprofile():
@@ -773,17 +839,6 @@ def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str, p
             H1("Add Course Failed", style="text-align: center; color: red;"),
             A("Go back", href="/{account_id}/addnewcourse", style="display: block; text-align: center; margin-top: 20px;")
             )
-
-           
-    #         return Redirect(f"/{account_id}/main")
-    # except (ValueError, IndexError) as e:
-    #     return Container(
-    #         H1("Add Course Failed", style="text-align: center; color: red;"),
-    #         P("Invalid input values. Please check course ID, price and category."),
-    #         Button("Try Again", 
-    #             onclick=f"window.location.href='/{account_id}/main'",
-    #             style="display: block; margin: 20px auto;"
-    #         )
         
 @rt('/{account_id}/viewprofile', methods=['GET'])
 def viewprofile(account_id: str):
@@ -819,112 +874,142 @@ def viewprofile(account_id: str):
          )
     )
     
-# @rt('/{account_id}/viewprofile', methods=['GET'])
-# def get_viewprofile():
-#     return Container(
-#         H1("View Profile", style="text-align: center; margin-bottom: 20px;"),
-
-#         Form(
-#             Div(
-#                 Label("Course Name", 
-#                     Input(
-#                         type="text", 
-#                         id="name",
-#                         name="name",
-#                         required=True,
-#                         placeholder="Enter your course name",
-#                         style="width: 100%;"
-#                     )
-#                 ),
-#                 Label("Course Detail", 
-#                     Input(
-#                         type="text", 
-#                         id="detail",
-#                         name="detail",
-#                         required=True,
-#                         placeholder="Enter your course detail",
-#                         style="width: 100%;"
-#                     )
-#                 ),
-#                 Label("Course Price", 
-#                     Input(
-#                         type="text", 
-#                         id="price",
-#                         name="price",
-#                         required=True,
-#                         placeholder="Enter your Course Price",
-#                         style="width: 100%;"
-#                     )
-#                 ),
-#                 Label("Course ID", 
-#                     Input(
-#                         type="text", 
-#                         id="course_id",
-#                         name="course_id",
-#                         required=True,
-#                         placeholder="Enter your Course ID",
-#                         style="width: 100%;"
-#                     )
-#                 ),
-#                 Div(
-#                     "Course Category",
-#                     Div(
-#                         Label(
-#                             Input(
-#                                 type="checkbox",
-#                                 id="category_programming",
-#                                 name="category",
-#                                 value="programming"
-#                             ),
-#                             "Programming"
-#                         ),
-#                         Label(
-#                             Input(
-#                                 type="checkbox",
-#                                 id="category_pet",
-#                                 name="category",
-#                                 value="pet"
-#                             ),
-#                             "Pet"
-#                         ),
-#                         Label(
-#                             Input(
-#                                 type="checkbox",
-#                                 id="category_cooking",
-#                                 name="category",
-#                                 value="cooking"
-#                             ),
-#                             "Cooking"
-#                         ),
-#                         style="margin-top: 10px;"
-#                     ),
-#                     style="margin-top: 20px;"
-#                 ),
-#                 style="max-width: 300px;"
-#             ),
-#             Button(
-#                 "Submit", 
-#                 type="submit",
-#                 style=""" 
-#                     max-width: 200px;
-#                     margin: 20px auto 0;
-#                     display: block;
-#                     background-color: #007bff; 
-#                     color: white;
-#                 """
-#             ),
-#             method="post",
-#             action="addnewcourse",
-#             style="padding: 20px;"
-#         ),
-#         style="""
-#             display: flex;
-#             flex-direction: column;
-#             justify-content: center;
-#             align-items: center;
-#             min-height: 100vh;
-#         """
-#     )
-
+@rt("/{account_id}/faq")
+def faq(account_id: str):
+    faq_items = [
+        Container(
+            H3(f"{faq.get_faq_question()}?"),
+            Label(f"Answer: {faq.get_faq_answer()}"),
+            Form(
+                Button("Add/Change answer", type = "add_answer"),
+                method = "post",
+                action = f"/{account_id}/add_faq_answer/{faq.get_faq_id()}"
+            ),
+            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+        ) for faq in test.get_faq_list()
+    ]
+    return Container(
+        *faq_items,
+        Form(
+            Button("Contact us", type="routing"),
+            method = "post",
+            action = f"/{account_id}/support",
+        )
+    )
     
+@rt("/{account_id}/add_faq_answer/{faq_id}")
+def add_answer(account_id: str, faq_id:int):
+    for faq in test.get_faq_list():
+        if faq.get_faq_id() == faq_id:
+            return Container(
+                H1("Add answer"),
+                Form(
+                    H3(f"{faq.get_faq_question()}?"),
+                    Label(f"Answer: {faq.get_faq_answer()}"),
+                    Input(type="text", name="faq_ans", id="faq_ans", placeholder="Enter answer", required=True, pattern="[A-Za-z ]{2,}"),
+                    Button("Done", type="submit"),
+                    method="post",
+                    action=f"/{account_id}/faq_answered/{faq.get_faq_id()}"
+                )
+            )
+
+@rt("/{account_id}/faq_answered/{faq_id}")
+def append_answer(account_id: str, faq_id:int, faq_ans:str):
+    for faq in test.get_faq_list():
+        if faq.get_faq_id() == faq_id:
+            faq.add_faq_answer(faq_ans)
+    return Container(
+        H1("Answer added"),
+        Form(
+            Button("Back to FAQ", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/faq"
+        )
+    )
+
+@rt("/{account_id}/support")
+def support(account_id: str):
+    return Container(
+        H1("Support"),
+        Form(
+            Label("Customer support", Input(type = "text", id = "faq_question", placeholder = "Enter your question", required = True, pattern = "[A-Za-z ]{2,}")),
+            Button("Submit question", type = "submit"),
+            method = "post",
+            action = f"/{account_id}/submit_support"
+        )
+    )
+
+@rt("/{account_id}/submit_support")
+def submit_support(account_id: str, faq_question:str):
+    global faq_id_counter
+    for faq in test.get_faq_list():
+        if faq_question == faq.get_faq_question():
+            if faq.get_faq_answer() is not None:
+                return Container(
+                    H1("There is already an answer to this question."),
+                    Form(
+                        Button("Back to FAQ", type = "home"),
+                        method = "/get",
+                        action = f"/{account_id}/faq"
+                    )
+                )
+            return Container(
+                H1("There is this question already in the FAQ."),
+                Form(
+                    Button("Back to FAQ", type = "home"),
+                    method = "/get",
+                    action = f"/{account_id}/faq"
+                )
+            )
+    test.add_faq_list(faq_id_counter, faq_question)
+    faq_id_counter += 1
+    return Container(
+        H1("Thank you for contacting us"),
+        Form(
+            Button("Back to FAQ", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/faq"
+        )
+    )
+
+@rt('/{account_id}/notification')
+def notification(account_id: str):
+    account = test.get_account(account_id)
+    acc_noti = account.get_account_noti()
+    noti = acc_noti.get_notification()
+    noti = [
+        Container(
+            H3(f"{notification}"),
+            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+        ) for notification in noti
+    ]
+    return Container(
+        H1("Notification"),
+        *noti,
+        Form(
+            Button("Back to main", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/main"
+        ),
+        Form(
+            Button("Clear notification", type = "clear_notification"),
+            method = "/get",
+            action = f"/{account_id}/clear_notification"
+        )
+    )
+
+@rt('/{account_id}/clear_notification')
+def clear_notification(account_id: str):
+    account = test.get_account(account_id)
+    acc_noti = account.get_account_noti()
+    acc_noti.delete_notification()
+    return Container(
+        H1("Notifications cleared"),
+        Form(
+            Button("Back to main", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/main"
+        )
+    )
+
 serve()
