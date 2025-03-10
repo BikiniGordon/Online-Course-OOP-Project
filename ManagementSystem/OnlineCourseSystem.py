@@ -23,7 +23,19 @@ class OnlineCourseManagement:
 
     def add_enrollment_list(self, enrollment):
         self.__enrollment_list.append(enrollment)
+
+    def create_card(self, payment_id, card_number):
+        card = CreditCard(payment_id, card_number)
+        return card
+
+    def create_enrollment(self, student, course, progression):
+        enroll = Enrollment(student, course, progression)
+        return enroll
     
+    def create_order(self, account, paid_enrollment):
+        order = Order(account, paid_enrollment)
+        return order
+
     def add_faq_list(self, faq_id, faq_question):
         self.__faq_list.append(FAQ(faq_id, faq_question))
 
@@ -80,8 +92,10 @@ class OnlineCourseManagement:
             return "Course already in cart"
         return "Failed to add course to cart"
 
-    def create_noti(self, content):
-        pass
+    def create_noti(self, noti_account, context):
+        noti = noti_account.get_account_noti()
+        noti.add_notification(context)
+        return True
     
     def search_courses(self, search: str):
         return [
@@ -236,6 +250,7 @@ class Account:
         self.__account_cart = Cart(self)
         self.__account_payment_method = None
         self.__account_order = []
+        self.__account_noti = Notification(self)
 
     def login(self):
         pass
@@ -267,6 +282,9 @@ class Account:
     def get_password(self):
         return self.__account_password
     
+    def get_card(self):
+        return self.__account_payment_method
+    
     def set_account_payment_method(self, payment_method):
         self.__account_payment_method = payment_method
         
@@ -275,15 +293,15 @@ class Account:
             return self.__account_payment_method
         else:
             return None
-
-    def set_account_order(self, order):
-        self.__account_order = order
     
     def add_account_order(self, order):
         self.__account_order.append(order)
 
     def get_account_order(self):
         return self.__account_order
+    
+    def get_account_noti(self):
+        return self.__account_noti
     
     def view_enrolled_course(self):
         enrolled_course = []
@@ -392,12 +410,18 @@ class CreditCard(PaymentMethod):
 
 
 class Notification:
-    def __init__(self, notification_id, notification_content):
-        self.__notification_id = notification_id
-        self.__text = notification_content
+    def __init__(self, noti_account: Account):
+        self.__noti_account = noti_account
+        self.__noti = []
+
+    def add_notification(self, context):
+        self.__noti.append(context)
+
+    def get_notification(self):
+        return self.__noti
 
     def delete_notification(self):
-        pass
+        self.__noti.clear()
 
 class FAQ:
     def __init__(self, faq_id, faq_question):
@@ -408,9 +432,13 @@ class FAQ:
     def add_faq_answer(self, answer):
         self.__faq_answer = answer
 
+    def get_faq_id(self):
+        return self.__faq_id
+
     def get_faq_question(self):
         return self.__faq_question
     
     def get_faq_answer(self):
         return self.__faq_answer
 
+faq_id_counter = 1
