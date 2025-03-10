@@ -322,7 +322,7 @@ def view_cart(account_id: str):
     )
 
 @rt('/{account_id}/checkout/others')
-def others(account_id: str):
+def via_others(account_id: str):
     return Container(
         H1("We don't have such thing, please pay with credit card. [I beg you]"),
         Form(
@@ -333,7 +333,18 @@ def others(account_id: str):
     )
 
 @rt('/{account_id}/checkout/credit_card')
-def credit_card(account_id: str):
+def via_credit_card(account_id: str):
+    account = test.get_account(account_id)
+    card_number = account.get_card()
+    if card_number:
+        return Container(
+            H1("Credit Card Payment"),
+            Form(
+                Button("Pay with saved card"),
+                method="post",
+                action=f"/{account_id}/pay"
+            )
+        )
     return Container(
         H1("Credit Card Payment"),
         Form(
@@ -346,22 +357,23 @@ def credit_card(account_id: str):
     )
 
 @rt('/{account_id}/pay')
-def pay(account_id: str, card_number: str):
+def pay(account_id: str, card_number: str = None):
     global payment_id
     account = test.get_account(account_id)
     student = test.get_student(account_id)
     cart = account.get_cart()
     if account.get_account_payment_method() == None:
-        card = CreditCard(payment_id, card_number)
+        card = test.create_card(payment_id, card_number)
         account.set_account_payment_method(card)
     else:
         card = account.get_account_payment_method()
     card.pay(cart.calculate_total())
     payment_id += 1
     for item in cart.get_content():
-        enroll = Enrollment(student, item, 0)
-        order_item = Order(account, enroll)
+        enroll = test.create_enrollment(student, item, 0)
+        order_item = test.create_order(account, enroll)
         account.add_account_order(order_item)
+        test.create_noti(account, f"Successfully enrolled to {item.get_course_name()}.")
     cart.clear_item()
     
     return Container(
@@ -538,6 +550,144 @@ def get_search_result(search: str):
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"
+    )
+
+@rt("/{account_id}/faq")
+def faq(account_id: str):
+    faq_items = [
+        Container(
+            H3(f"{faq.get_faq_question()}?"),
+            Label(f"Answer: {faq.get_faq_answer()}"),
+            Form(
+                Button("Add/Change answer", type = "add_answer"),
+                method = "post",
+                action = f"/{account_id}/add_faq_answer/{faq.get_faq_id()}"
+            ),
+            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+        ) for faq in test.get_faq_list()
+    ]
+    return Container(
+        *faq_items,
+        Form(
+            Button("Contact us", type="routing"),
+            method = "post",
+            action = f"/{account_id}/support",
+        )
+    )
+    
+@rt("/{account_id}/add_faq_answer/{faq_id}")
+def add_answer(account_id: str, faq_id:int):
+    for faq in test.get_faq_list():
+        if faq.get_faq_id() == faq_id:
+            return Container(
+                H1("Add answer"),
+                Form(
+                    H3(f"{faq.get_faq_question()}?"),
+                    Label(f"Answer: {faq.get_faq_answer()}"),
+                    Input(type="text", name="faq_ans", id="faq_ans", placeholder="Enter answer", required=True, pattern="[A-Za-z ]{2,}"),
+                    Button("Done", type="submit"),
+                    method="post",
+                    action=f"/{account_id}/faq_answered/{faq.get_faq_id()}"
+                )
+            )
+
+@rt("/{account_id}/faq_answered/{faq_id}")
+def append_answer(account_id: str, faq_id:int, faq_ans:str):
+    for faq in test.get_faq_list():
+        if faq.get_faq_id() == faq_id:
+            faq.add_faq_answer(faq_ans)
+    return Container(
+        H1("Answer added"),
+        Form(
+            Button("Back to FAQ", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/faq"
+        )
+    )
+
+@rt("/{account_id}/support")
+def support(account_id: str):
+    return Container(
+        H1("Support"),
+        Form(
+            Label("Customer support", Input(type = "text", id = "faq_question", placeholder = "Enter your question", required = True, pattern = "[A-Za-z ]{2,}")),
+            Button("Submit question", type = "submit"),
+            method = "post",
+            action = f"/{account_id}/submit_support"
+        )
+    )
+
+@rt("/{account_id}/submit_support")
+def submit_support(account_id: str, faq_question:str):
+    global faq_id_counter
+    for faq in test.get_faq_list():
+        if faq_question == faq.get_faq_question():
+            if faq.get_faq_answer() is not None:
+                return Container(
+                    H1("There is already an answer to this question."),
+                    Form(
+                        Button("Back to FAQ", type = "home"),
+                        method = "/get",
+                        action = f"/{account_id}/faq"
+                    )
+                )
+            return Container(
+                H1("There is this question already in the FAQ."),
+                Form(
+                    Button("Back to FAQ", type = "home"),
+                    method = "/get",
+                    action = f"/{account_id}/faq"
+                )
+            )
+    test.add_faq_list(faq_id_counter, faq_question)
+    faq_id_counter += 1
+    return Container(
+        H1("Thank you for contacting us"),
+        Form(
+            Button("Back to FAQ", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/faq"
+        )
+    )
+
+@rt('/{account_id}/notification')
+def notification(account_id: str):
+    account = test.get_account(account_id)
+    acc_noti = account.get_account_noti()
+    noti = acc_noti.get_notification()
+    noti = [
+        Container(
+            H3(f"{notification}"),
+            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+        ) for notification in noti
+    ]
+    return Container(
+        H1("Notification"),
+        *noti,
+        Form(
+            Button("Back to main", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/main"
+        ),
+        Form(
+            Button("Clear notification", type = "clear_notification"),
+            method = "/get",
+            action = f"/{account_id}/clear_notification"
+        )
+    )
+
+@rt('/{account_id}/clear_notification')
+def clear_notification(account_id: str):
+    account = test.get_account(account_id)
+    acc_noti = account.get_account_noti()
+    acc_noti.delete_notification()
+    return Container(
+        H1("Notifications cleared"),
+        Form(
+            Button("Back to main", type = "home"),
+            method = "/get",
+            action = f"/{account_id}/main"
+        )
     )
 
 serve()
