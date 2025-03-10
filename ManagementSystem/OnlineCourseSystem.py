@@ -205,6 +205,10 @@ class Lesson:
     
     def add_lesson_material(self, lesson_material):
         pass
+
+    def update_progression(self, progression):
+        if progression >= 0 and progression <= 100:
+            self.__lesson_progression = progression
     
 class Cart:
     def __init__(self, account):
@@ -368,6 +372,7 @@ class Enrollment:
         self.__student = student
         self.__course = course
         self.__progression = progression
+        self.__completed_lessons = set()  # Track completed lessons
     
     def get_account(self):
         return self.__student
@@ -375,8 +380,24 @@ class Enrollment:
     def enroll_course(self):
         return self.__course
     
-    def update_progression(self):
-        pass
+    def get_progress(self):
+        return self.__progression
+    
+    def set_progress(self, value):
+        self.__progression = value
+    
+    def mark_lesson_complete(self, lesson_id):
+        self.__completed_lessons.add(lesson_id)
+        self.__update_progress()
+    
+    def is_lesson_completed(self, lesson_id):
+        return lesson_id in self.__completed_lessons
+    
+    def __update_progress(self):
+        total_lessons = sum(len(chapter.get_lesson_list()) 
+                          for chapter in self.__course.get_chapter_list())
+        if total_lessons > 0:
+            self.__progression = (len(self.__completed_lessons) * 100) // total_lessons
 
 class Order:
     def __init__(self, order_account: Account, paid_enrollment):
