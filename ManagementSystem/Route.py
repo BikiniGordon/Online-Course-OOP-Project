@@ -104,7 +104,6 @@ def main(account_id: str):
     # Create cards for enrolled courses
     for course in enrolled_courses:
         course_id = course.get_course_id()
-        # Get enrollment to check progress
         enrollment = next((order.get_paid_enrollment() for order in account.get_account_order() 
                          if order.get_paid_enrollment().enroll_course().get_course_id() == course_id), None)
         progress = enrollment.get_progress() if enrollment else 0
@@ -114,7 +113,6 @@ def main(account_id: str):
                 H3(course.get_course_name()),
                 P(course.get_course_category(), style='color: #5996B2;'),
                 P(course.get_course_detail()),
-                # Add progress bar
                 P(f"Progress: {progress}%", 
                       style="color: #28a745; text-align: left;"),
                 Button("Start Learning",
@@ -247,7 +245,7 @@ def view_course(account_id: str ,course_id: str):
                       hx_target="#cart-message")
             )
         ),
-        Div(id="cart-message")  # Placeholder for popup message
+        Div(id="cart-message")
     )
 
 @rt('/{account_id}/addtocart/{course_id}')
@@ -467,7 +465,6 @@ def view_enrolled_course(account_id: str, course_id: str):
         )
     return H1("Course not found", style="color: #dc3545;")
 
-# Add this new route to handle lesson content display
 @rt('/{account_id}/lesson/{lesson_id}')
 def view_lesson(account_id: str, lesson_id: str):
     account = test.get_account(account_id)
@@ -485,18 +482,15 @@ def view_lesson(account_id: str, lesson_id: str):
                 current_progress = enrollment.get_progress()
                 
                 if not enrollment.is_lesson_completed(lesson_id):
-                    # Calculate progress per lesson more precisely
                     progress_per_lesson = 100 / total_lessons
                     completed_lessons = len(enrollment._Enrollment__completed_lessons) + 1  # Include current lesson
                     new_progress = round((completed_lessons * progress_per_lesson))
-                    # Ensure 100% is reached when all lessons are completed
                     new_progress = 100 if completed_lessons == total_lessons else new_progress
                     
                     enrollment.set_progress(new_progress)
                     enrollment.mark_lesson_complete(lesson_id)
-                    is_completed = True
+
                 else:
-                    is_completed = True
                     new_progress = current_progress
             
             return Container(
@@ -829,7 +823,7 @@ def get_addnewcourse(account_id: str):
                 """
             ),
             method="post",
-            action=f"/{account_id}/addnewcourse",  # Changed this line to include account_id
+            action=f"/{account_id}/addnewcourse",
             style="padding: 20px;"
         ),
         style="""
