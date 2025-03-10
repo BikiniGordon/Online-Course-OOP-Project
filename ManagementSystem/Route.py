@@ -104,11 +104,19 @@ def main(account_id: str):
     # Create cards for enrolled courses
     for course in enrolled_courses:
         course_id = course.get_course_id()
+        # Get enrollment to check progress
+        enrollment = next((order.get_paid_enrollment() for order in account.get_account_order() 
+                         if order.get_paid_enrollment().enroll_course().get_course_id() == course_id), None)
+        progress = enrollment.get_progress() if enrollment else 0
+        
         enrolled_course_card.append(
             Card(
                 H3(course.get_course_name()),
                 P(course.get_course_category(), style='color: #5996B2;'),
                 P(course.get_course_detail()),
+                # Add progress bar
+                P(f"Progress: {progress}%", 
+                      style="color: #28a745; text-align: left;"),
                 Button("Start Learning",
                        onclick=f"window.location.href='enrolled/{course_id}'"),
                 style="min-width: 250px; margin: 10px;"
@@ -292,8 +300,7 @@ def close_popup():
 
 @rt('/cart/{account_id}')
 def view_cart(account_id: str):
-    account = test.get_account(account_id)
-    cart = account.get_cart()
+    cart = test.get_account_cart(account_id)
     cart_items = []
     for course in cart.get_content():
         cart_items.append(
@@ -375,6 +382,21 @@ def view_enrolled_course(account_id: str, course_id: str):
     course = test.get_enrolled_course(account_id, course_id)
     if course:
         return Container(
+            Div(
+                Button(
+                    "← Back", 
+                    onclick=f"window.location.href='/{account_id}/main'",
+                    style="""
+                        background-color: #5996B2;
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                    """
+                ),
+                style="""
+                    margin-bottom: 40px;
+                """
+            ),
             Grid(
                 Div(
                     Div(
@@ -410,7 +432,8 @@ def view_enrolled_course(account_id: str, course_id: str):
                     cls="sidebar"
                 ),
                 columns=2
-            )
+            ),
+            style="padding: 20px;"
         )
     return H1("Course not found", style="color: #dc3545;")
 
@@ -418,17 +441,51 @@ def view_enrolled_course(account_id: str, course_id: str):
 @rt('/{account_id}/lesson/{lesson_id}')
 def view_lesson(account_id: str, lesson_id: str):
     account = test.get_account(account_id)
-    lesson = account.view_lesson(lesson_id)
-    
-    if lesson:
-        return Container(
-            H2(lesson.get_lesson_name()),
-            Card(
-                P(lesson.get_lesson_content()),
-                style="margin-bottom: 20px;"
-            )
-        )
-    return P("Lesson not found", style="color: #dc3545;")
+    try:
+        course_id, chapter_id, lesson_num = lesson_id.split('-')
+        lesson = account.view_lesson(lesson_id)
+        
+        if lesson:
+            enrollment = next((order.get_paid_enrollment() for order in account.get_account_order() 
+                            if order.get_paid_enrollment().enroll_course().get_course_id() == course_id), None)
+            
+            if enrollment:
+                course = enrollment.enroll_course()
+                total_lessons = sum(len(chapter.get_lesson_list()) for chapter in course.get_chapter_list())
+                current_progress = enrollment.get_progress()
+                
+                if not enrollment.is_lesson_completed(lesson_id):
+                    # Calculate progress per lesson more precisely
+                    progress_per_lesson = 100 / total_lessons
+                    completed_lessons = len(enrollment._Enrollment__completed_lessons) + 1  # Include current lesson
+                    new_progress = round((completed_lessons * progress_per_lesson))
+                    # Ensure 100% is reached when all lessons are completed
+                    new_progress = 100 if completed_lessons == total_lessons else new_progress
+                    
+                    enrollment.set_progress(new_progress)
+                    enrollment.mark_lesson_complete(lesson_id)
+                    is_completed = True
+                else:
+                    is_completed = True
+                    new_progress = current_progress
+            
+            return Container(
+                H2(lesson.get_lesson_name()),
+                Card(
+                    P(lesson.get_lesson_content()),
+                    style="margin-bottom: 20px;"
+                ),
+                Div(
+                    P(f"Progress: {new_progress}%", 
+                      style="color: #28a745; text-align: left;")
+                    ),
+                    id="completion-status"
+                )
+        return P("Lesson not found", style="color: #dc3545;")
+    except ValueError:
+        return P("Invalid lesson ID format", style="color: #dc3545;")
+
+
 
 def get_style():
     return """
