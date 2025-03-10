@@ -1,7 +1,7 @@
 from fasthtml.common import *
 from OnlineCourseSystem import *
 
-app, rt = fast_app()
+app, rt = fast_app(live=True, debug=True)
 
 payment_id = 1
 
@@ -84,10 +84,15 @@ def add_data():
     imeow.add_enrollment_list(Enrollment1)
     Order1 = Order(account, Enrollment1)
     account.add_account_order(Order1)
-    imeow.add_student_list(1, "Name", "Surname", "69", "admin", "password", "test@example.com")
+    
+    for account in imeow.get_account_list():
+        print(f"Account ID: {account.get_account_id()}, Username: {account.get_username()}, Password: {account.get_password()}")
+        
     return imeow
 
+
 test = add_data()
+
 
 @rt('/{account_id}/main')
 def main(account_id: str):
@@ -110,7 +115,7 @@ def main(account_id: str):
                 P(course.get_course_category(), style='color: #5996B2;'),
                 P(course.get_course_detail()),
                 Button("Start Learning",
-                       onclick=f"window.location.href='enrolled/{course_id}'"),
+                    onclick=f"window.location.href='enrolled/{course_id}'"),
                 style="min-width: 250px; margin: 10px;"
             )
         )
@@ -498,10 +503,8 @@ def get_login():
 def post_login(username: str, password: str):
     account = test.login(username, password)
     if account:
-        return Container(
-            H1(f"Welcome, {account.get_username()}!", style="text-align: center; color: green;"),
-            P("You have successfully logged in.")
-        )
+        account_id = account.get_account_id()
+        return Redirect(f"/{account_id}/main")
     else:
         return Container(
             H1("Login Failed", style="text-align: center; color: red;"),
@@ -520,7 +523,11 @@ def get_search():
         ),
         Div(
             *[
-                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
+                A(
+                    Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                    href=f"/course/{c.get_course_id()}",
+                    style="text-decoration: none; color: inherit;"
+                )
                 for c in results
             ],
             id="results",
@@ -534,10 +541,14 @@ def get_search_result(search: str):
     
     return Div(
         *[
-            Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
+            A(
+                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                href=f"/course/{c.get_course_id()}",
+                style="text-decoration: none; color: inherit;"
+            )
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"
     )
 
-serve()
+serve(port=5003)

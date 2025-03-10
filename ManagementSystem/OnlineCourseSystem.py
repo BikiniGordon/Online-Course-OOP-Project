@@ -55,6 +55,9 @@ class OnlineCourseManagement:
                 return account
         return None
     
+    def get_account_list(self):
+        return self.__account_list
+    
     def get_student(self, account_id):
         for student in self.__student_list:
             student_account = student.get_student_account()
@@ -86,12 +89,11 @@ class OnlineCourseManagement:
     def search_courses(self, search: str):
         return [
             c for c in self.__course_list
-            if search.lower() in c.get_course_detail().lower() or search.lower() in c.get_course_category().lower()
+            if search.lower() in c.get_course_detail().lower() or search.lower() in c.get_course_category().lower() or search.lower() in c.get_course_name().lower()
         ]
 
     def login(self, username, password):
-        for student in self.__student_list:
-            account = student.get_account()
+        for account in self.__account_list:
             if account.get_username() == username and account.get_password() == password:
                 return account
         return None
@@ -237,9 +239,6 @@ class Account:
         self.__account_payment_method = None
         self.__account_order = []
 
-    def login(self):
-        pass
-
     def logout(self):
         pass
     
@@ -250,6 +249,9 @@ class Account:
         if self.__account_id == account_id:
             return True
         return False
+    
+    def get_account_id(self):
+        return self.__account_id
 
     def get_cart(self):
         return self.__account_cart
