@@ -20,7 +20,11 @@ class OnlineCourseManagement:
         self.__teacher_list.append(Teacher(name, surname, age, account))
 
     def add_course_list(self, id, name, detail, price, category):
+        before = len(self.__course_list)
         self.__course_list.append(Course(id, name, detail, price, category))
+        if len(self.__course_list) == before+1:
+            return True
+        return False
 
     def add_enrollment_list(self, enrollment):
         self.__enrollment_list.append(enrollment)
@@ -84,6 +88,10 @@ class OnlineCourseManagement:
     def add_to_cart(self, account_id, course_id):
         account = self.get_account(account_id)
         course = self.get_course(course_id)
+        enrolled_course = account.view_enrolled_course()
+        for enrolled in enrolled_course:
+            if enrolled.check_course_id(course_id):
+                return "Already enrolled in course"
         if account is None or course is None:
             return "Failed to add course to cart"
         result = account.add_item_to_cart(course)
