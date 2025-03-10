@@ -253,7 +253,25 @@ def view_course(account_id: str ,course_id: str):
 @rt('/{account_id}/addtocart/{course_id}')
 def add_course_to_cart(account_id: str, course_id: str):
     result = test.add_to_cart(account_id, course_id)
-    # If course is already in cart
+    if result == "Already enrolled in course":
+        return Container(
+            Card(
+                Grid(
+                    Button("×", 
+                          hx_post="/close-popup",
+                          hx_target="#cart-message",
+                          style="background: none; border: none; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
+                    P("You are already enrolled in this course!", style="color: #dc3545;"),
+                    Button("View Course", 
+                          onclick=f"window.location.href='/{account_id}/enrolled/{course_id}'",
+                          style="background-color: #5996B2; color: white;"),
+                    columns=1
+                ),
+                style="position: relative; padding: 20px;"
+            ),
+            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;",
+            id="cart-message"
+        )
     if result == "Course already in cart":
         return Container(
             Card(
@@ -706,7 +724,6 @@ def get_editprofile():
 @rt('/{account_id}/editprofile', methods=['POST'])
 def post_editprofile(account_id: str, username: str, password: str, confirm_password: str, name: str, surname: str, description: str):  # Note: category is now a list
     account = test.edit_profile(account_id, username, password, confirm_password, name, surname, description)
-    print(account)
     if account:
         return Container(
             H1("Edit Profile Successfully", style="text-align: center; color: green;"),
