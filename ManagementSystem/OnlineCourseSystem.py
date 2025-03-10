@@ -13,6 +13,7 @@ class OnlineCourseManagement:
     def add_student_list(self, id, name, surname, age, username, password, email):
         account = Account(id, username, password, email)
         student = Student(name, surname, age, account)
+        self.__account_list.append(account)
         self.__student_list.append(student)
         
     def add_teacher_list(self, name, surname, age, account):
@@ -60,7 +61,7 @@ class OnlineCourseManagement:
             student_account = student.get_student_account()
             if student_account and student_account.check_account_id(account_id):
                 return student
-        return None
+        return 
 
     def get_account_cart(self, account_id):
         account = self.get_account(account_id)
@@ -95,6 +96,27 @@ class OnlineCourseManagement:
             if account.get_username() == username and account.get_password() == password:
                 return account
         return None
+    
+    def get_person_using_account(self, account):
+        for student in self.__student_list:
+            if student.check_account(account):
+                return student.get_account()
+            
+        for teacher in self.__teacher_list:
+            if teacher.check_account(account):
+                return teacher.get_account()
+    
+    def edit_profile(self,account_id, username, password, confirm_password, name, surname, desc):
+        account = self.get_account(account_id)
+        if account:
+            print('yeaah')
+            person = self.get_student(account_id)
+            if person:
+                print("yooo")
+                person.edit_profile(name, surname, desc), account.edit_username(username), account.edit_password(password, confirm_password)
+                return True
+        return False
+            
 
 class Course:
     def __init__(self, course_id, course_name, course_detail, course_price, course_category):
@@ -242,6 +264,17 @@ class Account:
 
     def logout(self):
         pass
+
+    def edit_username(self, username):
+        if username:
+            self.__account_name = username
+    
+    def edit_password(self, password, confirm_password):
+        if password and confirm_password:
+            if password == confirm_password:
+                self.__password = password
+                return True
+            return False
     
     def get_account_username(self):
         return self.__account_name
@@ -310,15 +343,28 @@ class Person:
         self.__surname = surname
         self.__age = age
         self.__account = account
+        self.__description = None
     
-    def edit_profile(self):
-        pass
+    def edit_profile(self, name, surname, description):
+        if name:
+            self.__name = name
+
+        if surname:
+            self.__surname = surname
+
+        if description:
+            self.__description = description
 
     def view_profile(self):
-        pass
+        return (self.__name, self.__surname, self.__age, self.__description)
 
     def get_account(self):
         return self.__account
+    
+    def check_account(self, account):
+        if self.__account == account:
+            return True
+        return False
         
 class Student(Person):
     def __init__(self, name, surname, age, account: Account):
