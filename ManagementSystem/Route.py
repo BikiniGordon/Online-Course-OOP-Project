@@ -78,13 +78,13 @@ def add_data():
     course4.add_chapter(chapter2_cooking)
     
     # Add a test account
-    imeow.add_account_list("1", "testuser", "password", "test@example.com")
+    imeow.add_student_list("1", "John", "Doe", "18", "testuser", "password", "test@example.com")
     account = imeow.get_account("1")
     Enrollment1 = Enrollment(account, course1, 0)
     imeow.add_enrollment_list(Enrollment1)
     Order1 = Order(account, Enrollment1)
     account.add_account_order(Order1)
-    imeow.add_student_list(1, "Name", "Surname", "69", "admin", "password", "test@example.com")
+    imeow.add_student_list("2", "Name", "Surname", "69", "admin", "password", "test@example.com")
     return imeow
 
 test = add_data()
@@ -607,8 +607,273 @@ def get_search_result(search: str):
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"
+    ) 
+
+@rt('/{account_id}/editprofile', methods=['GET'])
+def get_editprofile():
+    return Container(
+        H1("Edit Profile", style="text-align: center; margin-bottom: 20px;"),
+        Form(
+            Div(
+                Label("Username", 
+                    Input(
+                        type="text", 
+                        id="username",
+                        name="username",
+                        required=True,
+                        placeholder="Enter your new Username",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("New Password", 
+                    Input(
+                        type="text", 
+                        id="password",
+                        name="password",
+                        required=True,
+                        placeholder="Enter your new Password",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Confirm Password", 
+                    Input(
+                        type="text", 
+                        id="confirm_password",
+                        name="confirm_password",
+                        required=True,
+                        placeholder="Confirm your Password",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Name", 
+                    Input(
+                        type="text", 
+                        id="name",
+                        name="name",
+                        required=True,
+                        placeholder="Enter your new Name",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Surname", 
+                    Input(
+                        type="surname", 
+                        id="surname",
+                        name="surname",
+                        required=True,
+                        placeholder="Enter your new Surname",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Description", 
+                    Input(
+                        type="description", 
+                        id="description",
+                        name="description",
+                        required=True,
+                        placeholder="Enter your new Description",
+                        style="width: 100%;"
+                    )
+                ),
+                style="max-width: 300px;"
+
+            ),
+            
+            Button(
+                "Submit", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #007bff; 
+                    color: white;
+                """
+            ),
+            
+            method="post",
+            action="editprofile",
+            style="padding: 20px;"
+        ),
+        style="""
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        """
+    )
+@rt('/{account_id}/editprofile', methods=['POST'])
+def post_editprofile(account_id: str, username: str, password: str, confirm_password: str, name: str, surname: str, description: str):  # Note: category is now a list
+    account = test.edit_profile(account_id, username, password, confirm_password, name, surname, description)
+    print(account)
+    if account:
+        return Container(
+            H1("Edit Profile Successfully", style="text-align: center; color: green;"),
+        )
+    else: 
+        return Container(
+            H1("Edit Profile Failed", style="text-align: center; color: red;"),
+            A("Go back", href="/{account_id}/editprofile", style="display: block; text-align: center; margin-top: 20px;")
+        )
+
+
+@rt('/{account_id}/addnewcourse', methods=['GET'])
+def get_addnewcourse(account_id: str):
+    return Container(
+        H1("Add Course", style="text-align: center; margin-bottom: 20px;"),
+        Form(
+            Div(
+                Label("Course Name", 
+                    Input(
+                        type="text", 
+                        id="name",
+                        name="name",
+                        required=True,
+                        placeholder="Enter your course name",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Course Detail", 
+                    Input(
+                        type="text", 
+                        id="detail",
+                        name="detail",
+                        required=True,
+                        placeholder="Enter your course detail",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Course Price", 
+                    Input(
+                        type="text", 
+                        id="price",
+                        name="price",
+                        required=True,
+                        placeholder="Enter your Course Price",
+                        style="width: 100%;"
+                    )
+                ),
+                Label("Course ID", 
+                    Input(
+                        type="text", 
+                        id="course_id",
+                        name="course_id",
+                        required=True,
+                        placeholder="Enter your Course ID",
+                        style="width: 100%;"
+                    )
+                ),
+                Div(
+                    "Course Category",
+                    Div(
+                        Label(
+                            Input(
+                                type="checkbox",
+                                id="category_programming",
+                                name="category",
+                                value="programming"
+                            ),
+                            "Programming"
+                        ),
+                        Label(
+                            Input(
+                                type="checkbox",
+                                id="category_pet",
+                                name="category",
+                                value="pet"
+                            ),
+                            "Pet"
+                        ),
+                        Label(
+                            Input(
+                                type="checkbox",
+                                id="category_cooking",
+                                name="category",
+                                value="cooking"
+                            ),
+                            "Cooking"
+                        ),
+                        style="margin-top: 10px;"
+                    ),
+                    style="margin-top: 20px;"
+                ),
+                style="max-width: 300px;"
+            ),
+            Button(
+                "Submit", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #007bff; 
+                    color: white;
+                """
+            ),
+            method="post",
+            action=f"/{account_id}/addnewcourse",  # Changed this line to include account_id
+            style="padding: 20px;"
+        ),
+        style="""
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        """
     )
 
+@rt('/{account_id}/addnewcourse', methods=['POST'])
+def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str, price: str, category: List[str]):
+        price_float = float(price)
+        category_str = category[0] if category else ""
+        new_course = test.add_course_list(course_id, name, detail, price_float, category_str)
+        if new_course:
+            return Container(
+                H1("Add Course Successfully", style="text-align: center; color: green;"),
+                P("Course has been added successfully.")
+            )
+        else:
+            return Container(
+            H1("Add Course Failed", style="text-align: center; color: red;"),
+            A("Go back", href="/{account_id}/addnewcourse", style="display: block; text-align: center; margin-top: 20px;")
+            )
+        
+@rt('/{account_id}/viewprofile', methods=['GET'])
+def viewprofile(account_id: str):
+    results = test.get_student(account_id)
+    name, surname, age, desc = results.view_profile()
+    return Container(
+        H1("View Profile", style="text-align: center; align-items: Top; margin-bottom: 20px;"),
+        Container(
+            H3(f"Name: {name}"),
+            H3(f"Surname: {surname}"),
+            H3(f"Age: {age}"),
+            H3(f"Description: {desc}"),
+            style="""
+            
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 70vh;
+            """
+        ),
+        Button(
+                "Edit Profile",
+                onclick=f"window.location.href='/{account_id}/editprofile'", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #007bff; 
+                    color: white;
+                """
+         )
+    )
+    
 @rt("/{account_id}/faq")
 def faq(account_id: str):
     faq_items = [
