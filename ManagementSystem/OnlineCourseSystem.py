@@ -21,6 +21,7 @@ class OnlineCourseManagement:
 
     def add_course_list(self, id, name, detail, price, category):
         self.__course_list.append(Course(id, name, detail, price, category))
+        return True
 
     def add_enrollment_list(self, enrollment):
         self.__enrollment_list.append(enrollment)
