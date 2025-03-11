@@ -90,6 +90,114 @@ def add_data():
 
 test = add_data()
 
+def navbar(account_id):
+    return [  # Return a list of buttons instead of a Container
+        Button(
+            "Home",
+            onclick=f"window.location.href='/{account_id}/main'", 
+            type="submit",
+            style=""" 
+                max-width: 150px;
+                margin: 1.5px 10px 0;  
+                background-color: #ffffff; 
+                color: #13171f;
+                text-align: center; 
+                border: 1px solid #ffffff;
+                font-weight: bold;
+                font-size: 18px;
+            """
+        ),
+        Button(
+            "Search",
+            onclick=f"window.location.href='/{account_id}/search'", 
+            type="submit",
+            style=""" 
+                max-width: 150px;
+                margin: 1.5px 10px 0; 
+                background-color: #ffffff; 
+                color: #13171f;
+                text-align: center; 
+                border: 1px solid #ffffff;
+                font-weight: bold;
+                font-size: 18px;
+            """
+        ),
+        Button(
+            "Cart",
+            onclick=f"window.location.href='/cart/{account_id}'", 
+            type="submit",
+            style=""" 
+                max-width: 150px;
+                margin: 1.5px 10px 0;  
+                background-color: #ffffff; 
+                color: #13171f;
+                text-align: center; 
+                border: 1px solid #ffffff;
+                font-weight: bold;
+                font-size: 18px;
+            """
+        ),
+        Button(
+            "Notification",
+            onclick=f"window.location.href='/{account_id}/notification'", 
+            type="submit",
+            style=""" 
+                max-width: 150px;
+                margin: 1.5px 10px 0;  
+                background-color: #ffffff; 
+                color: #13171f;
+                text-align: center;
+                border: 1px solid #ffffff;
+                font-weight: bold;
+                font-size: 18px;
+            """
+        ),
+        Button(
+            "FAQ",
+            onclick=f"window.location.href='/{account_id}/faq'", 
+            type="submit",
+            style=""" 
+                max-width: 150px;
+                margin: 1.5px 10px 0;  
+                background-color: #ffffff; 
+                color: #13171f;
+                text-align: center;
+                border: 1px solid #ffffff;
+                font-weight: bold;
+                font-size: 18px;
+            """
+        ),
+        Button(
+            "Profile",
+            onclick=f"window.location.href='/{account_id}/viewprofile'", 
+            type="submit",
+            style=""" 
+                max-width: 150px;
+                margin: 1.5px 10px 0; 
+                background-color: #ffffff; 
+                color: #13171f;
+                text-align: center; 
+                border: 1px solid #ffffff;
+                font-weight: bold;
+                font-size: 18px;
+            """
+        ),
+        Button(
+            "Log out",
+            onclick=f"window.location.href='/login'", 
+            type="submit",
+            style=""" 
+                max-width: 150px;
+                margin: 1.5px 10px 0; 
+                background-color: #ffffff; 
+                color: #13171f;
+                text-align: center; 
+                border: 1px solid #ffffff;
+                font-weight: bold;
+                font-size: 18px;
+            """
+        )
+    ]
 
 @rt('/{account_id}/main')
 def main(account_id: str):
@@ -190,6 +298,17 @@ def main(account_id: str):
             ])
 
     return Container(
+        Container(*navbar(account_id),
+                  style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """),
         Titled("Welcome! {}".format(account.get_account_username()), 
                style="margin-top: 20px;"),
         
@@ -226,6 +345,17 @@ def view_course(account_id: str ,course_id: str):
     chapter_num = len(course.get_chapter_list())
     lesson_num = sum([len(chapter.get_lesson_list()) for chapter in course.get_chapter_list()])
     return Container(
+        Container(*navbar(account_id),
+                  style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """),
         Grid(
             Card(
                 P(course.get_course_category(), style='color: #5996B2;'),
@@ -240,7 +370,17 @@ def view_course(account_id: str ,course_id: str):
                 )
             ),
             Card(
-                H1("This is an image."),
+                Img(
+                    src="https://www.westminster.ac.uk/sites/default/public-files/styles/panel_image_1_2_768px_/public/general-images/epq-meme.jpg?itok=5b7ZyKpI",
+                    alt="Course Image",
+                    style="""
+                        max-width: 100%;
+                        height: auto;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    """
+                ),
                 H4("{}฿".format(course.get_course_price())),
                 Button("Add to Cart", 
                       hx_post= "/" + account_id + "/addtocart/" + course_id,
@@ -329,8 +469,20 @@ def view_cart(account_id: str):
         )
     
     # Return a complete new page
-    return Titled("Shopping Cart",  # This creates a new page with proper title
-        Container(
+    return  Container(
+            Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
+        Titled("Shopping Cart"),
             H1("Your Cart"),
             *cart_items,
             P(f"Total: {cart.calculate_total()}฿"),
@@ -344,11 +496,22 @@ def view_cart(account_id: str):
                   onclick=f"window.location.href='/{account_id}/course/1'",
                   style="background-color: #5996B2; color: white;")
         )
-    )
+    
 
 @rt('/{account_id}/checkout/others')
 def via_others(account_id: str):
     return Container(
+        Container(*navbar(account_id),
+                  style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """),
         H1("We don't have such thing, please pay with credit card. [I beg you]"),
         Form(
             Button("Back to Cart"),
@@ -356,6 +519,7 @@ def via_others(account_id: str):
             action=f"/cart/{account_id}"
         )
     )
+    
 
 @rt('/{account_id}/checkout/credit_card')
 def via_credit_card(account_id: str):
@@ -363,6 +527,18 @@ def via_credit_card(account_id: str):
     card_number = account.get_card()
     if card_number:
         return Container(
+            Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
             H1("Credit Card Payment"),
             Form(
                 Button("Pay with saved card"),
@@ -371,6 +547,18 @@ def via_credit_card(account_id: str):
             )
         )
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Credit Card Payment"),
         Form(
             Label("Card number:", id="card_number"),
@@ -402,6 +590,18 @@ def pay(account_id: str, card_number: str = None):
     cart.clear_item()
     
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1(f"Payment Successful! Your course(s) will be available in your account. Balance: {card.get_balance()}"),
         Button("Back to main"), 
               onclick=f"window.location.href='/{account_id}/main'", # Redirect to main page [not available at the moment]
@@ -412,6 +612,18 @@ def view_enrolled_course(account_id: str, course_id: str):
     course = test.get_enrolled_course(account_id, course_id)
     if course:
         return Container(
+            Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
             Div(
                 Button(
                     "← Back", 
@@ -593,8 +805,21 @@ def post_login(username: str, password: str):
 @rt('/{account_id}/search', methods=['GET'])
 def get_search(account_id: str):
     results = test.search_courses("")
-    
-    return Titled("Search Online Courses",
+
+    return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
+        Titled("Search Online Courses",
         Form(
             Input(id="search", placeholder="Search courses...", hx_get="/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
             style="margin-bottom: 20px;"
@@ -607,9 +832,10 @@ def get_search(account_id: str):
                     style="text-decoration: none; color: inherit;"
                 )
                 for c in results
-            ],
-            id="results",
-            style="margin-top: 20px;"
+                ],
+                id="results",
+                style="margin-top: 20px;"
+            )
         )
     )
 
@@ -630,8 +856,20 @@ def get_search_result(search: str, account_id: str):
     ) 
 
 @rt('/{account_id}/editprofile', methods=['GET'])
-def get_editprofile():
+def get_editprofile(account_id: str):
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Edit Profile", style="text-align: center; margin-bottom: 20px;"),
         Form(
             Div(
@@ -728,10 +966,34 @@ def post_editprofile(account_id: str, username: str, password: str, confirm_pass
     account = test.edit_profile(account_id, username, password, confirm_password, name, surname, description)
     if account:
         return Container(
+            Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
             H1("Edit Profile Successfully", style="text-align: center; color: green;"),
         )
     else: 
         return Container(
+            Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
             H1("Edit Profile Failed", style="text-align: center; color: red;"),
             A("Go back", href="/{account_id}/editprofile", style="display: block; text-align: center; margin-top: 20px;")
         )
@@ -740,143 +1002,187 @@ def post_editprofile(account_id: str, username: str, password: str, confirm_pass
 @rt('/{account_id}/addnewcourse', methods=['GET'])
 def get_addnewcourse(account_id: str):
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Add Course", style="text-align: center; margin-bottom: 20px;"),
         Form(
             Div(
+                # Course basic info
                 Label("Course Name", 
-                    Input(
-                        type="text", 
-                        id="name",
-                        name="name",
-                        required=True,
-                        placeholder="Enter your course name",
-                        style="width: 100%;"
-                    )
+                    Input(type="text", id="name", name="name", required=True,
+                        placeholder="Enter your course name", style="width: 100%;")
                 ),
                 Label("Course Detail", 
-                    Input(
-                        type="text", 
-                        id="detail",
-                        name="detail",
-                        required=True,
-                        placeholder="Enter your course detail",
-                        style="width: 100%;"
-                    )
+                    Input(type="text", id="detail", name="detail", required=True,
+                        placeholder="Enter your course detail", style="width: 100%;")
                 ),
                 Label("Course Price", 
-                    Input(
-                        type="text", 
-                        id="price",
-                        name="price",
-                        required=True,
-                        placeholder="Enter your Course Price",
-                        style="width: 100%;"
-                    )
+                    Input(type="text", id="price", name="price", required=True,
+                        placeholder="Enter your Course Price", style="width: 100%;",
+                        pattern="[0-9]{2,}")
                 ),
                 Label("Course ID", 
-                    Input(
-                        type="text", 
-                        id="course_id",
-                        name="course_id",
-                        required=True,
-                        placeholder="Enter your Course ID",
-                        style="width: 100%;"
-                    )
+                    Input(type="text", id="course_id", name="course_id", required=True,
+                        placeholder="Enter your Course ID", style="width: 100%;")
                 ),
+                
+                # Category radio buttons
                 Div(
                     "Course Category",
                     Div(
-                        Label(
-                            Input(
-                                type="checkbox",
-                                id="category_programming",
-                                name="category",
-                                value="programming"
-                            ),
-                            "Programming"
-                        ),
-                        Label(
-                            Input(
-                                type="checkbox",
-                                id="category_pet",
-                                name="category",
-                                value="pet"
-                            ),
-                            "Pet"
-                        ),
-                        Label(
-                            Input(
-                                type="checkbox",
-                                id="category_cooking",
-                                name="category",
-                                value="cooking"
-                            ),
-                            "Cooking"
-                        ),
+                        Label(Input(type="radio", id="category_programming", name="category", 
+                                  value="Programming", required=True), "Programming"),
+                        Label(Input(type="radio", id="category_pet", name="category",
+                                  value="Pet", required=True), "Pet"),
+                        Label(Input(type="radio", id="category_cooking", name="category",
+                                  value="Cooking", required=True), "Cooking"),
                         style="margin-top: 10px;"
                     ),
                     style="margin-top: 20px;"
                 ),
+
+                # Chapter 1
+                H3("Chapter 1"),
+                Label("Chapter 1 Lesson 1 Name",
+                    Input(type="text", name="ch1_l1_name", required=True,
+                         placeholder="Enter lesson name", style="width: 100%;")
+                ),
+                Label("Chapter 1 Lesson 1 Content",
+                    Textarea(name="ch1_l1_content", required=True,
+                            placeholder="Enter lesson content", style="width: 100%;")
+                ),
+                Label("Chapter 1 Lesson 2 Name",
+                    Input(type="text", name="ch1_l2_name", required=True,
+                         placeholder="Enter lesson name", style="width: 100%;")
+                ),
+                Label("Chapter 1 Lesson 2 Content",
+                    Textarea(name="ch1_l2_content", required=True,
+                            placeholder="Enter lesson content", style="width: 100%;")
+                ),
+
+                # Chapter 2
+                H3("Chapter 2"),
+                Label("Chapter 2 Lesson 1 Name",
+                    Input(type="text", name="ch2_l1_name", required=True,
+                         placeholder="Enter lesson name", style="width: 100%;")
+                ),
+                Label("Chapter 2 Lesson 1 Content",
+                    Textarea(name="ch2_l1_content", required=True,
+                            placeholder="Enter lesson content", style="width: 100%;")
+                ),
+                Label("Chapter 2 Lesson 2 Name",
+                    Input(type="text", name="ch2_l2_name", required=True,
+                         placeholder="Enter lesson name", style="width: 100%;")
+                ),
+                Label("Chapter 2 Lesson 2 Content",
+                    Textarea(name="ch2_l2_content", required=True,
+                            placeholder="Enter lesson content", style="width: 100%;")
+                ),
+                
                 style="max-width: 300px;"
             ),
-            Button(
-                "Submit", 
-                type="submit",
-                style=""" 
-                    max-width: 200px;
-                    margin: 20px auto 0;
-                    display: block;
-                    background-color: #007bff; 
-                    color: white;
-                """
-            ),
+            Button("Submit", type="submit",
+                style="""max-width: 200px; margin: 20px auto 0; display: block; 
+                        background-color: #007bff; color: white;"""),
             method="post",
             action=f"/{account_id}/addnewcourse",
             style="padding: 20px;"
         ),
-        style="""
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        """
+        style="""display: flex; flex-direction: column; justify-content: center; 
+                 align-items: center; min-height: 100vh;"""
     )
 
 @rt('/{account_id}/addnewcourse', methods=['POST'])
-def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str, price: str, category: List[str]):
-        price_float = float(price)
+def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str, 
+                     price: float, category: List[str],
+                     ch1_l1_name: str, ch1_l1_content: str,
+                     ch1_l2_name: str, ch1_l2_content: str,
+                     ch2_l1_name: str, ch2_l1_content: str,
+                     ch2_l2_name: str, ch2_l2_content: str):
+    try:
         category_str = category[0] if category else ""
-        new_course = test.add_course_list(course_id, name, detail, price_float, category_str)
+        # First create the course
+        test.add_course_list(course_id, name, detail, price, category_str)
+        # Then get the course object
+        new_course = test.get_course(course_id)
+        
         if new_course:
+            # Add Chapter 1 with its lessons
+            chapter1 = Chapter("1")
+            chapter1.add_lesson("1", ch1_l1_name, ch1_l1_content, "", "")
+            chapter1.add_lesson("2", ch1_l2_name, ch1_l2_content, "", "")
+            new_course.add_chapter(chapter1)
+
+            # Add Chapter 2 with its lessons
+            chapter2 = Chapter("2")
+            chapter2.add_lesson("1", ch2_l1_name, ch2_l1_content, "", "")
+            chapter2.add_lesson("2", ch2_l2_name, ch2_l2_content, "", "")
+            new_course.add_chapter(chapter2)
+
             return Container(
+                Container(*navbar(account_id),
+                    style="""display: flex; justify-content: center; align-items: center;
+                            margin-bottom: 30px; background-color: #ffffff; padding: 15px;
+                            border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"""),
                 H1("Add Course Successfully", style="text-align: center; color: green;"),
                 P("Course has been added successfully.")
             )
         else:
             return Container(
-            H1("Add Course Failed", style="text-align: center; color: red;"),
-            A("Go back", href="/{account_id}/addnewcourse", style="display: block; text-align: center; margin-top: 20px;")
+                Container(*navbar(account_id),
+                    style="""display: flex; justify-content: center; align-items: center;
+                            margin-bottom: 30px; background-color: #ffffff; padding: 15px;
+                            border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"""),
+                H1("Add Course Failed", style="text-align: center; color: red;"),
+                A("Go back", href=f"/{account_id}/addnewcourse",
+                  style="display: block; text-align: center; margin-top: 20px;")
             )
+    except Exception as e:
+        return Container(
+            H1("Add Course Failed", style="text-align: center; color: red;"),
+            P(f"Error: {str(e)}"),
+            A("Go back", href=f"/{account_id}/addnewcourse")
+        )
         
 @rt('/{account_id}/viewprofile', methods=['GET'])
 def viewprofile(account_id: str):
     results = test.get_student(account_id)
     name, surname, age, desc = results.view_profile()
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("View Profile", style="text-align: center; align-items: Top; margin-bottom: 20px;"),
         Container(
-            H3(f"Name: {name}"),
-            H3(f"Surname: {surname}"),
-            H3(f"Age: {age}"),
-            H3(f"Description: {desc}"),
+            H4(f"Name: {name}"),
+            H4(f"Surname: {surname}"),
+            H4(f"Age: {age}"),
+            H4(f"Description: {desc}"),
             style="""
-            
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                min-height: 70vh;
+                min-height: 45vh;
             """
         ),
         Button(
@@ -889,9 +1195,24 @@ def viewprofile(account_id: str):
                     display: block;
                     background-color: #007bff; 
                     color: white;
+                    
                 """
-         )
-    )
+         ),
+         Button(
+                "Create Course",
+                onclick=f"window.location.href='/{account_id}/addnewcourse'", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #ffffff; 
+                    color: #13171f;
+                    
+                """
+         ),
+        )    
+    
     
 @rt("/{account_id}/faq")
 def faq(account_id: str):
@@ -908,6 +1229,18 @@ def faq(account_id: str):
         ) for faq in test.get_faq_list()
     ]
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         *faq_items,
         Form(
             Button("Contact us", type="routing"),
@@ -916,11 +1249,24 @@ def faq(account_id: str):
         )
     )
     
+    
 @rt("/{account_id}/add_faq_answer/{faq_id}")
 def add_answer(account_id: str, faq_id:int):
     for faq in test.get_faq_list():
         if faq.get_faq_id() == faq_id:
             return Container(
+                Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
                 H1("Add answer"),
                 Form(
                     H3(f"{faq.get_faq_question()}?"),
@@ -931,6 +1277,7 @@ def add_answer(account_id: str, faq_id:int):
                     action=f"/{account_id}/faq_answered/{faq.get_faq_id()}"
                 )
             )
+            
 
 @rt("/{account_id}/faq_answered/{faq_id}")
 def append_answer(account_id: str, faq_id:int, faq_ans:str):
@@ -938,6 +1285,18 @@ def append_answer(account_id: str, faq_id:int, faq_ans:str):
         if faq.get_faq_id() == faq_id:
             faq.add_faq_answer(faq_ans)
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Answer added"),
         Form(
             Button("Back to FAQ", type = "home"),
@@ -945,18 +1304,33 @@ def append_answer(account_id: str, faq_id:int, faq_ans:str):
             action = f"/{account_id}/faq"
         )
     )
+     
 
 @rt("/{account_id}/support")
 def support(account_id: str):
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Support"),
         Form(
             Label("Customer support", Input(type = "text", id = "faq_question", placeholder = "Enter your question", required = True, pattern = "[A-Za-z ]{2,}")),
             Button("Submit question", type = "submit"),
             method = "post",
             action = f"/{account_id}/submit_support"
+        
         )
     )
+    
 
 @rt("/{account_id}/submit_support")
 def submit_support(account_id: str, faq_question:str):
@@ -965,14 +1339,28 @@ def submit_support(account_id: str, faq_question:str):
         if faq_question == faq.get_faq_question():
             if faq.get_faq_answer() is not None:
                 return Container(
+                    Container(*navbar(account_id),
                     H1("There is already an answer to this question."),
                     Form(
                         Button("Back to FAQ", type = "home"),
                         method = "/get",
                         action = f"/{account_id}/faq"
                     )
+                    )
                 )
             return Container(
+                Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
                 H1("There is this question already in the FAQ."),
                 Form(
                     Button("Back to FAQ", type = "home"),
@@ -980,9 +1368,22 @@ def submit_support(account_id: str, faq_question:str):
                     action = f"/{account_id}/faq"
                 )
             )
+            
     test.add_faq_list(faq_id_counter, faq_question)
     faq_id_counter += 1
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Thank you for contacting us"),
         Form(
             Button("Back to FAQ", type = "home"),
@@ -990,6 +1391,7 @@ def submit_support(account_id: str, faq_question:str):
             action = f"/{account_id}/faq"
         )
     )
+    
 
 @rt('/{account_id}/notification')
 def notification(account_id: str):
@@ -1003,6 +1405,18 @@ def notification(account_id: str):
         ) for notification in noti
     ]
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Notification"),
         *noti,
         Form(
@@ -1016,6 +1430,7 @@ def notification(account_id: str):
             action = f"/{account_id}/clear_notification"
         )
     )
+    
 
 @rt('/{account_id}/clear_notification')
 def clear_notification(account_id: str):
@@ -1023,6 +1438,18 @@ def clear_notification(account_id: str):
     acc_noti = account.get_account_noti()
     acc_noti.delete_notification()
     return Container(
+        Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #ffffff; 
+                padding: 15px;          
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
         H1("Notifications cleared"),
         Form(
             Button("Back to main", type = "home"),
