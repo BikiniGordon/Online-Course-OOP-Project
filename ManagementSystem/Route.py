@@ -1,7 +1,7 @@
 from fasthtml.common import *
 from OnlineCourseSystem import *
 
-app, rt = fast_app()
+app, rt = fast_app(live=True, debug=True)
 
 payment_id = 1
 
@@ -86,6 +86,7 @@ def add_data():
     account.add_account_order(Order1)
     imeow.add_student_list("2", "Name", "Surname", "69", "admin", "password", "test@example.com")
     return imeow
+
 
 test = add_data()
 
@@ -198,7 +199,6 @@ def navbar(account_id):
         )
     ]
 
-
 @rt('/{account_id}/main')
 def main(account_id: str):
     account = test.get_account(account_id)
@@ -214,7 +214,6 @@ def main(account_id: str):
     # Create cards for enrolled courses
     for course in enrolled_courses:
         course_id = course.get_course_id()
-        # Get enrollment to check progress
         enrollment = next((order.get_paid_enrollment() for order in account.get_account_order() 
                          if order.get_paid_enrollment().enroll_course().get_course_id() == course_id), None)
         progress = enrollment.get_progress() if enrollment else 0
@@ -224,11 +223,10 @@ def main(account_id: str):
                 H3(course.get_course_name()),
                 P(course.get_course_category(), style='color: #5996B2;'),
                 P(course.get_course_detail()),
-                # Add progress bar
                 P(f"Progress: {progress}%", 
                       style="color: #28a745; text-align: left;"),
                 Button("Start Learning",
-                       onclick=f"window.location.href='enrolled/{course_id}'"),
+                    onclick=f"window.location.href='enrolled/{course_id}'"),
                 style="min-width: 250px; margin: 10px;"
             )
         )
@@ -389,13 +387,31 @@ def view_course(account_id: str ,course_id: str):
                       hx_target="#cart-message")
             )
         ),
-        Div(id="cart-message")  # Placeholder for popup message
+        Div(id="cart-message")
     )
 
 @rt('/{account_id}/addtocart/{course_id}')
 def add_course_to_cart(account_id: str, course_id: str):
     result = test.add_to_cart(account_id, course_id)
-    # If course is already in cart
+    if result == "Already enrolled in course":
+        return Container(
+            Card(
+                Grid(
+                    Button("×", 
+                          hx_post="/close-popup",
+                          hx_target="#cart-message",
+                          style="background: none; border: none; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
+                    P("You are already enrolled in this course!", style="color: #dc3545;"),
+                    Button("View Course", 
+                          onclick=f"window.location.href='/{account_id}/enrolled/{course_id}'",
+                          style="background-color: #5996B2; color: white;"),
+                    columns=1
+                ),
+                style="position: relative; padding: 20px;"
+            ),
+            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;",
+            id="cart-message"
+        )
     if result == "Course already in cart":
         return Container(
             Card(
@@ -663,7 +679,6 @@ def view_enrolled_course(account_id: str, course_id: str):
         )
     return H1("Course not found", style="color: #dc3545;")
 
-# Add this new route to handle lesson content display
 @rt('/{account_id}/lesson/{lesson_id}')
 def view_lesson(account_id: str, lesson_id: str):
     account = test.get_account(account_id)
@@ -681,18 +696,15 @@ def view_lesson(account_id: str, lesson_id: str):
                 current_progress = enrollment.get_progress()
                 
                 if not enrollment.is_lesson_completed(lesson_id):
-                    # Calculate progress per lesson more precisely
                     progress_per_lesson = 100 / total_lessons
                     completed_lessons = len(enrollment._Enrollment__completed_lessons) + 1  # Include current lesson
                     new_progress = round((completed_lessons * progress_per_lesson))
-                    # Ensure 100% is reached when all lessons are completed
                     new_progress = 100 if completed_lessons == total_lessons else new_progress
                     
                     enrollment.set_progress(new_progress)
                     enrollment.mark_lesson_complete(lesson_id)
-                    is_completed = True
+
                 else:
-                    is_completed = True
                     new_progress = current_progress
             
             return Container(
@@ -781,10 +793,8 @@ def get_login():
 def post_login(username: str, password: str):
     account = test.login(username, password)
     if account:
-        return Container(
-            H1(f"Welcome, {account.get_username()}!", style="text-align: center; color: green;"),
-            P("You have successfully logged in.")
-        )
+        account_id = account.get_account_id()
+        return Redirect(f"/{account_id}/main")
     else:
         return Container(
             H1("Login Failed", style="text-align: center; color: red;"),
@@ -795,7 +805,7 @@ def post_login(username: str, password: str):
 @rt('/{account_id}/search', methods=['GET'])
 def get_search(account_id: str):
     results = test.search_courses("")
-    
+
     return Container(
         Container(*navbar(account_id),
             style="""
@@ -810,13 +820,17 @@ def get_search(account_id: str):
             """
         ),
         Titled("Search Online Courses",
-            Form(
-                Input(id="search", placeholder="Search courses...", hx_get="/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
-                style="margin-bottom: 20px;"
-             ),
-            Div(
-                *[
-                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
+        Form(
+            Input(id="search", placeholder="Search courses...", hx_get="/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
+            style="margin-bottom: 20px;"
+        ),
+        Div(
+            *[
+                A(
+                    Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                    href=f"/{account_id}/course/{c.get_course_id()}",
+                    style="text-decoration: none; color: inherit;"
+                )
                 for c in results
                 ],
                 id="results",
@@ -826,12 +840,16 @@ def get_search(account_id: str):
     )
 
 @rt('/{account_id}/searchresult', methods=['GET'])
-def get_search_result(search: str):
+def get_search_result(search: str, account_id: str):
     results = test.search_courses(search)
     
     return Div(
         *[
-            Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
+            A(
+                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                href=f"/{account_id}/course/{c.get_course_id()}",
+                style="text-decoration: none; color: inherit;"
+            )
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"

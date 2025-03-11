@@ -20,6 +20,7 @@ class OnlineCourseManagement:
         self.__teacher_list.append(Teacher(name, surname, age, account))
 
     def add_course_list(self, id, name, detail, price, category):
+        before = len(self.__course_list)
         self.__course_list.append(Course(id, name, detail, price, category))
         return True
 
@@ -69,6 +70,9 @@ class OnlineCourseManagement:
                 return account
         return None
     
+    def get_account_list(self):
+        return self.__account_list
+    
     def get_student(self, account_id):
         for student in self.__student_list:
             student_account = student.get_student_account()
@@ -85,6 +89,10 @@ class OnlineCourseManagement:
     def add_to_cart(self, account_id, course_id):
         account = self.get_account(account_id)
         course = self.get_course(course_id)
+        enrolled_course = account.view_enrolled_course()
+        for enrolled in enrolled_course:
+            if enrolled.check_course_id(course_id):
+                return "Already enrolled in course"
         if account is None or course is None:
             return "Failed to add course to cart"
         result = account.add_item_to_cart(course)
@@ -102,12 +110,11 @@ class OnlineCourseManagement:
     def search_courses(self, search: str):
         return [
             c for c in self.__course_list
-            if search.lower() in c.get_course_detail().lower() or search.lower() in c.get_course_category().lower()
+            if search.lower() in c.get_course_detail().lower() or search.lower() in c.get_course_category().lower() or search.lower() in c.get_course_name().lower()
         ]
 
     def login(self, username, password):
-        for student in self.__student_list:
-            account = student.get_account()
+        for account in self.__account_list:
             if account.get_username() == username and account.get_password() == password:
                 return account
         return None
@@ -279,9 +286,6 @@ class Account:
         self.__account_order = []
         self.__account_noti = Notification(self)
 
-    def login(self):
-        pass
-
     def logout(self):
         pass
 
@@ -303,6 +307,9 @@ class Account:
         if self.__account_id == account_id:
             return True
         return False
+    
+    def get_account_id(self):
+        return self.__account_id
 
     def get_cart(self):
         return self.__account_cart
