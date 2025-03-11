@@ -523,9 +523,8 @@ def via_others(account_id: str):
 
 @rt('/{account_id}/checkout/credit_card')
 def via_credit_card(account_id: str):
-    account = test.get_account(account_id)
-    card_number = account.get_card()
-    if card_number:
+    payment_method = test.get_account(account_id).get_account_payment_method()
+    if payment_method:
         return Container(
             Container(*navbar(account_id),
             style="""

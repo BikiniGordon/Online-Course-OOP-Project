@@ -327,9 +327,6 @@ class Account:
     def get_password(self):
         return self.__account_password
     
-    def get_card(self):
-        return self.__account_payment_method
-    
     def set_account_payment_method(self, payment_method):
         self.__account_payment_method = payment_method
         
@@ -474,6 +471,9 @@ class CreditCard(PaymentMethod):
         super().__init__(payment_id)
         self.__card_number = card_number
         self.__balance = 1000000
+
+    def get_card_number(self):
+        return self.__card_number
 
     def pay(self, amount):
         if self.__balance >= amount:
