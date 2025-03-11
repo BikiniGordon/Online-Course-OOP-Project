@@ -92,6 +92,13 @@ class OnlineCourseManagement:
         elif result == "Course already in cart":
             return "Course already in cart"
         return "Failed to add course to cart"
+    
+    def remove_from_cart(self, account_id, course_id):
+        account = self.get_account(account_id)
+        if account:
+            result = account.remove_item_from_cart(course_id)
+            return result
+        return "Failed to remove course"
 
     def create_noti(self, noti_account, context):
         noti = noti_account.get_account_noti()
@@ -216,8 +223,12 @@ class Cart:
         self.__cart.append(course)
         return "Success"
 
-    def remove_item(self, course):
-        self.__cart.pop(course)
+    def remove_item(self, course_id):
+        for i, cart_item in enumerate(self.__cart):
+            if cart_item.get_course_id() == course_id:
+                self.__cart.pop(i)
+                return "Item removed"
+        return "Item not found"
 
     def clear_item(self):
         self.__cart.clear()
@@ -274,6 +285,9 @@ class Account:
         elif (self.__account_cart.add_item(course) == "Course already in cart"):
             return "Course already in cart"
         return "Failed to add course to cart"
+    
+    def remove_item_from_cart(self, course_id):
+        return self.__account_cart.remove_item(course_id)
         
     def get_username(self):
         return self.__account_name

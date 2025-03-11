@@ -469,13 +469,34 @@ def view_cart(account_id: str):
     for course in cart.get_content():
         cart_items.append(
             Card(
-                H3(course.get_course_name()),
-                P(f"{course.get_course_price()}฿")
+                Grid(
+                    Div(
+                        H3(course.get_course_name()),
+                        P(f"{course.get_course_price()}฿")
+                    ),
+                    Button(
+                        "Remove",
+                        hx_post=f"/{account_id}/remove_from_cart/{course.get_course_id()}",
+                        hx_target="#cart-container",  # Updated target
+                        style="""
+                            background-color: #dc3545;
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: 4px;
+                            border: none;
+                        """
+                    ),
+                    columns=2,
+                    style="align-items: center;"
+                ),
+                style="margin-bottom: 10px;"
             )
         )
     
-    return  Container(
-            Container(*navbar(account_id),
+    total = cart.calculate_total()
+    
+    return Container(
+        Container(*navbar(account_id),
             style="""
                 display: flex;
                 justify-content: center; 
@@ -488,9 +509,13 @@ def view_cart(account_id: str):
             """
         ),
         Titled("Shopping Cart"),
+        Div(
             H1("Your Cart"),
-            *cart_items,
-            P(f"Total: {cart.calculate_total()}฿"),
+            Div(
+                *cart_items,
+                id="cart-items"
+            ),
+            P(f"Total: {total}฿", id="cart-total"),
             Button("Checkout with Credit card", 
                   onclick=f"window.location.href='/{account_id}/checkout/credit_card'",
                   style="background-color: #28a745; color: white;"),
@@ -499,9 +524,63 @@ def view_cart(account_id: str):
                   style="background-color: #28a745; color: white;"),
             Button("Continue Shopping", 
                   onclick=f"window.location.href='/{account_id}/course/1'",
-                  style="background-color: #5996B2; color: white;")
+                  style="background-color: #5996B2; color: white;"),
+            id="cart-container"
+        )
+    )
+
+@rt('/{account_id}/remove_from_cart/{course_id}')
+def remove_from_cart(account_id: str, course_id: str):
+    result = test.remove_from_cart(account_id, course_id)
+    cart = test.get_account_cart(account_id)
+    cart_items = []
+    for course in cart.get_content():
+        cart_items.append(
+            Card(
+                Grid(
+                    Div(
+                        H3(course.get_course_name()),
+                        P(f"{course.get_course_price()}฿")
+                    ),
+                    Button(
+                        "Remove",
+                        hx_post=f"/{account_id}/remove_from_cart/{course.get_course_id()}",
+                        hx_target="#cart-container",
+                        style="""
+                            background-color: #dc3545;
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: 4px;
+                            border: none;
+                        """
+                    ),
+                    columns=2,
+                    style="align-items: center;"
+                ),
+                style="margin-bottom: 10px;"
+            )
         )
     
+    total = cart.calculate_total()
+    
+    return Div(
+        H1("Your Cart"),
+        Div(
+            *cart_items if cart_items else [P("Your cart is empty.")],
+            id="cart-items"
+        ),
+        P(f"Total: {total}฿", id="cart-total"),
+        Button("Checkout with Credit card", 
+              onclick=f"window.location.href='/{account_id}/checkout/credit_card'",
+              style="background-color: #28a745; color: white;"),
+        Button("Checkout by other ways", 
+              onclick=f"window.location.href='/{account_id}/checkout/others'",
+              style="background-color: #28a745; color: white;"),
+        Button("Continue Shopping", 
+              onclick=f"window.location.href='/{account_id}/course/1'",
+              style="background-color: #5996B2; color: white;"),
+        id="cart-container"
+    )
 
 @rt('/{account_id}/checkout/others')
 def via_others(account_id: str):
