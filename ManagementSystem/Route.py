@@ -1,7 +1,7 @@
 from fasthtml.common import *
 from OnlineCourseSystem import *
 
-app, rt = fast_app()
+app, rt = fast_app(live=True, debug=True)
 
 payment_id = 1
 
@@ -87,7 +87,9 @@ def add_data():
     imeow.add_student_list("2", "Name", "Surname", "69", "admin", "password", "test@example.com")
     return imeow
 
+
 test = add_data()
+
 
 @rt('/{account_id}/main')
 def main(account_id: str):
@@ -116,7 +118,7 @@ def main(account_id: str):
                 P(f"Progress: {progress}%", 
                       style="color: #28a745; text-align: left;"),
                 Button("Start Learning",
-                       onclick=f"window.location.href='enrolled/{course_id}'"),
+                    onclick=f"window.location.href='enrolled/{course_id}'"),
                 style="min-width: 250px; margin: 10px;"
             )
         )
@@ -579,10 +581,8 @@ def get_login():
 def post_login(username: str, password: str):
     account = test.login(username, password)
     if account:
-        return Container(
-            H1(f"Welcome, {account.get_username()}!", style="text-align: center; color: green;"),
-            P("You have successfully logged in.")
-        )
+        account_id = account.get_account_id()
+        return Redirect(f"/{account_id}/main")
     else:
         return Container(
             H1("Login Failed", style="text-align: center; color: red;"),
@@ -590,8 +590,8 @@ def post_login(username: str, password: str):
             A("Go back", href="/login", style="display: block; text-align: center; margin-top: 20px;")
         )
 
-@rt('/search', methods=['GET'])
-def get_search():
+@rt('/{account_id}/search', methods=['GET'])
+def get_search(account_id: str):
     results = test.search_courses("")
     
     return Titled("Search Online Courses",
@@ -601,7 +601,11 @@ def get_search():
         ),
         Div(
             *[
-                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
+                A(
+                    Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                    href=f"/{account_id}/course/{c.get_course_id()}",
+                    style="text-decoration: none; color: inherit;"
+                )
                 for c in results
             ],
             id="results",
@@ -609,13 +613,17 @@ def get_search():
         )
     )
 
-@rt('/searchresult', methods=['GET'])
-def get_search_result(search: str):
+@rt('/{account_id}/searchresult', methods=['GET'])
+def get_search_result(search: str, account_id: str):
     results = test.search_courses(search)
     
     return Div(
         *[
-            Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;")
+            A(
+                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                href=f"/{account_id}/course/{c.get_course_id()}",
+                style="text-decoration: none; color: inherit;"
+            )
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"
@@ -1023,4 +1031,4 @@ def clear_notification(account_id: str):
         )
     )
 
-serve()
+serve(port=5005)
