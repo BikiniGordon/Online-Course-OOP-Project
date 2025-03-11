@@ -199,6 +199,10 @@ def navbar(account_id):
         )
     ]
 
+@rt('/')
+def root():
+    return Redirect('/login')
+
 @rt('/{account_id}/main')
 def main(account_id: str):
     account = test.get_account(account_id)
@@ -820,14 +824,14 @@ def get_search(account_id: str):
         ),
         Titled("Search Online Courses",
         Form(
-            Input(id="search", placeholder="Search courses...", hx_get="/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
+            Input(id="search", placeholder="Search courses...", hx_get=f"/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
             style="margin-bottom: 20px;"
         ),
         Div(
             *[
                 A(
                     Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
-                    href=f"/{account_id}/course/{c.get_course_id()}",
+                    href=("/" + account_id + f"/course/{c.get_course_id()}"),
                     style="text-decoration: none; color: inherit;"
                 )
                 for c in results
@@ -841,12 +845,11 @@ def get_search(account_id: str):
 @rt('/{account_id}/searchresult', methods=['GET'])
 def get_search_result(search: str, account_id: str):
     results = test.search_courses(search)
-    
     return Div(
         *[
             A(
                 Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
-                href=f"/{account_id}/course/{c.get_course_id()}",
+                href=("/" + account_id + f"/course/{c.get_course_id()}"),
                 style="text-decoration: none; color: inherit;"
             )
             for c in results
