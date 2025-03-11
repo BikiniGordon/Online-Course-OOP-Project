@@ -512,8 +512,8 @@ def post_login(username: str, password: str):
             A("Go back", href="/login", style="display: block; text-align: center; margin-top: 20px;")
         )
 
-@rt('/search', methods=['GET'])
-def get_search():
+@rt('/{account_id}/search', methods=['GET'])
+def get_search(account_id: str):
     results = test.search_courses("")
     
     return Titled("Search Online Courses",
@@ -525,7 +525,7 @@ def get_search():
             *[
                 A(
                     Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
-                    href=f"/course/{c.get_course_id()}",
+                    href=f"/{account_id}/course/{c.get_course_id()}",
                     style="text-decoration: none; color: inherit;"
                 )
                 for c in results
@@ -535,15 +535,15 @@ def get_search():
         )
     )
 
-@rt('/searchresult', methods=['GET'])
-def get_search_result(search: str):
+@rt('/{account_id}/searchresult', methods=['GET'])
+def get_search_result(search: str, account_id: str):
     results = test.search_courses(search)
     
     return Div(
         *[
             A(
                 Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
-                href=f"/course/{c.get_course_id()}",
+                href=f"/{account_id}/course/{c.get_course_id()}",
                 style="text-decoration: none; color: inherit;"
             )
             for c in results
@@ -551,4 +551,4 @@ def get_search_result(search: str):
         style="margin-top: 10px;"
     )
 
-serve(port=5003)
+serve(port=5005)
