@@ -7,17 +7,11 @@ class OnlineCourseManagement:
         self.__enrollment_list = []
         self.__faq_list = []
 
-    def add_account_list(self, id, username, password, email):
-        self.__account_list.append(Account(id, username, password, email))
-
     def add_student_list(self, id, name, surname, age, username, password, email):
         account = Account(id, username, password, email)
         student = Student(name, surname, age, account)
         self.__account_list.append(account)
         self.__student_list.append(student)
-        
-    def add_teacher_list(self, name, surname, age, account):
-        self.__teacher_list.append(Teacher(name, surname, age, account))
 
     def add_course_list(self, id, name, detail, price, category):
         before = len(self.__course_list)
@@ -70,15 +64,12 @@ class OnlineCourseManagement:
                 return account
         return None
     
-    def get_account_list(self):
-        return self.__account_list
-    
     def get_student(self, account_id):
         for student in self.__student_list:
             student_account = student.get_student_account()
             if student_account and student_account.check_account_id(account_id):
                 return student
-        return 
+        return None
 
     def get_account_cart(self, account_id):
         account = self.get_account(account_id)
@@ -119,22 +110,11 @@ class OnlineCourseManagement:
                 return account
         return None
     
-    def get_person_using_account(self, account):
-        for student in self.__student_list:
-            if student.check_account(account):
-                return student.get_account()
-            
-        for teacher in self.__teacher_list:
-            if teacher.check_account(account):
-                return teacher.get_account()
-    
     def edit_profile(self,account_id, username, password, confirm_password, name, surname, desc):
         account = self.get_account(account_id)
         if account:
-            print('yeaah')
             person = self.get_student(account_id)
             if person:
-                print("yooo")
                 person.edit_profile(name, surname, desc), account.edit_username(username), account.edit_password(password, confirm_password)
                 return True
         return False
@@ -200,9 +180,6 @@ class Chapter:
     
     def get_lesson_list(self):
         return self.__lesson_list
-
-    def get_chapter_detail(self):
-        pass
     
 class Lesson:
     def __init__(self, lesson_id, lesson_name, lesson_content, lesson_description, lesson_material):
@@ -223,22 +200,6 @@ class Lesson:
     
     def get_lesson_description(self):
         return self.__lesson_description
-
-    def add_lesson_name(self, lesson_name):
-        pass
-
-    def add_lesson_content(self, lesson_content):
-        pass
-    
-    def add_lesson_description(self, lesson_description):
-        pass
-    
-    def add_lesson_material(self, lesson_material):
-        pass
-
-    def update_progression(self, progression):
-        if progression >= 0 and progression <= 100:
-            self.__lesson_progression = progression
     
 class Cart:
     def __init__(self, account):
@@ -249,7 +210,6 @@ class Cart:
         return self.__cart
 
     def add_item(self, course):
-        # Check if course already exists in cart
         for cart_item in self.__cart:
             if cart_item.get_course_id() == course.get_course_id():
                 return "Course already in cart"
@@ -286,9 +246,6 @@ class Account:
         self.__account_order = []
         self.__account_noti = Notification(self)
 
-    def logout(self):
-        pass
-
     def edit_username(self, username):
         if username:
             self.__account_name = username
@@ -299,9 +256,6 @@ class Account:
                 self.__password = password
                 return True
             return False
-    
-    def get_account_username(self):
-        return self.__account_name
     
     def check_account_id(self, account_id):
         if self.__account_id == account_id:
@@ -387,36 +341,17 @@ class Person:
 
     def get_account(self):
         return self.__account
-    
-    def check_account(self, account):
-        if self.__account == account:
-            return True
-        return False
         
 class Student(Person):
     def __init__(self, name, surname, age, account: Account):
         super().__init__(name, surname, age, account)
-        self.__enrollment_list = []
 
     def get_student_account(self):
         return self.get_account()
-    
-    def get_account(self):
-        return self._Person__account
 
 class Teacher(Person):
     def __init__(self, name, surname, age, account: Account):
         super().__init__(name, surname, age, account)
-        self.__course_list = []
-
-    def create_course(self, course):
-        pass
-
-    def edit_course(self, course):
-        pass
-
-    def remove_course(self, course):
-        pass
 
 class Enrollment:
     def __init__(self, student, course, progression):
@@ -462,9 +397,6 @@ class Order:
 class PaymentMethod:
     def __init__(self, payment_id):
         self.__payment_id = payment_id
-
-    def process_payment(self):
-        pass
 
 class CreditCard(PaymentMethod):
     def __init__(self, payment_id, card_number):
@@ -514,5 +446,3 @@ class FAQ:
     
     def get_faq_answer(self):
         return self.__faq_answer
-
-faq_id_counter = 1

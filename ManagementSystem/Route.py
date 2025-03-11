@@ -85,13 +85,15 @@ def add_data():
     Order1 = Order(account, Enrollment1)
     account.add_account_order(Order1)
     imeow.add_student_list("2", "Name", "Surname", "69", "admin", "password", "test@example.com")
+    global faq_id_counter
+    faq_id_counter = 1
     return imeow
 
 
 test = add_data()
 
 def navbar(account_id):
-    return [  # Return a list of buttons instead of a Container
+    return [
         Button(
             "Home",
             onclick=f"window.location.href='/{account_id}/main'", 
@@ -313,7 +315,7 @@ def main(account_id: str):
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """),
-        Titled("Welcome! {}".format(account.get_account_username()), 
+        Titled("Welcome! {}".format(account.get_username()), 
                style="margin-top: 20px;"),
         
         # Enrolled Courses Section
@@ -472,7 +474,6 @@ def view_cart(account_id: str):
             )
         )
     
-    # Return a complete new page
     return  Container(
             Container(*navbar(account_id),
             style="""
@@ -607,7 +608,7 @@ def pay(account_id: str, card_number: str = None):
         ),
         H1(f"Payment Successful! Your course(s) will be available in your account. Balance: {card.get_balance()}"),
         Button("Back to main"), 
-              onclick=f"window.location.href='/{account_id}/main'", # Redirect to main page [not available at the moment]
+              onclick=f"window.location.href='/{account_id}/main'",
         )
 
 @rt('/{account_id}/enrolled/{course_id}')
@@ -725,18 +726,6 @@ def view_lesson(account_id: str, lesson_id: str):
         return P("Lesson not found", style="color: #dc3545;")
     except ValueError:
         return P("Invalid lesson ID format", style="color: #dc3545;")
-
-
-
-def get_style():
-    return """
-    <style>
-        body {
-            font-family: Noto Sans, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-    """    
     
 @rt('/login', methods=['GET'])
 def get_login():
@@ -1038,7 +1027,6 @@ def get_addnewcourse(account_id: str):
                         placeholder="Enter your Course ID", style="width: 100%;")
                 ),
                 
-                # Category radio buttons
                 Div(
                     "Course Category",
                     Div(
@@ -1113,19 +1101,17 @@ def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str,
                      ch2_l2_name: str, ch2_l2_content: str):
     try:
         category_str = category[0] if category else ""
-        # First create the course
         test.add_course_list(course_id, name, detail, price, category_str)
-        # Then get the course object
         new_course = test.get_course(course_id)
         
         if new_course:
-            # Add Chapter 1 with its lessons
+            # Add Chapter 1
             chapter1 = Chapter("1")
             chapter1.add_lesson("1", ch1_l1_name, ch1_l1_content, "", "")
             chapter1.add_lesson("2", ch1_l2_name, ch1_l2_content, "", "")
             new_course.add_chapter(chapter1)
 
-            # Add Chapter 2 with its lessons
+            # Add Chapter 2
             chapter2 = Chapter("2")
             chapter2.add_lesson("1", ch2_l1_name, ch2_l1_content, "", "")
             chapter2.add_lesson("2", ch2_l2_name, ch2_l2_content, "", "")
