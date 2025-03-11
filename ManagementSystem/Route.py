@@ -270,7 +270,7 @@ def add_course_to_cart(account_id: str, course_id: str):
             style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;",
             id="cart-message"
         )
-    if result == "Course already in cart":
+    elif result == "Course already in cart":
         return Container(
             Card(
                 Grid(
