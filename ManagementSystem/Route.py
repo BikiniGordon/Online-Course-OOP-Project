@@ -596,7 +596,7 @@ def get_search(account_id: str):
     
     return Titled("Search Online Courses",
         Form(
-            Input(id="search", placeholder="Search courses...", hx_get="/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
+            Input(id="search", placeholder="Search courses...", hx_get="/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
             style="margin-bottom: 20px;"
         ),
         Div(
@@ -1031,4 +1031,4 @@ def clear_notification(account_id: str):
         )
     )
 
-serve(port=5005)
+serve()
