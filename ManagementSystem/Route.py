@@ -84,7 +84,7 @@ def add_data():
     imeow.add_enrollment_list(Enrollment1)
     Order1 = Order(account, Enrollment1)
     account.add_account_order(Order1)
-    imeow.add_student_list("2", "Name", "Surname", "69", "admin", "password", "test@example.com")
+    imeow.add_teacher_list("2", "Name", "Surname", "69", "admin", "password", "test@example.com")
     global faq_id_counter
     faq_id_counter = 1
     return imeow
@@ -608,7 +608,7 @@ def via_others(account_id: str):
 @rt('/{account_id}/checkout/credit_card')
 def via_credit_card(account_id: str):
     payment_method = test.get_account(account_id).get_account_payment_method()
-    if payment_method:
+    if (payment_method):
         return Container(
             Container(*navbar(account_id),
             style="""
@@ -898,7 +898,7 @@ def get_search(account_id: str):
         Div(
             *[
                 A(
-                    Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                    Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #000000"), style="cursor: pointer;"),
                     href=("/" + account_id + f"/course/{c.get_course_id()}"),
                     style="text-decoration: none; color: inherit;"
                 )
@@ -1065,7 +1065,7 @@ def post_editprofile(account_id: str, username: str, password: str, confirm_pass
             """
         ),
             H1("Edit Profile Failed", style="text-align: center; color: red;"),
-            A("Go back", href="/{account_id}/editprofile", style="display: block; text-align: center; margin-top: 20px;")
+            A("Go back", href=f"/{account_id}/editprofile", style="display: block; text-align: center; margin-top: 20px;")
         )
 
 
@@ -1173,7 +1173,7 @@ def get_addnewcourse(account_id: str):
 
 @rt('/{account_id}/addnewcourse', methods=['POST'])
 def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str, 
-                     price: float, category: List[str],
+                     price: int, category: List[str],
                      ch1_l1_name: str, ch1_l1_content: str,
                      ch1_l2_name: str, ch1_l2_content: str,
                      ch2_l1_name: str, ch2_l1_content: str,
@@ -1223,8 +1223,52 @@ def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str,
         
 @rt('/{account_id}/viewprofile', methods=['GET'])
 def viewprofile(account_id: str):
-    results = test.get_student(account_id)
+    # Get account and determine if it's a teacher
+    account_obj = test.get_account(account_id)
+    is_teacher = False
+    
+    for teacher in test._OnlineCourseManagement__teacher_list:
+        if teacher.get_account().check_account_id(account_id):
+            is_teacher = True
+            results = teacher
+            break
+    else:
+        results = test.get_student(account_id)
+    
     name, surname, age, desc = results.view_profile()
+    
+    buttons = [
+        Button(
+            "Edit Profile",
+            onclick=f"window.location.href='/{account_id}/editprofile'", 
+            type="submit",
+            style=""" 
+                max-width: 200px;
+                margin: 20px auto 0;
+                display: block;
+                background-color: #007bff; 
+                color: white;
+            """
+        )
+    ]
+    
+    # Only add Create Course button if user is a teacher
+    if is_teacher:
+        buttons.append(
+            Button(
+                "Create Course",
+                onclick=f"window.location.href='/{account_id}/addnewcourse'", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #ffffff; 
+                    color: #13171f;
+                """
+            )
+        )
+    
     return Container(
         Container(*navbar(account_id),
             style="""
@@ -1244,6 +1288,7 @@ def viewprofile(account_id: str):
             H4(f"Surname: {surname}"),
             H4(f"Age: {age}"),
             H4(f"Description: {desc}"),
+            H4(f"Role: {'Teacher' if is_teacher else 'Student'}", style="color: #5996B2;"),
             style="""
                 display: flex;
                 flex-direction: column;
@@ -1252,33 +1297,8 @@ def viewprofile(account_id: str):
                 min-height: 45vh;
             """
         ),
-        Button(
-                "Edit Profile",
-                onclick=f"window.location.href='/{account_id}/editprofile'", 
-                type="submit",
-                style=""" 
-                    max-width: 200px;
-                    margin: 20px auto 0;
-                    display: block;
-                    background-color: #007bff; 
-                    color: white;
-                    
-                """
-         ),
-         Button(
-                "Create Course",
-                onclick=f"window.location.href='/{account_id}/addnewcourse'", 
-                type="submit",
-                style=""" 
-                    max-width: 200px;
-                    margin: 20px auto 0;
-                    display: block;
-                    background-color: #ffffff; 
-                    color: #13171f;
-                    
-                """
-         ),
-        )    
+        *buttons
+    )
     
     
 @rt("/{account_id}/faq")

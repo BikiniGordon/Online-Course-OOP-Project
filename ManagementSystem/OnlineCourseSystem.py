@@ -13,6 +13,12 @@ class OnlineCourseManagement:
         self.__account_list.append(account)
         self.__student_list.append(student)
 
+    def add_teacher_list(self, id, name, surname, age, username, password, email):
+        account = Account(id, username, password, email)
+        teacher = Teacher(name, surname, age, account)
+        self.__account_list.append(account)
+        self.__teacher_list.append(teacher)
+
     def add_course_list(self, id, name, detail, price, category):
         before = len(self.__course_list)
         self.__course_list.append(Course(id, name, detail, price, category))
@@ -66,9 +72,13 @@ class OnlineCourseManagement:
     
     def get_student(self, account_id):
         for student in self.__student_list:
-            student_account = student.get_student_account()
+            student_account = student.get_account()
             if student_account and student_account.check_account_id(account_id):
                 return student
+        for teacher in self.__teacher_list:
+            teacher_account = teacher.get_account()
+            if teacher_account and teacher_account.check_account_id(account_id):
+                return teacher
         return None
 
     def get_account_cart(self, account_id):
@@ -122,8 +132,9 @@ class OnlineCourseManagement:
         if account:
             person = self.get_student(account_id)
             if person:
-                person.edit_profile(name, surname, desc), account.edit_username(username), account.edit_password(password, confirm_password)
-                return True
+                person.edit_profile(name, surname, desc), account.edit_username(username)
+                if account.edit_password(password, confirm_password):
+                    return True
         return False
             
 
