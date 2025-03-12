@@ -13,9 +13,17 @@ class OnlineCourseManagement:
         self.__account_list.append(account)
         self.__student_list.append(student)
 
-    def add_course_list(self, id, name, detail, price, category):
-        before = len(self.__course_list)
-        self.__course_list.append(Course(id, name, detail, price, category))
+    def add_teacher_list(self, id, name, surname, age, username, password, email):
+        account = Account(id, username, password, email)
+        teacher = Teacher(name, surname, age, account)
+        self.__account_list.append(account)
+        self.__teacher_list.append(teacher)
+
+    def add_course_list(self, id, name, detail, price, category, teacher=None):
+        course = Course(id, name, detail, price, category, teacher)
+        if teacher:
+            course.set_creator(teacher)
+        self.__course_list.append(course)
         return True
 
     def add_enrollment_list(self, enrollment):
@@ -64,11 +72,15 @@ class OnlineCourseManagement:
                 return account
         return None
     
-    def get_student(self, account_id):
+    def get_person(self, account_id):
         for student in self.__student_list:
-            student_account = student.get_student_account()
+            student_account = student.get_account()
             if student_account and student_account.check_account_id(account_id):
                 return student
+        for teacher in self.__teacher_list:
+            teacher_account = teacher.get_account()
+            if teacher_account and teacher_account.check_account_id(account_id):
+                return teacher
         return None
 
     def get_account_cart(self, account_id):
@@ -120,21 +132,29 @@ class OnlineCourseManagement:
     def edit_profile(self,account_id, username, password, confirm_password, name, surname, desc):
         account = self.get_account(account_id)
         if account:
-            person = self.get_student(account_id)
+            person = self.get_person(account_id)
             if person:
-                person.edit_profile(name, surname, desc), account.edit_username(username), account.edit_password(password, confirm_password)
-                return True
+                person.edit_profile(name, surname, desc), account.edit_username(username)
+                if account.edit_password(password, confirm_password):
+                    return True
         return False
             
 
 class Course:
-    def __init__(self, course_id, course_name, course_detail, course_price, course_category):
+    def __init__(self, course_id, course_name, course_detail, course_price, course_category, creator):
         self.__course_id = course_id
         self.__course_name = course_name
         self.__course_detail = course_detail
         self.__course_price = course_price
         self.__course_category = course_category
         self.__chapter_list = []
+        self.__creator = creator
+    
+    def set_creator(self, creator):
+        self.__creator = creator
+
+    def get_creator(self):
+        return self.__creator
     
     def check_course_id(self, course_id):
         if self.__course_id == course_id:
