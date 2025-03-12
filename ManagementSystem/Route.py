@@ -94,63 +94,99 @@ def add_data():
 test = add_data()
 
 def navbar(account_id):
+<<<<<<< Updated upstream
     return [
+=======
+    return [  # Return a list of buttons
+>>>>>>> Stashed changes
         Button(
-            "Home",
+            Img(
+                    src="https://media-hosting.imagekit.io//3953e1bceac64d68/logo.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=n-HMFmK8VEjrAPtl-5R8~TtBvrjN6E0yc1e-v65t~YQutAJML4vFpnGYNpnH2RODKn-eqCRbbq61eHc6QU~4gi~enp4il~UJENpLKl63z~EXrdIBVp3SHYXi5WzvcQNraMM1~0Xyt81zKJr4bkSS3zYYvn4dlIluX8fcFSIspDQpe6HRI8nqpWH9oiyytIbaBv6yrOrBID46Q2uFG6tt-UcCSAZ45ry0qBFgVV55LDlyn~lJOk8uFU4c-2zIzZWc05u0Fksq3sJL9Kt99GxzQMjjX89eEg3UKGb4B5wVQD58DCw0VWJGnVEc6loq5FjEeEWoBiRgXBDD1B0r-QPf9A__",
+                    alt="Course Image",
+                    style="""
+                        max-width: 100px;
+                        height: auto;
+                        # margin-bottom: 20px;
+                    """
+                ),
             onclick=f"window.location.href='/{account_id}/main'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
-                color: #13171f;
+                background-color: #F8F2EB; 
+                color: #5C482C;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Search",
+            Img(
+                    src="https://media-hosting.imagekit.io//71db2ee9eca745d1/explore.png?Expires=1836330973&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=buSj6sTZn5XsdIGIhqSVSaorXBVjR~dU1i5Z~KTIZJO~rk9N2CqbA2RO2WpN~JF~bdkhtSigVMGYHfFGCM5dFNS3QCqqf1JLE33sp43K9BeMO82vkdJZ0eqd36gsZ15wEw7cCQyZrmKfuzXP7m9X8Ct7FG8hN2gA3PHnQaCkM3joXA9bc-Vy3emmzHHeWm8ljCvmHEe0dlLAO9FXYdTRPFCfnPEy3qfnjiw~y-Bw8x0to60w92Nj5kCVkJ0HcF6cXY96O9-44JMbiYBAgEk-xfohpu9-kx5u-eeAJYs-2hXDM44BPJbwB2ovyaOeryjL0B83BeClohMr0UqS89DPWg__",
+                    alt="Course Image",
+                    style="""
+                        max-width: 150px;
+                        height: auto;
+                        # margin-bottom: 20px;
+                    """
+                ),
             onclick=f"window.location.href='/{account_id}/search'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0; 
-                background-color: #ffffff; 
-                color: #13171f;
+                background-color: #F8F2EB; 
+                color: #5C482C;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Cart",
+            Img(
+                    src="https://media-hosting.imagekit.io//c7195462cf184c14/cart.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=oDP7U3q1OKXOOE6RCZZarw9fBMt~-K8ls4SDFL7tRXVBczZO27iUMJ97iLA-xfIQS7lgwBR4bP43neffAfBwLXIJU~fh4sepbGajjzc6CTD02OHLJdH7bpuUC04HOow7PgWUnVaGNQ6lIJH1~RYvagJ62x30yJzxPtvTJQUZ4BOSbzweDWqFV9NDFy~4PrN2OPBX9efaOvQbcQQMRNDrWp15e-gKe7BrA7oUETaX2FLxKwRh2~3iSVLDtjMn2sAvXsNd5Edl8S1FP8mMSUmCDPXFsSaaJdB9jZ-Qkosl25ixqLkDBrn34iUyeL4YPWObfJr6iI3mvvwDczUOY3KhBA__",
+                    alt="Course Image",
+                    style="""
+                        max-width: 50px;
+                        height: auto;
+                        # margin-bottom: 20px;
+                    """
+                ),
             onclick=f"window.location.href='/cart/{account_id}'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
-                color: #13171f;
+                background-color: #F8F2EB; 
+                color: #5C482C;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Notification",
+            Img(
+                    src="https://media-hosting.imagekit.io//ae90b28ac719454a/notif.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=12AsucweImODEWeUG6KEW1IU3L9AXhwid8AntHYnBCGZBqUQafCakUCRg8t1Gto1x8iG-zNqEU7WXWSsmtoFCBP1VOhNzhuPiA-uWzc-7ekBN932u18QMttqWqBkDqOVAU9A6Nkmxorp1HDai-DArPP6QB~0SeIC0M3FIzZ-SeBfM0K52lnjGT42yYDVFezoHPW9kLgblxaaA4M~GkVEFXU9BET3BPdxcxx9crwWAav~YJRc04orrcOp13u~60FV6lMcDZSXtebrwYChebdlHMAOND6FEZag6RHXtfnEvT9vkn~7fV~iWkysFeuvWZADizPFjdmGwIG5XaMgIKTndQ__",
+                    alt="Course Image",
+                    style="""
+                        max-width: 50px;
+                        height: auto;
+                        # margin-bottom: 20px;
+                    """
+                ),
             onclick=f"window.location.href='/{account_id}/notification'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
-                color: #13171f;
+                background-color: #F8F2EB; 
+                color: #5C482C;
                 text-align: center;
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
@@ -162,49 +198,79 @@ def navbar(account_id):
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
-                color: #13171f;
+                background-color: #F8F2EB; 
+                color: #5C482C;
                 text-align: center;
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Profile",
+            Img(
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/316px-Meme_Man_on_transparent_background.webp.png",
+                    alt="Course Image",
+                    style="""
+                        max-width: 30px;
+                        height: auto;
+                        # margin-bottom: 20px;
+                    """
+                ),
             onclick=f"window.location.href='/{account_id}/viewprofile'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0; 
-                background-color: #ffffff; 
-                color: #13171f;
+                background-color: #F8F2EB; 
+                color: #5C482C;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Log out",
+            Img(
+                    src="https://png.pngtree.com/png-vector/20190411/ourmid/pngtree-vector-logout-icon-png-image_925699.jpg",
+                    alt="Course Image",
+                    style="""
+                        max-width: 30px;
+                        height: auto;
+                        # margin-bottom: 20px;
+                    """
+                ),
             onclick=f"window.location.href='/login'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0; 
-                background-color: #ffffff; 
-                color: #13171f;
+                background-color: #F8F2EB; 
+                color: #5C482C;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         )
     ]
 
+<<<<<<< Updated upstream
 @rt('/')
 def root():
     return Redirect('/login')
+=======
+# Common navbar container style to use in all routes:
+style="""
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: #F8F2EB; 
+    padding: 2px;          
+    border-radius: 8px;    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+"""
+>>>>>>> Stashed changes
 
 @rt('/{account_id}/main')
 def main(account_id: str):
@@ -227,14 +293,20 @@ def main(account_id: str):
         
         enrolled_course_card.append(
             Card(
-                H3(course.get_course_name()),
-                P(course.get_course_category(), style='color: #5996B2;'),
+                H3(course.get_course_name(), style="color: #5C482C;"),
+                P(course.get_course_category(), style='color: #5C482C;'),
                 P(course.get_course_detail()),
                 P(f"Progress: {progress}%", 
                       style="color: #28a745; text-align: left;"),
                 Button("Start Learning",
+<<<<<<< Updated upstream
                     onclick=f"window.location.href='enrolled/{course_id}'"),
                 style="min-width: 250px; margin: 10px;"
+=======
+                       onclick=f"window.location.href='enrolled/{course_id}'",
+                       style="background-color: #8D8883; color: white;"),
+                style="min-width: 250px; margin: 10px; background-color: #F8F2EB;"
+>>>>>>> Stashed changes
             )
         )
     
@@ -244,25 +316,27 @@ def main(account_id: str):
             if course.get_course_category() in enrolled_categories:
                 recommended_courses_based_on_interest.append(
                     Card(
-                        H3(course.get_course_name()),
-                        P(course.get_course_category(), style='color: #5996B2;'),
+                        H3(course.get_course_name(), style="color: #5C482C;"),
+                        P(course.get_course_category(), style='color: #5C482C;'),
                         P(course.get_course_detail()),
                         P(f"Price: {course.get_course_price()}฿"),
                         Button("View Course",
-                            onclick=f"window.location.href='course/{course.get_course_id()}'"),
-                        style="min-width: 250px; margin: 10px;"
+                            onclick=f"window.location.href='course/{course.get_course_id()}'",
+                            style="background-color: #8D8883; color: white;"),
+                        style="min-width: 250px; margin: 10px; background-color: #F8F2EB;"
                     )
                 )
             else:
                 recommended_courses.append(
                     Card(
-                        H3(course.get_course_name()),
-                        P(course.get_course_category(), style='color: #5996B2;'),
+                        H3(course.get_course_name(), style="color: #5C482C;"),
+                        P(course.get_course_category(), style='color: #5C482C;'),
                         P(course.get_course_detail()),
                         P(f"Price: {course.get_course_price()}฿"),
                         Button("View Course",
-                            onclick=f"window.location.href='course/{course.get_course_id()}'"),
-                        style="min-width: 250px; margin: 10px;"
+                            onclick=f"window.location.href='course/{course.get_course_id()}'",
+                            style="background-color: #8D8883; color: white;"),
+                        style="min-width: 250px; margin: 10px; background-color: #F8F2EB;"
                     )
                 )
 
@@ -278,13 +352,14 @@ def main(account_id: str):
                 other_categories[category] = []
             other_categories[category].append(
                 Card(
-                    H3(course.get_course_name()),
-                    P(category, style='color: #5996B2;'),
+                    H3(course.get_course_name(), style="color: #5C482C;"),
+                    P(category, style='color: #5C482C;'),
                     P(course.get_course_detail()),
                     P(f"Price: {course.get_course_price()}฿"),
                     Button("View Course",
-                           onclick=f"window.location.href='course/{course.get_course_id()}'"),
-                    style="min-width: 250px; margin: 10px;"
+                           onclick=f"window.location.href='course/{course.get_course_id()}'",
+                           style="background-color: #8D8883; color: white;"),
+                    style="min-width: 250px; margin: 10px; background-color: #F8F2EB;"
                 )
             )
 
@@ -293,7 +368,7 @@ def main(account_id: str):
     for category, courses in other_categories.items():
         if courses:
             category_sections.extend([
-                H2(f"Explore {category} Courses", style="margin-top: 50px;"),
+                H2(f"Explore {category} Courses", style="margin-top: 50px; color: #5C482C;"),
                 Div(
                     Grid(
                         *courses,
@@ -306,6 +381,7 @@ def main(account_id: str):
 
     return Container(
         Container(*navbar(account_id),
+<<<<<<< Updated upstream
                   style="""
                 display: flex;
                 justify-content: center; 
@@ -318,9 +394,14 @@ def main(account_id: str):
             """),
         Titled("Welcome! {}".format(account.get_username()), 
                style="margin-top: 20px;"),
+=======
+                  style=style),
+        Titled("Welcome! {}".format(account.get_account_username()), 
+               style="margin-top: 20px; color: #5C482C;"),
+>>>>>>> Stashed changes
         
         # Enrolled Courses Section
-        H2("My Enrolled Courses", style="margin-top: 50px;"),
+        H2("My Enrolled Courses", style="margin-top: 50px; color: #5C482C;"),
         Div(
             Grid(
                 *enrolled_course_card if enrolled_course_card else P("You haven't enrolled in any courses yet."),
@@ -331,8 +412,8 @@ def main(account_id: str):
         ),
         
         # Recommended Courses Section
-        H2("Recommended Courses", style="margin-top: 50px;"),
-        P("Based on your interests", style="color: #666;"),
+        H2("Recommended Courses", style="margin-top: 50px; color: #5C482C;"),
+        P("Based on your interests", style="color: #5C482C;"),
         Div(
             Grid(
                 *recommended_courses_based_on_interest if recommended_courses_based_on_interest else P("No recommendations available."),
@@ -364,20 +445,11 @@ def view_course(account_id: str, course_id: str):
     
     return Container(
         Container(*navbar(account_id),
-                  style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """),
+                  style=style),
         Grid(
             Card(
                 P(course.get_course_category(), style='color: #5996B2;'),
-                H3(course.get_course_name()),
+                H3(course.get_course_name(), style="color: #5C482C;"),
                 P(course.get_course_detail()),
                 Card(
                     H5("This course includes", style='text-align: center;'),
@@ -385,8 +457,13 @@ def view_course(account_id: str, course_id: str):
                     P("{} lessons".format(lesson_num)),
                     P("1 downloadable resource"),
                     P("Certificate of completion"),
+<<<<<<< Updated upstream
                 ),
                 creator_info if creator_info else None  # Add creator info if available
+=======
+            
+                )
+>>>>>>> Stashed changes
             ),
             Card(
                 Img(
@@ -400,10 +477,12 @@ def view_course(account_id: str, course_id: str):
                         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     """
                 ),
-                H4("{}฿".format(course.get_course_price())),
+                H4("{}฿".format(course.get_course_price()), style="color: #5C482C;"),
                 Button("Add to Cart", 
                       hx_post= "/" + account_id + "/addtocart/" + course_id,
-                      hx_target="#cart-message")
+                      hx_target="#cart-message",
+                      style="background-color: #8D8883; color: white;"
+                      )
             )
         ),
         Div(id="cart-message")
@@ -445,7 +524,7 @@ def add_course_to_cart(account_id: str, course_id: str):
                           style="background-color: #5996B2; color: white;"),
                     columns=1
                 ),
-                style="position: relative; padding: 20px;"
+                style="position: relative; padding: 20px; background-color: #F8F2EB;"
             ),
             style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;",
             id="cart-message"
@@ -464,7 +543,7 @@ def add_course_to_cart(account_id: str, course_id: str):
                           style="background-color: #5996B2; color: white;"),
                     columns=1
                 ),
-                style="position: relative; padding: 20px;"
+                style="position: relative; padding: 20px; background-color: #F8F2EB;"
             ),
             style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;",
             id="cart-message"
@@ -482,6 +561,7 @@ def view_cart(account_id: str):
     for course in cart.get_content():
         cart_items.append(
             Card(
+<<<<<<< Updated upstream
                 Grid(
                     Div(
                         H3(course.get_course_name()),
@@ -529,12 +609,29 @@ def view_cart(account_id: str):
                 id="cart-items"
             ),
             P(f"Total: {total}฿", id="cart-total"),
+=======
+                H3(course.get_course_name(), style="color: #5C482C;"),
+                P(f"{course.get_course_price()}฿"),
+                style="background-color: #F8F2EB;"
+            )
+        )
+    
+    # Return a complete new page
+    return  Container(
+            Container(*navbar(account_id),
+            style=style
+        ),
+        Titled("Shopping Cart", style="color: #5C482C;"),
+            H1("Your Cart", style="color: #5C482C;"),
+            *cart_items,
+            P(f"Total: {cart.calculate_total()}฿"),
+>>>>>>> Stashed changes
             Button("Checkout with Credit card", 
                   onclick=f"window.location.href='/{account_id}/checkout/credit_card'",
-                  style="background-color: #28a745; color: white;"),
+                  style="background-color: #8D8883; color: white;"),
             Button("Checkout by other ways", 
                   onclick=f"window.location.href='/{account_id}/checkout/others'",
-                  style="background-color: #28a745; color: white;"),
+                  style="background-color: #8D8883; color: white;"),
             Button("Continue Shopping", 
                   onclick=f"window.location.href='/{account_id}/course/1'",
                   style="background-color: #5996B2; color: white;"),
@@ -599,19 +696,10 @@ def remove_from_cart(account_id: str, course_id: str):
 def via_others(account_id: str):
     return Container(
         Container(*navbar(account_id),
-                  style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """),
-        H1("We don't have such thing, please pay with credit card. [I beg you]"),
+                  style=style),
+        H1("We don't have such thing, please pay with credit card. [I beg you]", style="color: #5C482C;"),
         Form(
-            Button("Back to Cart"),
+            Button("Back to Cart", style="background-color: #8D8883; color: white;"),
             method="/get",
             action=f"/cart/{account_id}"
         )
@@ -624,42 +712,24 @@ def via_credit_card(account_id: str):
     if (payment_method):
         return Container(
             Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-            H1("Credit Card Payment"),
+            H1("Credit Card Payment", style="color: #5C482C;"),
             Form(
-                Button("Pay with saved card"),
+                Button("Pay with saved card", style="background-color: #8D8883; color: white;"),
                 method="post",
                 action=f"/{account_id}/pay"
             )
         )
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Credit Card Payment"),
+        H1("Credit Card Payment", style="color: #5C482C;"),
         Form(
             Label("Card number:", id="card_number"),
             Input(placeholder = "Example: 1234 5678 1234 [If you paid once, you don't need to be worry, type anything.]",type="text", name="card_number"),
-            Button("Pay"),
+            Button("Pay", style="background-color: #8D8883; color: white;"),
             method="post",
             action=f"/{account_id}/pay"
         )
@@ -687,20 +757,17 @@ def pay(account_id: str, card_number: str = None):
     
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
+<<<<<<< Updated upstream
         H1(f"Payment Successful! Your course(s) will be available in your account. Balance: {card.get_balance()}"),
         Button("Back to main"), 
               onclick=f"window.location.href='/{account_id}/main'",
+=======
+        H1(f"Payment Successful! Your course(s) will be available in your account. Balance: {card.get_balance()}", style="color: #5C482C;"),
+        Button("Back to main", style="background-color: #8D8883; color: white;"), 
+              onclick=f"window.location.href='/{account_id}/main'", # Redirect to main page [not available at the moment]
+>>>>>>> Stashed changes
         )
 
 @rt('/{account_id}/enrolled/{course_id}')
@@ -709,16 +776,7 @@ def view_enrolled_course(account_id: str, course_id: str):
     if course:
         return Container(
             Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
             Div(
                 Button(
@@ -744,27 +802,29 @@ def view_enrolled_course(account_id: str, course_id: str):
                         cls="main-content"
                     ),
                     H3(f"Course: {course.get_course_name()}", 
-                        style="margin-top: 20px;")
+                        style="margin-top: 20px; color: #5C482C;")
                 ),
                 Div(
-                    H2("Course Navigation"),
+                    H2("Course Navigation", style="color: #5C482C;"),
                     *[
                         Card(
-                            H3(f"Chapter {chapter.get_chapter_id()}"),
+                            H3(f"Chapter {chapter.get_chapter_id()}", style="color: #5C482C;"),
                             *[
                                 Div(
-                                    H4(f"Lesson {lesson.get_lesson_id()}: {lesson.get_lesson_name()}"),
+                                    H4(f"Lesson {lesson.get_lesson_id()}: {lesson.get_lesson_name()}", style="color: #5C482C;"),
                                     P(lesson.get_lesson_description()),
                                     Button(
                                         "View Lesson",
                                         hx_get=f"/{account_id}/lesson/{course_id}-{chapter.get_chapter_id()}-{lesson.get_lesson_id()}",
                                         hx_target="#lesson-content",
-                                        hx_swap="innerHTML"
+                                        hx_swap="innerHTML",
+                                        style="background-color: #8D8883; color: white;"
                                     ),
                                     cls="lesson-box", style = "margin-bottom: 20px;"
                                 ) for lesson in chapter.get_lesson_list()
                             ],
-                            cls="chapter-box"
+                            cls="chapter-box",
+                            style="background-color: #F8F2EB;"
                         ) for chapter in course.get_chapter_list()
                     ],
                     cls="sidebar"
@@ -804,10 +864,10 @@ def view_lesson(account_id: str, lesson_id: str):
                     new_progress = current_progress
             
             return Container(
-                H2(lesson.get_lesson_name()),
+                H2(lesson.get_lesson_name(), style="color: #5C482C;"),
                 Card(
                     P(lesson.get_lesson_content()),
-                    style="margin-bottom: 20px;"
+                    style="margin-bottom: 20px; background-color: #F8F2EB;"
                 ),
                 Div(
                     P(f"Progress: {new_progress}%", 
@@ -818,11 +878,36 @@ def view_lesson(account_id: str, lesson_id: str):
         return P("Lesson not found", style="color: #dc3545;")
     except ValueError:
         return P("Invalid lesson ID format", style="color: #dc3545;")
+<<<<<<< Updated upstream
+=======
+
+
+def get_style():
+    return """
+    <style>
+        body {
+            font-family: Noto Sans, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+    """    
+>>>>>>> Stashed changes
     
 @rt('/login', methods=['GET'])
 def get_login():
     return Container(
-        H1("Login", style="text-align: center; margin-bottom: 20px;"),
+        Img(
+                    src="https://media-hosting.imagekit.io//3953e1bceac64d68/logo.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=n-HMFmK8VEjrAPtl-5R8~TtBvrjN6E0yc1e-v65t~YQutAJML4vFpnGYNpnH2RODKn-eqCRbbq61eHc6QU~4gi~enp4il~UJENpLKl63z~EXrdIBVp3SHYXi5WzvcQNraMM1~0Xyt81zKJr4bkSS3zYYvn4dlIluX8fcFSIspDQpe6HRI8nqpWH9oiyytIbaBv6yrOrBID46Q2uFG6tt-UcCSAZ45ry0qBFgVV55LDlyn~lJOk8uFU4c-2zIzZWc05u0Fksq3sJL9Kt99GxzQMjjX89eEg3UKGb4B5wVQD58DCw0VWJGnVEc6loq5FjEeEWoBiRgXBDD1B0r-QPf9A__",
+                    alt="Course Image",
+                    style="""
+                        max-width: 100px;
+                        height: auto;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    """
+                ),
+        H1("Login", style="text-align: center; margin-bottom: 20px; color: #5C482C;"),
         Form(
             Div(
                 Label("Username", 
@@ -855,7 +940,8 @@ def get_login():
                     max-width: 200px;
                     margin: 20px auto 0;
                     display: block;
-                    background-color: #007bff; 
+                    background-color: #8D8883; 
+                    border-radius: 8px color: #8D8883;
                     color: white;
                 """
             ),
@@ -892,18 +978,10 @@ def get_search(account_id: str):
 
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
         Titled("Search Online Courses",
+<<<<<<< Updated upstream
         Form(
             Input(id="search", placeholder="Search courses...", hx_get=f"/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
             style="margin-bottom: 20px;"
@@ -915,6 +993,15 @@ def get_search(account_id: str):
                     href=("/" + account_id + f"/course/{c.get_course_id()}"),
                     style="text-decoration: none; color: inherit;"
                 )
+=======
+            Form(
+                Input(id="search", placeholder="Search courses...", hx_get="/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
+                style="margin-bottom: 20px;"
+             ),
+            Div(
+                *[
+                Card(H3(c.get_course_name(), style="color: #5C482C;"), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="background-color: #F8F2EB; cursor: pointer;")
+>>>>>>> Stashed changes
                 for c in results
                 ],
                 id="results",
@@ -928,11 +1015,15 @@ def get_search_result(search: str, account_id: str):
     results = test.search_courses(search)
     return Div(
         *[
+<<<<<<< Updated upstream
             A(
                 Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
                 href=("/" + account_id + f"/course/{c.get_course_id()}"),
                 style="text-decoration: none; color: inherit;"
             )
+=======
+            Card(H3(c.get_course_name(), style="color: #F8F2EB;"), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="background-color: #F8F2EB; cursor: pointer;")
+>>>>>>> Stashed changes
             for c in results
         ] if results else [P("No courses found.")],
         style="margin-top: 10px;"
@@ -942,18 +1033,9 @@ def get_search_result(search: str, account_id: str):
 def get_editprofile(account_id: str):
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Edit Profile", style="text-align: center; margin-bottom: 20px;"),
+        H1("Edit Profile", style="text-align: center; margin-bottom: 20px; color: #5C482C;"),
         Form(
             Div(
                 Label("Username", 
@@ -1027,7 +1109,7 @@ def get_editprofile(account_id: str):
                     max-width: 200px;
                     margin: 20px auto 0;
                     display: block;
-                    background-color: #007bff; 
+                    background-color: #8D8883; 
                     color: white;
                 """
             ),
@@ -1050,32 +1132,14 @@ def post_editprofile(account_id: str, username: str, password: str, confirm_pass
     if account:
         return Container(
             Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
             H1("Edit Profile Successfully", style="text-align: center; color: green;"),
         )
     else: 
         return Container(
             Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
             H1("Edit Profile Failed", style="text-align: center; color: red;"),
             A("Go back", href=f"/{account_id}/editprofile", style="display: block; text-align: center; margin-top: 20px;")
@@ -1086,18 +1150,9 @@ def post_editprofile(account_id: str, username: str, password: str, confirm_pass
 def get_addnewcourse(account_id: str):
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Add Course", style="text-align: center; margin-bottom: 20px;"),
+        H1("Add Course", style="text-align: center; margin-bottom: 20px; color: #5C482C;"),
         Form(
             Div(
                 # Course basic info
@@ -1134,7 +1189,7 @@ def get_addnewcourse(account_id: str):
                 ),
 
                 # Chapter 1
-                H3("Chapter 1"),
+                H3("Chapter 1", style="color: #5C482C;"),
                 Label("Chapter 1 Lesson 1 Name",
                     Input(type="text", name="ch1_l1_name", required=True,
                          placeholder="Enter lesson name", style="width: 100%;")
@@ -1153,7 +1208,7 @@ def get_addnewcourse(account_id: str):
                 ),
 
                 # Chapter 2
-                H3("Chapter 2"),
+                H3("Chapter 2", style="color: #5C482C;"),
                 Label("Chapter 2 Lesson 1 Name",
                     Input(type="text", name="ch2_l1_name", required=True,
                          placeholder="Enter lesson name", style="width: 100%;")
@@ -1175,7 +1230,7 @@ def get_addnewcourse(account_id: str):
             ),
             Button("Submit", type="submit",
                 style="""max-width: 200px; margin: 20px auto 0; display: block; 
-                        background-color: #007bff; color: white;"""),
+                        background-color: #8D8883; color: white;"""),
             method="post",
             action=f"/{account_id}/addnewcourse",
             style="padding: 20px;"
@@ -1224,18 +1279,14 @@ def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str,
 
             return Container(
                 Container(*navbar(account_id),
-                    style="""display: flex; justify-content: center; align-items: center;
-                            margin-bottom: 30px; background-color: #ffffff; padding: 15px;
-                            border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"""),
+                    style=style),
                 H1("Add Course Successfully", style="text-align: center; color: green;"),
                 P("Course has been added successfully.")
             )
         else:
             return Container(
                 Container(*navbar(account_id),
-                    style="""display: flex; justify-content: center; align-items: center;
-                            margin-bottom: 30px; background-color: #ffffff; padding: 15px;
-                            border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"""),
+                    style=style),
                 H1("Add Course Failed", style="text-align: center; color: red;"),
                 A("Go back", href=f"/{account_id}/addnewcourse",
                   style="display: block; text-align: center; margin-top: 20px;")
@@ -1294,24 +1345,22 @@ def viewprofile(account_id: str):
     
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("View Profile", style="text-align: center; align-items: Top; margin-bottom: 20px;"),
+        H1("View Profile", style="text-align: center; align-items: Top; margin-bottom: 20px; color: #5C482C;"),
         Container(
+<<<<<<< Updated upstream
             H4(f"Name: {name}"),
             H4(f"Surname: {surname}"),
             H4(f"Age: {age}"),
             H4(f"Description: {desc}"),
             H4(f"Role: {'Teacher' if is_teacher else 'Student'}", style="color: #5996B2;"),
+=======
+            H4(f"Name: {name}", style="color: #5C482C;"),
+            H4(f"Surname: {surname}", style="color: #5C482C;"),
+            H4(f"Age: {age}", style="color: #5C482C;"),
+            H4(f"Description: {desc}", style="color: #5C482C;"),
+>>>>>>> Stashed changes
             style="""
                 display: flex;
                 flex-direction: column;
@@ -1320,40 +1369,61 @@ def viewprofile(account_id: str):
                 min-height: 45vh;
             """
         ),
+<<<<<<< Updated upstream
         *buttons
     )
+=======
+        Button(
+                "Edit Profile",
+                onclick=f"window.location.href='/{account_id}/editprofile'", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #8D8883; 
+                    color: white;
+                    
+                """
+         ),
+         Button(
+                "Create Course",
+                onclick=f"window.location.href='/{account_id}/addnewcourse'", 
+                type="submit",
+                style=""" 
+                    max-width: 200px;
+                    margin: 20px auto 0;
+                    display: block;
+                    background-color: #ffffff; 
+                    color: #13171f;
+                    
+                """
+         ),
+        )    
+>>>>>>> Stashed changes
     
     
 @rt("/{account_id}/faq")
 def faq(account_id: str):
     faq_items = [
         Container(
-            H3(f"{faq.get_faq_question()}?"),
+            H3(f"{faq.get_faq_question()}?", style="color: #5C482C;"),
             Label(f"Answer: {faq.get_faq_answer()}"),
             Form(
-                Button("Add/Change answer", type = "add_answer"),
+                Button("Add/Change answer", type = "add_answer", style="background-color: #8D8883; color: white;"),
                 method = "post",
                 action = f"/{account_id}/add_faq_answer/{faq.get_faq_id()}"
             ),
-            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+            style = "background-color: #F8F2EB; border: 1px solid #F8F2EB; padding: 10px; margin-bottom: 10px;"
         ) for faq in test.get_faq_list()
     ]
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
         *faq_items,
         Form(
-            Button("Contact us", type="routing"),
+            Button("Contact us", type="routing", style="background-color: #8D8883; color: white;"),
             method = "post",
             action = f"/{account_id}/support",
         )
@@ -1366,23 +1436,14 @@ def add_answer(account_id: str, faq_id:int):
         if faq.get_faq_id() == faq_id:
             return Container(
                 Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-                H1("Add answer"),
+                H1("Add answer", style="color: #8D8883;"),
                 Form(
-                    H3(f"{faq.get_faq_question()}?"),
+                    H3(f"{faq.get_faq_question()}?", style="color: #8D8883;"),
                     Label(f"Answer: {faq.get_faq_answer()}"),
                     Input(type="text", name="faq_ans", id="faq_ans", placeholder="Enter answer", required=True, pattern="[A-Za-z ]{2,}"),
-                    Button("Done", type="submit"),
+                    Button("Done", type="submit", style="background-color: #8D8883; color: white;"),
                     method="post",
                     action=f"/{account_id}/faq_answered/{faq.get_faq_id()}"
                 )
@@ -1396,20 +1457,11 @@ def append_answer(account_id: str, faq_id:int, faq_ans:str):
             faq.add_faq_answer(faq_ans)
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Answer added"),
+        H1("Answer added", style="color: #8D8883;"),
         Form(
-            Button("Back to FAQ", type = "home"),
+            Button("Back to FAQ", type = "home", style="background-color: #8D8883; color: white;"),
             method = "/get",
             action = f"/{account_id}/faq"
         )
@@ -1420,21 +1472,12 @@ def append_answer(account_id: str, faq_id:int, faq_ans:str):
 def support(account_id: str):
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Support"),
+        H1("Support", style="color: #5C482C;"),
         Form(
             Label("Customer support", Input(type = "text", id = "faq_question", placeholder = "Enter your question", required = True, pattern = "[A-Za-z ]{2,}")),
-            Button("Submit question", type = "submit"),
+            Button("Submit question", type = "submit", style="background-color: #8D8883; color: white;"),
             method = "post",
             action = f"/{account_id}/submit_support"
         
@@ -1450,9 +1493,9 @@ def submit_support(account_id: str, faq_question:str):
             if faq.get_faq_answer() is not None:
                 return Container(
                     Container(*navbar(account_id),
-                    H1("There is already an answer to this question."),
+                    H1("There is already an answer to this question.", style="color: #5C482C;"),
                     Form(
-                        Button("Back to FAQ", type = "home"),
+                        Button("Back to FAQ", type = "home", style="background-color: #8D8883; color: white;"),
                         method = "/get",
                         action = f"/{account_id}/faq"
                     )
@@ -1460,20 +1503,11 @@ def submit_support(account_id: str, faq_question:str):
                 )
             return Container(
                 Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-                H1("There is this question already in the FAQ."),
+                H1("There is this question already in the FAQ.", style="color: #5C482C;"),
                 Form(
-                    Button("Back to FAQ", type = "home"),
+                    Button("Back to FAQ", type = "home", style="background-color: #8D8883; color: white;"),
                     method = "/get",
                     action = f"/{account_id}/faq"
                 )
@@ -1483,20 +1517,11 @@ def submit_support(account_id: str, faq_question:str):
     faq_id_counter += 1
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Thank you for contacting us"),
+        H1("Thank you for contacting us", style="color: #5C482C;"),
         Form(
-            Button("Back to FAQ", type = "home"),
+            Button("Back to FAQ", type = "home", style="background-color: #8D8883; color: white;"),
             method = "/get",
             action = f"/{account_id}/faq"
         )
@@ -1510,32 +1535,23 @@ def notification(account_id: str):
     noti = acc_noti.get_notification()
     noti = [
         Container(
-            H3(f"{notification}"),
-            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+            H3(f"{notification}", style="color: #5C482C;"),
+            style = "background-color: #F8F2EB; border: 1px solid #F8F2EB; padding: 10px; margin-bottom: 10px;"
         ) for notification in noti
     ]
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Notification"),
+        H1("Notification", style="color: #5C482C;"),
         *noti,
         Form(
-            Button("Back to main", type = "home"),
+            Button("Back to main", type = "home", style="background-color: #8D8883; color: white;"),
             method = "/get",
             action = f"/{account_id}/main"
         ),
         Form(
-            Button("Clear notification", type = "clear_notification"),
+            Button("Clear notification", type = "clear_notification", style="background-color: #8D8883; color: white;"),
             method = "/get",
             action = f"/{account_id}/clear_notification"
         )
@@ -1549,20 +1565,11 @@ def clear_notification(account_id: str):
     acc_noti.delete_notification()
     return Container(
         Container(*navbar(account_id),
-            style="""
-                display: flex;
-                justify-content: center; 
-                align-items: center;
-                margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
-                border-radius: 8px;    
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """
+            style=style
         ),
-        H1("Notifications cleared"),
+        H1("Notifications cleared", style="color: #5C482C;"),
         Form(
-            Button("Back to main", type = "home"),
+            Button("Back to main", type = "home", style="background-color: #8D8883; color: white;"),
             method = "/get",
             action = f"/{account_id}/main"
         )
