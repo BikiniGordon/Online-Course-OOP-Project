@@ -96,61 +96,74 @@ test = add_data()
 def navbar(account_id):
     return [
         Button(
-            "Home",
+            Img(
+                src = "https://media-hosting.imagekit.io//3953e1bceac64d68/logo.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=n-HMFmK8VEjrAPtl-5R8~TtBvrjN6E0yc1e-v65t~YQutAJML4vFpnGYNpnH2RODKn-eqCRbbq61eHc6QU~4gi~enp4il~UJENpLKl63z~EXrdIBVp3SHYXi5WzvcQNraMM1~0Xyt81zKJr4bkSS3zYYvn4dlIluX8fcFSIspDQpe6HRI8nqpWH9oiyytIbaBv6yrOrBID46Q2uFG6tt-UcCSAZ45ry0qBFgVV55LDlyn~lJOk8uFU4c-2zIzZWc05u0Fksq3sJL9Kt99GxzQMjjX89eEg3UKGb4B5wVQD58DCw0VWJGnVEc6loq5FjEeEWoBiRgXBDD1B0r-QPf9A__",
+                alt = "Home",
+                style = "max-width: 100%;"
+            ),
             onclick=f"window.location.href='/{account_id}/main'", 
             type="submit",
             style=""" 
                 max-width: 150px;
-                margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
+                margin: 1.5px 1px 0;  
+                background-color: #F8F2EB; 
                 color: #13171f;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
+                padding: 0px;
             """
         ),
         Button(
-            "Search",
+            "Explore",
             onclick=f"window.location.href='/{account_id}/search'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0; 
-                background-color: #ffffff; 
+                background-color: #F8F2EB; 
                 color: #13171f;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Cart",
+            Img(
+                src = "https://media-hosting.imagekit.io//c7195462cf184c14/cart.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=oDP7U3q1OKXOOE6RCZZarw9fBMt~-K8ls4SDFL7tRXVBczZO27iUMJ97iLA-xfIQS7lgwBR4bP43neffAfBwLXIJU~fh4sepbGajjzc6CTD02OHLJdH7bpuUC04HOow7PgWUnVaGNQ6lIJH1~RYvagJ62x30yJzxPtvTJQUZ4BOSbzweDWqFV9NDFy~4PrN2OPBX9efaOvQbcQQMRNDrWp15e-gKe7BrA7oUETaX2FLxKwRh2~3iSVLDtjMn2sAvXsNd5Edl8S1FP8mMSUmCDPXFsSaaJdB9jZ-Qkosl25ixqLkDBrn34iUyeL4YPWObfJr6iI3mvvwDczUOY3KhBA__",
+                alt = "Cart",
+                style = "max-width: 50%;"
+            ),
             onclick=f"window.location.href='/cart/{account_id}'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
+                background-color: #F8F2EB; 
                 color: #13171f;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Notification",
+            Img(
+                src = "https://media-hosting.imagekit.io//ae90b28ac719454a/notif.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=12AsucweImODEWeUG6KEW1IU3L9AXhwid8AntHYnBCGZBqUQafCakUCRg8t1Gto1x8iG-zNqEU7WXWSsmtoFCBP1VOhNzhuPiA-uWzc-7ekBN932u18QMttqWqBkDqOVAU9A6Nkmxorp1HDai-DArPP6QB~0SeIC0M3FIzZ-SeBfM0K52lnjGT42yYDVFezoHPW9kLgblxaaA4M~GkVEFXU9BET3BPdxcxx9crwWAav~YJRc04orrcOp13u~60FV6lMcDZSXtebrwYChebdlHMAOND6FEZag6RHXtfnEvT9vkn~7fV~iWkysFeuvWZADizPFjdmGwIG5XaMgIKTndQ__",
+                alt = "Notification",
+                style = "max-width: 50%;"
+            ),
             onclick=f"window.location.href='/{account_id}/notification'", 
             type="submit",
             style=""" 
                 max-width: 150px;
-                margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
+                margin: 0;  
+                background-color: #F8F2EB; 
                 color: #13171f;
                 text-align: center;
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
@@ -160,27 +173,31 @@ def navbar(account_id):
             onclick=f"window.location.href='/{account_id}/faq'", 
             type="submit",
             style=""" 
-                max-width: 150px;
+                max-width: 150px;x;
                 margin: 1.5px 10px 0;  
-                background-color: #ffffff; 
+                background-color: #F8F2EB;
                 color: #13171f;
                 text-align: center;
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         ),
         Button(
-            "Profile",
+            Img(
+                src = "https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/316px-Meme_Man_on_transparent_background.webp.png",
+                alt = "Profile",
+                style = "max-width: 30%;"
+            ),
             onclick=f"window.location.href='/{account_id}/viewprofile'", 
             type="submit",
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0; 
-                background-color: #ffffff; 
+                background-color: #F8F2EB; 
                 color: #13171f;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
@@ -192,14 +209,15 @@ def navbar(account_id):
             style=""" 
                 max-width: 150px;
                 margin: 1.5px 10px 0; 
-                background-color: #ffffff; 
+                background-color: #F8F2EB; 
                 color: #13171f;
                 text-align: center; 
-                border: 1px solid #ffffff;
+                border: 1px solid #F8F2EB;
                 font-weight: bold;
                 font-size: 18px;
             """
         )
+        
     ]
 
 @rt('/')
@@ -233,8 +251,18 @@ def main(account_id: str):
                 P(f"Progress: {progress}%", 
                       style="color: #28a745; text-align: left;"),
                 Button("Start Learning",
-                    onclick=f"window.location.href='enrolled/{course_id}'"),
-                style="min-width: 250px; margin: 10px;"
+                    onclick=f"window.location.href='enrolled/{course_id}'",
+                    style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
+                            ),
+                        style="""
+                        min-width: 250px; 
+                        margin: 10px;
+                        border-radius: 30px;
+                        """
             )
         )
     
@@ -249,8 +277,18 @@ def main(account_id: str):
                         P(course.get_course_detail()),
                         P(f"Price: {course.get_course_price()}฿"),
                         Button("View Course",
-                            onclick=f"window.location.href='course/{course.get_course_id()}'"),
-                        style="min-width: 250px; margin: 10px;"
+                            onclick=f"window.location.href='course/{course.get_course_id()}'",
+                            style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
+                            ),
+                        style="""
+                        min-width: 250px; 
+                        margin: 10px;
+                        border-radius: 30px;
+                        """
                     )
                 )
             else:
@@ -261,8 +299,18 @@ def main(account_id: str):
                         P(course.get_course_detail()),
                         P(f"Price: {course.get_course_price()}฿"),
                         Button("View Course",
-                            onclick=f"window.location.href='course/{course.get_course_id()}'"),
-                        style="min-width: 250px; margin: 10px;"
+                            onclick=f"window.location.href='course/{course.get_course_id()}'",
+                            style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
+                            ),
+                        style="""
+                        min-width: 250px; 
+                        margin: 10px;
+                        border-radius: 30px;
+                        """
                     )
                 )
 
@@ -283,8 +331,18 @@ def main(account_id: str):
                     P(course.get_course_detail()),
                     P(f"Price: {course.get_course_price()}฿"),
                     Button("View Course",
-                           onclick=f"window.location.href='course/{course.get_course_id()}'"),
-                    style="min-width: 250px; margin: 10px;"
+                           onclick=f"window.location.href='course/{course.get_course_id()}'",
+                    style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
+                            ),
+                        style="""
+                        min-width: 250px; 
+                        margin: 10px;
+                        border-radius: 30px;
+                        """
                 )
             )
 
@@ -311,13 +369,14 @@ def main(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;          
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """),
         Titled("Welcome! {}".format(account.get_username()), 
-               style="margin-top: 20px;"),
+               style="margin-top: 20px; text-align: center;"),
         
         # Enrolled Courses Section
         H2("My Enrolled Courses", style="margin-top: 50px;"),
@@ -356,37 +415,41 @@ def view_course(account_id: str, course_id: str):
         creator = course.get_creator()
         name, surname, age, desc = creator.view_profile()
         creator_info = Card(
-            H5("Course Creator", style="color: #5996B2;"),
+            H5("Course Creator", style="color: #5C482C;"),
             P(f"{name} {surname}", style="font-weight: bold;"),
             P(desc if desc else "No description available"),
-            style="margin-top: 15px; padding: 15px; border-top: 1px solid #eee;"
+            style="margin-top: 15px; padding: 15px; border-top: 1px solid #eee; border-radius: 20px; background-color: #fff;"
         )
     
     return Container(
         Container(*navbar(account_id),
-                  style="""
+            style="""
                 display: flex;
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2Eb;
+                border: 1px solid #f8f2eb;
+                padding: 2px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-            """),
+            """
+        ),
         Grid(
             Card(
                 P(course.get_course_category(), style='color: #5996B2;'),
-                H3(course.get_course_name()),
+                H3(course.get_course_name(), style='color: #5C482C;'),
                 P(course.get_course_detail()),
                 Card(
-                    H5("This course includes", style='text-align: center;'),
+                    H5("This course includes", style='text-align: center; color: #5C482C;'),
                     P("{} chapters".format(chapter_num)),
                     P("{} lessons".format(lesson_num)),
                     P("1 downloadable resource"),
                     P("Certificate of completion"),
+                    style="margin-top: 20px; padding: 15px; border-top: 1px solid #eee; border-radius: 20px; background-color: #FFF;"
                 ),
-                creator_info if creator_info else None  # Add creator info if available
+                creator_info if creator_info else None,
+                style="background-color: #Fff; border-radius: 20px; padding: 15px;"
             ),
             Card(
                 Img(
@@ -400,13 +463,28 @@ def view_course(account_id: str, course_id: str):
                         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     """
                 ),
-                H4("{}฿".format(course.get_course_price())),
-                Button("Add to Cart", 
-                      hx_post= "/" + account_id + "/addtocart/" + course_id,
-                      hx_target="#cart-message")
-            )
-        ),
-        Div(id="cart-message")
+                H4("{}฿".format(course.get_course_price()), style='color: #5C482C;'),
+                Button(
+                    "Add to Cart", 
+                    hx_post=f"/{account_id}/addtocart/{course_id}",
+                    hx_target="#cart-message",
+                    style="""
+                    background-color: #8D8883; 
+                    color: white; 
+                    border-radius: 30px;
+                    border: 1px solid #8D8883;
+                    """
+                ),
+                Div(id="cart-message"),
+                style="""
+                background-color: #fff; 
+                border-radius: 20px;
+                padding: 15px;
+                """
+            ),
+            columns=2,
+            style="gap: 20px; padding: 20px;"
+        )
     )
 
 @rt('/{account_id}/addtocart/{course_id}')
@@ -419,16 +497,24 @@ def add_course_to_cart(account_id: str, course_id: str):
                     Button("×", 
                           hx_post="/close-popup",
                           hx_target="#cart-message",
-                          style="background: none; border: none; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
+                          style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
                     P("You are already enrolled in this course!", style="color: #dc3545;"),
                     Button("View Course", 
                           onclick=f"window.location.href='/{account_id}/enrolled/{course_id}'",
-                          style="background-color: #5996B2; color: white;"),
+                          style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
                     columns=1
                 ),
-                style="position: relative; padding: 20px;"
+                style="position: relative; padding: 20px; border-radius: 30px"
             ),
-            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;",
+            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 30px",
             id="cart-message"
         )
     elif result == "Course already in cart":
@@ -442,7 +528,11 @@ def add_course_to_cart(account_id: str, course_id: str):
                     P("This course is already added!", style="color: #dc3545;"),
                     Button("View Cart", 
                           onclick=f"window.location.href='/cart/{account_id}'",
-                          style="background-color: #5996B2; color: white;"),
+                          style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
                     columns=1
                 ),
                 style="position: relative; padding: 20px;"
@@ -457,16 +547,20 @@ def add_course_to_cart(account_id: str, course_id: str):
                     Button("×", 
                           hx_post="/close-popup",
                           hx_target="#cart-message",
-                          style="background: none; border: none; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
+                          style="background: none; border-radius: 30px; font-size: 20px; position: absolute; right: 10px; top: 5px;"),
                     P("Course added to cart successfully!"),
                     Button("View Cart", 
                           onclick=f"window.location.href='/cart/{account_id}'",
-                          style="background-color: #5996B2; color: white;"),
+                           style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
                     columns=1
                 ),
-                style="position: relative; padding: 20px;"
+                style="position: relative; padding: 20px; border-radius: 30px"
             ),
-            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;",
+            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 30px",
             id="cart-message"
         )
     return result
@@ -491,18 +585,16 @@ def view_cart(account_id: str):
                         "Remove",
                         hx_post=f"/{account_id}/remove_from_cart/{course.get_course_id()}",
                         hx_target="#cart-container",  # Updated target
-                        style="""
-                            background-color: #dc3545;
-                            color: white;
-                            padding: 8px 16px;
-                            border-radius: 4px;
-                            border: none;
-                        """
+                         style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
                     ),
                     columns=2,
-                    style="align-items: center;"
+                    style="align-items: center; border-radius: 30px"
                 ),
-                style="margin-bottom: 10px;"
+                style="margin-bottom: 10px; border-radius: 30px"
             )
         )
     
@@ -515,13 +607,14 @@ def view_cart(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;          
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
-        Titled("Shopping Cart"),
+        Titled("Shopping Cart", style="margin-top: 20px; text-align: center; border-radius: 30px"),
         Div(
             H1("Your Cart"),
             Div(
@@ -531,13 +624,28 @@ def view_cart(account_id: str):
             P(f"Total: {total}฿", id="cart-total"),
             Button("Checkout with Credit card", 
                   onclick=f"window.location.href='/{account_id}/checkout/credit_card'",
-                  style="background-color: #28a745; color: white;"),
+                   style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            margin-right: 10px;
+                            """),
             Button("Checkout by other ways", 
                   onclick=f"window.location.href='/{account_id}/checkout/others'",
-                  style="background-color: #28a745; color: white;"),
+                   style="""
+                            background-color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            margin-right: 10px;
+                            """),
             Button("Continue Shopping", 
                   onclick=f"window.location.href='/{account_id}/course/1'",
-                  style="background-color: #5996B2; color: white;"),
+                   style="""
+                            background-color: #fff;
+                            color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
             id="cart-container"
         )
     )
@@ -559,13 +667,12 @@ def remove_from_cart(account_id: str, course_id: str):
                         "Remove",
                         hx_post=f"/{account_id}/remove_from_cart/{course.get_course_id()}",
                         hx_target="#cart-container",
-                        style="""
-                            background-color: #dc3545;
-                            color: white;
-                            padding: 8px 16px;
-                            border-radius: 4px;
-                            border: none;
-                        """
+                         style="""
+                            background-color: #ff6e6e;
+                            color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
                     ),
                     columns=2,
                     style="align-items: center;"
@@ -585,13 +692,28 @@ def remove_from_cart(account_id: str, course_id: str):
         P(f"Total: {total}฿", id="cart-total"),
         Button("Checkout with Credit card", 
               onclick=f"window.location.href='/{account_id}/checkout/credit_card'",
-              style="background-color: #28a745; color: white;"),
+              style="""
+                            background-color: #8d8883;
+                            color: white;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
         Button("Checkout by other ways", 
               onclick=f"window.location.href='/{account_id}/checkout/others'",
-              style="background-color: #28a745; color: white;"),
+               style="""
+                            background-color: #8d8883;
+                            color: white;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
         Button("Continue Shopping", 
               onclick=f"window.location.href='/{account_id}/course/1'",
-              style="background-color: #5996B2; color: white;"),
+               style="""
+                            background-color: #fff;
+                            color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
         id="cart-container"
     )
 
@@ -604,14 +726,20 @@ def via_others(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """),
         H1("We don't have such thing, please pay with credit card. [I beg you]"),
         Form(
-            Button("Back to Cart"),
+            Button("Back to Cart", style="""
+                            background-color: #fff;
+                            color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
             method="/get",
             action=f"/cart/{account_id}"
         )
@@ -629,15 +757,21 @@ def via_credit_card(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;        
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
             H1("Credit Card Payment"),
             Form(
-                Button("Pay with saved card"),
+                Button("Pay with saved card",  style="""
+                            background-color: #fff;
+                            color: #8D8883;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
                 method="post",
                 action=f"/{account_id}/pay"
             )
@@ -649,17 +783,23 @@ def via_credit_card(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;     
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
         H1("Credit Card Payment"),
         Form(
-            Label("Card number:", id="card_number"),
-            Input(placeholder = "Example: 1234 5678 1234 [If you paid once, you don't need to be worry, type anything.]",type="text", name="card_number"),
-            Button("Pay"),
+            Label("Card number:", id="card_number", style="border-radius: 30px;"),
+            Input(placeholder = "Example: 1234 5678 1234 [If you paid once, you don't need to be worry, type anything.]",type="text", name="card_number", style="border-radius: 30px;"),
+            Button("Pay",  style="""
+                            background-color: #8d8883;
+                            color: white;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """),
             method="post",
             action=f"/{account_id}/pay"
         )
@@ -692,14 +832,20 @@ def pay(account_id: str, card_number: str = None):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;      
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
         H1(f"Payment Successful! Your course(s) will be available in your account. Balance: {card.get_balance()}"),
-        Button("Back to main"), 
+        Button("Back to main", style="""
+                            background-color: #8d8883;
+                            color: white;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """), 
               onclick=f"window.location.href='/{account_id}/main'",
         )
 
@@ -714,8 +860,9 @@ def view_enrolled_course(account_id: str, course_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;       
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
@@ -725,11 +872,11 @@ def view_enrolled_course(account_id: str, course_id: str):
                     "← Back", 
                     onclick=f"window.location.href='/{account_id}/main'",
                     style="""
-                        background-color: #5996B2;
-                        color: white;
-                        padding: 8px 16px;
-                        border-radius: 4px;
-                    """
+                            background-color: #8d8883;
+                            color: white;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
                 ),
                 style="""
                     margin-bottom: 40px;
@@ -759,12 +906,21 @@ def view_enrolled_course(account_id: str, course_id: str):
                                         "View Lesson",
                                         hx_get=f"/{account_id}/lesson/{course_id}-{chapter.get_chapter_id()}-{lesson.get_lesson_id()}",
                                         hx_target="#lesson-content",
-                                        hx_swap="innerHTML"
+                                        hx_swap="innerHTML",
+                                        style="""
+                            background-color: #8d8883;
+                            color: white;
+                            border-radius: 30px;
+                            border: 1px solid #8D8883;
+                            """
                                     ),
-                                    cls="lesson-box", style = "margin-bottom: 20px;"
+                                    cls="lesson-box", style = "margin-bottom: 20px; "
                                 ) for lesson in chapter.get_lesson_list()
                             ],
-                            cls="chapter-box"
+                            cls="chapter-box",
+                            style="""
+                            border-radius: 30px;
+                            """
                         ) for chapter in course.get_chapter_list()
                     ],
                     cls="sidebar"
@@ -807,7 +963,7 @@ def view_lesson(account_id: str, lesson_id: str):
                 H2(lesson.get_lesson_name()),
                 Card(
                     P(lesson.get_lesson_content()),
-                    style="margin-bottom: 20px;"
+                    style="margin-bottom: 20px; border-radius: 20px; padding: 20px;"
                 ),
                 Div(
                     P(f"Progress: {new_progress}%", 
@@ -822,56 +978,114 @@ def view_lesson(account_id: str, lesson_id: str):
 @rt('/login', methods=['GET'])
 def get_login():
     return Container(
-        H1("Login", style="text-align: center; margin-bottom: 20px;"),
-        Form(
-            Div(
-                Label("Username", 
-                    Input(
-                        type="text", 
-                        id="username",
-                        name="username",
-                        required=True,
-                        placeholder="Enter your username",
-                        style="width: 100%;"
-                    )
+        Grid(
+            # Left side - Image
+            Container(
+                Img(
+                    src = "https://media-hosting.imagekit.io//28ea30b4fb964332/Let%E2%80%99s%20continue%20your%20learning%20journey!.png?Expires=1836407268&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=q~-dCTzJcwr4HbDbvynAg7O8ADzbo8fhgnKq56YasNbE1ekdMt-QoRsizYZEz6yhU9mydD07WQWYzxVbTbvmeb5g4WzPOHxnJ6vI9ObYBYSTKE-JYrmIAuRQG9yp4M8b-4~v9d1d4F8~BvxwKQ5WsE-idpBTZBM052F3rlPBdqwxl7vdjtsgaOWouvyly6ni-UhAi~WdTi4LHfKsf1UZuONgVDezFnoXDmahtiuNdsHtjhsmiiMLtFsB52R-8uytl5np7kfkxfm2fOFqihEbJZDyxsvgrmfW5aJRGbA1ntxTVJjAWWKlpiy2dMgprShSXywyJp~or91Gelw~MaqGCg__",
+                    alt="Learning Journey",
+                    style="""
+                        width: auto;
+                        height: 450px;
+                        object-fit: cover;
+                    """
                 ),
-                Label("Password", 
-                    Input(
-                        type="password", 
-                        id="password",
-                        name="password",
-                        required=True,
-                        placeholder="Enter your password",
-                        style="width: 100%;"
-                    )
-                ),
-                style="max-width: 300px;"
-            ),
-            
-            Button(
-                "Login", 
-                type="submit",
-                style=""" 
-                    max-width: 200px;
-                    margin: 20px auto 0;
-                    display: block;
-                    background-color: #007bff; 
-                    color: white;
+                style="""
+                    background-color: #FFFFFF;
+                    height: 100vh;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 """
             ),
             
-            method="post",
-            action="/login",
-            style="padding: 20px;"
+            # Right side - Login Form
+            Container(
+                Container(
+                    Img(
+                        src="https://media-hosting.imagekit.io//3953e1bceac64d68/logo.png?Expires=1836319434&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=n-HMFmK8VEjrAPtl-5R8~TtBvrjN6E0yc1e-v65t~YQutAJML4vFpnGYNpnH2RODKn-eqCRbbq61eHc6QU~4gi~enp4il~UJENpLKl63z~EXrdIBVp3SHYXi5WzvcQNraMM1~0Xyt81zKJr4bkSS3zYYvn4dlIluX8fcFSIspDQpe6HRI8nqpWH9oiyytIbaBv6yrOrBID46Q2uFG6tt-UcCSAZ45ry0qBFgVV55LDlyn~lJOk8uFU4c-2zIzZWc05u0Fksq3sJL9Kt99GxzQMjjX89eEg3UKGb4B5wVQD58DCw0VWJGnVEc6loq5FjEeEWoBiRgXBDD1B0r-QPf9A__",
+                        alt="Logo",
+                        style="max-width: 100px; margin-bottom: 30px;"
+                    ),
+                    H1("Login", 
+                        style="text-align: center; margin-bottom: 40px; color: #5C482C;"
+                    ),
+                    Form(
+                        Div(
+                            Label("Username", 
+                                Input(
+                                    type="text", 
+                                    id="username",
+                                    name="username",
+                                    required=True,
+                                    placeholder="Enter your username",
+                                    style="""
+                                    width: 100%;
+                                    border-radius: 30px;
+                                    """
+                                    
+                                )
+                            ),
+                            Label("Password", 
+                                Input(
+                                    type="password", 
+                                    id="password",
+                                    name="password",
+                                    required=True,
+                                    placeholder="Enter your password",
+                                    style="""
+                                    width: 100%;
+                                    border-radius: 30px;
+                                    """
+                                )
+                            ),
+                            style="""
+                            max-width: 300px;
+                            item-align: center;
+                            margin: 0 auto;
+                            """
+                        ),
+                        Button(
+                            "Login", 
+                            type="submit",
+                            style=""" 
+                                width: 200px;
+                                margin: 40px auto 0;
+                                display: block;
+                                background-color: #8D8883; 
+                                color: white;
+                                padding: 10px 0;
+                                border: none;
+                                border-radius: 30px;
+                            """
+                        ),
+                        method="post",
+                        action="/login",
+                        style="width: 100%;"
+                    ),
+                    style="""
+                        width: 100%;
+                        min-width: 400px;
+                        margin: 0 auto;
+                        text-align: center;
+                    """
+                ),
+                style="""
+                    background-color: #F8F2EB;
+                    height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                """
+            ),
+            columns=2,
+            style="margin: 0; padding: 0; width: 100vw; height: 100vh;"
         ),
-        style="""
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        """
+        style="margin: 0; padding: 0; max-width: 100vw; height: 100vh; overflow: hidden;"
     )
+
 
 @rt('/login', methods=['POST'])
 def post_login(username: str, password: str):
@@ -897,23 +1111,31 @@ def get_search(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;        
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
-        Titled("Search Online Courses",
+        Titled("Search Online Courses", style="text-align: center;"),
         Form(
-            Input(id="search", placeholder="Search courses...", hx_get=f"/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change"),
-            style="margin-bottom: 20px;"
+            Input(id="search", placeholder="Search courses...", hx_get=f"/{account_id}/searchresult", target_id="results", hx_trigger="keyup delay:500ms change", style="width: 100%; border-radius: 30px;"),
+            style="""
+            margin-bottom: 20px;
+            text-align: center;
+            """
         ),
         Div(
             *[
                 A(
-                    Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #000000"), style="cursor: pointer;"),
+                    Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #000000"), style="cursor: pointer; border-radius: 30px;"),
                     href=("/" + account_id + f"/course/{c.get_course_id()}"),
-                    style="text-decoration: none; color: inherit;"
+                    style="""
+                    text-decoration: none; 
+                    color: inherit;
+                    border-radius: 30px;
+                    """
                 )
                 for c in results
                 ],
@@ -921,7 +1143,7 @@ def get_search(account_id: str):
                 style="margin-top: 20px;"
             )
         )
-    )
+    
 
 @rt('/{account_id}/searchresult', methods=['GET'])
 def get_search_result(search: str, account_id: str):
@@ -929,7 +1151,7 @@ def get_search_result(search: str, account_id: str):
     return Div(
         *[
             A(
-                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #FFFF00"), style="cursor: pointer;"),
+                Card(H3(c.get_course_name()), P(c.get_course_detail()), P(f"Category: {c.get_course_category()}"), H6(f"{c.get_course_price()}฿", style="color: #000000"), style="cursor: pointer; border-radius: 30px;"),
                 href=("/" + account_id + f"/course/{c.get_course_id()}"),
                 style="text-decoration: none; color: inherit;"
             )
@@ -947,8 +1169,9 @@ def get_editprofile(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;        
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
@@ -963,7 +1186,7 @@ def get_editprofile(account_id: str):
                         name="username",
                         required=True,
                         placeholder="Enter your new Username",
-                        style="width: 100%;"
+                        style="width: 100%; border-radius: 30px;"
                     )
                 ),
                 Label("New Password", 
@@ -973,7 +1196,7 @@ def get_editprofile(account_id: str):
                         name="password",
                         required=True,
                         placeholder="Enter your new Password",
-                        style="width: 100%;"
+                        style="width: 100%; border-radius: 30px;"
                     )
                 ),
                 Label("Confirm Password", 
@@ -983,7 +1206,7 @@ def get_editprofile(account_id: str):
                         name="confirm_password",
                         required=True,
                         placeholder="Confirm your Password",
-                        style="width: 100%;"
+                        style="width: 100%; border-radius: 30px;"
                     )
                 ),
                 Label("Name", 
@@ -993,7 +1216,7 @@ def get_editprofile(account_id: str):
                         name="name",
                         required=True,
                         placeholder="Enter your new Name",
-                        style="width: 100%;"
+                        style="width: 100%; border-radius: 30px;"
                     )
                 ),
                 Label("Surname", 
@@ -1003,7 +1226,7 @@ def get_editprofile(account_id: str):
                         name="surname",
                         required=True,
                         placeholder="Enter your new Surname",
-                        style="width: 100%;"
+                        style="width: 100%; border-radius: 30px;"
                     )
                 ),
                 Label("Description", 
@@ -1013,7 +1236,7 @@ def get_editprofile(account_id: str):
                         name="description",
                         required=True,
                         placeholder="Enter your new Description",
-                        style="width: 100%;"
+                        style="width: 100%; border-radius: 30px;"
                     )
                 ),
                 style="max-width: 300px;"
@@ -1027,7 +1250,9 @@ def get_editprofile(account_id: str):
                     max-width: 200px;
                     margin: 20px auto 0;
                     display: block;
-                    background-color: #007bff; 
+                    background-color: #8d8883;
+                    border-radius: 30px;
+                    border: 1px solid #8d8883;
                     color: white;
                 """
             ),
@@ -1055,13 +1280,15 @@ def post_editprofile(account_id: str, username: str, password: str, confirm_pass
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
             H1("Edit Profile Successfully", style="text-align: center; color: green;"),
+            A("Go back", href=f"/{account_id}/viewprofile", style="display: block; text-align: center; margin-top: 20px;")
         )
     else: 
         return Container(
@@ -1071,8 +1298,9 @@ def post_editprofile(account_id: str, username: str, password: str, confirm_pass
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;    
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
@@ -1091,97 +1319,124 @@ def get_addnewcourse(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
         H1("Add Course", style="text-align: center; margin-bottom: 20px;"),
         Form(
-            Div(
-                # Course basic info
-                Label("Course Name", 
-                    Input(type="text", id="name", name="name", required=True,
-                        placeholder="Enter your course name", style="width: 100%;")
-                ),
-                Label("Course Detail", 
-                    Input(type="text", id="detail", name="detail", required=True,
-                        placeholder="Enter your course detail", style="width: 100%;")
-                ),
-                Label("Course Price", 
-                    Input(type="text", id="price", name="price", required=True,
-                        placeholder="Enter your Course Price", style="width: 100%;",
-                        pattern="[0-9]{2,}")
-                ),
-                Label("Course ID", 
-                    Input(type="text", id="course_id", name="course_id", required=True,
-                        placeholder="Enter your Course ID", style="width: 100%;")
-                ),
-                
-                Div(
-                    "Course Category",
+            Grid(
+                # Left side - Course Details
+                Card(
+                    H2("Course Details", style="color: #5C482C; margin-bottom: 20px;"),
                     Div(
-                        Label(Input(type="radio", id="category_programming", name="category", 
-                                  value="Programming", required=True), "Programming"),
-                        Label(Input(type="radio", id="category_pet", name="category",
-                                  value="Pet", required=True), "Pet"),
-                        Label(Input(type="radio", id="category_cooking", name="category",
-                                  value="Cooking", required=True), "Cooking"),
-                        style="margin-top: 10px;"
+                        Label("Course Name", 
+                            Input(type="text", id="name", name="name", required=True,
+                                placeholder="Enter your course name", style="width: 100%; border-radius: 30px;")
+                        ),
+                        Label("Course Detail", 
+                            Input(type="text", id="detail", name="detail", required=True,
+                                placeholder="Enter your course detail", style="width: 100%; border-radius: 30px;")
+                        ),
+                        Label("Course Price", 
+                            Input(type="text", id="price", name="price", required=True,
+                                placeholder="Enter your Course Price", style="width: 100%; border-radius: 30px;",
+                                pattern="[0-9]{2,}")
+                        ),
+                        Label("Course ID", 
+                            Input(type="text", id="course_id", name="course_id", required=True,
+                                placeholder="Enter your Course ID", style="width: 100%; border-radius: 30px;")
+                        ),
+                        Div(
+                            "Course Category",
+                            Div(
+                                Label(Input(type="radio", id="category_programming", name="category", 
+                                          value="Programming", required=True), "Programming"),
+                                Label(Input(type="radio", id="category_pet", name="category",
+                                          value="Pet", required=True), "Pet"),
+                                Label(Input(type="radio", id="category_cooking", name="category",
+                                          value="Cooking", required=True), "Cooking"),
+                                style="margin-top: 10px;"
+                            ),
+                            style="margin-top: 20px;"
+                        ),
+                        style="width: 100%;"
                     ),
-                    style="margin-top: 20px;"
+                    style="background-color: #fff; padding: 20px; border-radius: 15px;"
                 ),
 
-                # Chapter 1
-                H3("Chapter 1"),
-                Label("Chapter 1 Lesson 1 Name",
-                    Input(type="text", name="ch1_l1_name", required=True,
-                         placeholder="Enter lesson name", style="width: 100%;")
-                ),
-                Label("Chapter 1 Lesson 1 Content",
-                    Textarea(name="ch1_l1_content", required=True,
-                            placeholder="Enter lesson content", style="width: 100%;")
-                ),
-                Label("Chapter 1 Lesson 2 Name",
-                    Input(type="text", name="ch1_l2_name", required=True,
-                         placeholder="Enter lesson name", style="width: 100%;")
-                ),
-                Label("Chapter 1 Lesson 2 Content",
-                    Textarea(name="ch1_l2_content", required=True,
-                            placeholder="Enter lesson content", style="width: 100%;")
-                ),
+                # Right side - Chapters and Lessons
+                Card(
+                    H2("Course Content", style="color: #5C482C; margin-bottom: 20px;"),
+                    Div(
+                        # Chapter 1
+                        H3("Chapter 1", style="color: #5C482C;"),
+                        Label("Chapter 1 Lesson 1 Name",
+                            Input(type="text", name="ch1_l1_name", required=True,
+                                 placeholder="Enter lesson name", style="width: 100%; border-radius: 30px;")
+                        ),
+                        Label("Chapter 1 Lesson 1 Content",
+                            Textarea(name="ch1_l1_content", required=True,
+                                    placeholder="Enter lesson content", style="width: 100%; border-radius: 15px;")
+                        ),
+                        Label("Chapter 1 Lesson 2 Name",
+                            Input(type="text", name="ch1_l2_name", required=True,
+                                 placeholder="Enter lesson name", style="width: 100%; border-radius: 30px;")
+                        ),
+                        Label("Chapter 1 Lesson 2 Content",
+                            Textarea(name="ch1_l2_content", required=True,
+                                    placeholder="Enter lesson content", style="width: 100%; border-radius: 15px;")
+                        ),
 
-                # Chapter 2
-                H3("Chapter 2"),
-                Label("Chapter 2 Lesson 1 Name",
-                    Input(type="text", name="ch2_l1_name", required=True,
-                         placeholder="Enter lesson name", style="width: 100%;")
+                        # Chapter 2
+                        H3("Chapter 2", style="color: #5C482C; margin-top: 20px;"),
+                        Label("Chapter 2 Lesson 1 Name",
+                            Input(type="text", name="ch2_l1_name", required=True,
+                                 placeholder="Enter lesson name", style="width: 100%; border-radius: 30px;")
+                        ),
+                        Label("Chapter 2 Lesson 1 Content",
+                            Textarea(name="ch2_l1_content", required=True,
+                                    placeholder="Enter lesson content", style="width: 100%; border-radius: 15px;")
+                        ),
+                        Label("Chapter 2 Lesson 2 Name",
+                            Input(type="text", name="ch2_l2_name", required=True,
+                                 placeholder="Enter lesson name", style="width: 100%; border-radius: 30px;")
+                        ),
+                        Label("Chapter 2 Lesson 2 Content",
+                            Textarea(name="ch2_l2_content", required=True,
+                                    placeholder="Enter lesson content", style="width: 100%; border-radius: 15px;")
+                        ),
+                        style="width: 100%;"
+                    ),
+                    style="background-color: #fff; padding: 20px; border-radius: 15px;"
                 ),
-                Label("Chapter 2 Lesson 1 Content",
-                    Textarea(name="ch2_l1_content", required=True,
-                            placeholder="Enter lesson content", style="width: 100%;")
-                ),
-                Label("Chapter 2 Lesson 2 Name",
-                    Input(type="text", name="ch2_l2_name", required=True,
-                         placeholder="Enter lesson name", style="width: 100%;")
-                ),
-                Label("Chapter 2 Lesson 2 Content",
-                    Textarea(name="ch2_l2_content", required=True,
-                            placeholder="Enter lesson content", style="width: 100%;")
-                ),
-                
-                style="max-width: 300px;"
+                columns=2,
+                style="gap: 20px; width: 100%; max-width: 1200px;"
             ),
             Button("Submit", type="submit",
-                style="""max-width: 200px; margin: 20px auto 0; display: block; 
-                        background-color: #007bff; color: white;"""),
+                style="""
+                    max-width: 200px; 
+                    margin: 20px auto 0; 
+                    display: block; 
+                    background-color: #8D8883; 
+                    color: white; 
+                    border-radius: 30px;
+                    border: 1px solid #8D8883;
+                """),
             method="post",
             action=f"/{account_id}/addnewcourse",
-            style="padding: 20px;"
+            style="padding: 20px; width: 100%;"
         ),
-        style="""display: flex; flex-direction: column; justify-content: center; 
-                 align-items: center; min-height: 100vh;"""
+        style="""
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh;
+            padding: 20px;
+        """
     )
 
 @rt('/{account_id}/addnewcourse', methods=['POST'])
@@ -1223,19 +1478,37 @@ def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str,
             new_course.add_chapter(chapter2)
 
             return Container(
-                Container(*navbar(account_id),
-                    style="""display: flex; justify-content: center; align-items: center;
-                            margin-bottom: 30px; background-color: #ffffff; padding: 15px;
-                            border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"""),
+               Container(*navbar(account_id),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
                 H1("Add Course Successfully", style="text-align: center; color: green;"),
                 P("Course has been added successfully.")
             )
         else:
             return Container(
                 Container(*navbar(account_id),
-                    style="""display: flex; justify-content: center; align-items: center;
-                            margin-bottom: 30px; background-color: #ffffff; padding: 15px;
-                            border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"""),
+            style="""
+                display: flex;
+                justify-content: center; 
+                align-items: center;
+                margin-bottom: 30px;
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
+                border-radius: 8px;    
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+            """
+        ),
                 H1("Add Course Failed", style="text-align: center; color: red;"),
                 A("Go back", href=f"/{account_id}/addnewcourse",
                   style="display: block; text-align: center; margin-top: 20px;")
@@ -1271,7 +1544,9 @@ def viewprofile(account_id: str):
                 max-width: 200px;
                 margin: 20px auto 0;
                 display: block;
-                background-color: #007bff; 
+                background-color: #8d8883; 
+                border-radius: 30px;
+                border: 1px solid #8d8883;
                 color: white;
             """
         )
@@ -1286,7 +1561,9 @@ def viewprofile(account_id: str):
                     max-width: 200px;
                     margin: 20px auto 0;
                     display: block;
-                    background-color: #ffffff; 
+                    background-color: #fff; 
+                    border-radius: 30px;
+                    border: 1px solid #8d8883;
                     color: #13171f;
                 """
             )
@@ -1299,8 +1576,9 @@ def viewprofile(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
@@ -1329,13 +1607,17 @@ def faq(account_id: str):
     faq_items = [
         Container(
             H3(f"{faq.get_faq_question()}?"),
-            Label(f"Answer: {faq.get_faq_answer()}"),
+            Label(f"Answer: {faq.get_faq_answer()}", style="border-redius: 30px;"),
             Form(
-                Button("Add/Change answer", type = "add_answer"),
+                Button("Add/Change answer", type = "add_answer", 
+                       style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
                 method = "post",
                 action = f"/{account_id}/add_faq_answer/{faq.get_faq_id()}"
             ),
-            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+            style = "border: 30px #8d8883; padding: 10px; margin-bottom: 10px; border-radius: 30px; border: 1px solid #8d8883;"
         ) for faq in test.get_faq_list()
     ]
     return Container(
@@ -1345,15 +1627,20 @@ def faq(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
         *faq_items,
         Form(
-            Button("Contact us", type="routing"),
+            Button("Contact us", type="routing", 
+                   style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
             method = "post",
             action = f"/{account_id}/support",
         )
@@ -1371,8 +1658,9 @@ def add_answer(account_id: str, faq_id:int):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
@@ -1381,8 +1669,11 @@ def add_answer(account_id: str, faq_id:int):
                 Form(
                     H3(f"{faq.get_faq_question()}?"),
                     Label(f"Answer: {faq.get_faq_answer()}"),
-                    Input(type="text", name="faq_ans", id="faq_ans", placeholder="Enter answer", required=True, pattern="[A-Za-z ]{2,}"),
-                    Button("Done", type="submit"),
+                    Input(type="text", name="faq_ans", id="faq_ans", placeholder="Enter answer", required=True, pattern="[A-Za-z ]{2,}", style="border-radius: 30px;"),
+                    Button("Done", type="submit", style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
                     method="post",
                     action=f"/{account_id}/faq_answered/{faq.get_faq_id()}"
                 )
@@ -1401,15 +1692,19 @@ def append_answer(account_id: str, faq_id:int, faq_ans:str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
         H1("Answer added"),
         Form(
-            Button("Back to FAQ", type = "home"),
+            Button("Back to FAQ", type = "home", style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
             method = "/get",
             action = f"/{account_id}/faq"
         )
@@ -1425,16 +1720,20 @@ def support(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
         H1("Support"),
         Form(
-            Label("Customer support", Input(type = "text", id = "faq_question", placeholder = "Enter your question", required = True, pattern = "[A-Za-z ]{2,}")),
-            Button("Submit question", type = "submit"),
+            Label("Customer support", Input(type = "text", id = "faq_question", placeholder = "Enter your question", required = True, pattern = "[A-Za-z ]{2,}", style = "border-radius: 30px;")),
+            Button("Submit question", type = "submit", style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
             method = "post",
             action = f"/{account_id}/submit_support"
         
@@ -1465,15 +1764,19 @@ def submit_support(account_id: str, faq_question:str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
                 H1("There is this question already in the FAQ."),
                 Form(
-                    Button("Back to FAQ", type = "home"),
+                    Button("Back to FAQ", type = "home",style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
                     method = "/get",
                     action = f"/{account_id}/faq"
                 )
@@ -1488,15 +1791,19 @@ def submit_support(account_id: str, faq_question:str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
         H1("Thank you for contacting us"),
         Form(
-            Button("Back to FAQ", type = "home"),
+            Button("Back to FAQ", type = "home",style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
             method = "/get",
             action = f"/{account_id}/faq"
         )
@@ -1511,7 +1818,7 @@ def notification(account_id: str):
     noti = [
         Container(
             H3(f"{notification}"),
-            style = "border: 1px solid black; padding: 10px; margin-bottom: 10px;"
+            style = "border: 1px #8d8883; padding: 10px; margin-bottom: 10px;"
         ) for notification in noti
     ]
     return Container(
@@ -1521,21 +1828,29 @@ def notification(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
-        H1("Notification"),
+        H1("Notification", style="margin-top: 20px; text-align: center;"),
         *noti,
         Form(
-            Button("Back to main", type = "home"),
+            Button("Back to main", type = "home",style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
             method = "/get",
-            action = f"/{account_id}/main"
+            action = f"/{account_id}/main",
+            style= "margin-bottom: 10px;"
         ),
         Form(
-            Button("Clear notification", type = "clear_notification"),
+            Button("Clear notification", type = "clear_notification",style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;"""),
             method = "/get",
             action = f"/{account_id}/clear_notification"
         )
@@ -1554,18 +1869,25 @@ def clear_notification(account_id: str):
                 justify-content: center; 
                 align-items: center;
                 margin-bottom: 30px;
-                background-color: #ffffff; 
-                padding: 15px;          
+                background-color: #F8F2EB;
+                border: 1px solid #f8f2eb;
+                padding: 0px;         
                 border-radius: 8px;    
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
             """
         ),
+
         H1("Notifications cleared"),
         Form(
-            Button("Back to main", type = "home"),
+            Button("Back to main", type = "home",style = """
+                        background-color: #8d8883; 
+                        border-radius: 30px;
+                        border: 1px solid #8d8883;
+                        margin: 0 0 0 10px;
+                   """),
             method = "/get",
-            action = f"/{account_id}/main"
-        )
-    )
+            action = f"/{account_id}/main",
+        ),
+    ),
 
 serve()
