@@ -403,6 +403,9 @@ class Enrollment:
     def get_progress(self):
         return self.__progression
     
+    def get_completed_lessons(self):
+        return self.__completed_lessons
+    
     def set_progress(self, value):
         self.__progression = value
     
