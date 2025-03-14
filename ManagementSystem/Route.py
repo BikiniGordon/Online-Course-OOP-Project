@@ -949,7 +949,7 @@ def view_lesson(account_id: str, lesson_id: str):
                 
                 if not enrollment.is_lesson_completed(lesson_id):
                     progress_per_lesson = 100 / total_lessons
-                    completed_lessons = len(enrollment._Enrollment__completed_lessons) + 1  # Include current lesson
+                    completed_lessons = len(enrollment.get_completed_lessons()) + 1  # Include current lesson
                     new_progress = round((completed_lessons * progress_per_lesson))
                     new_progress = 100 if completed_lessons == total_lessons else new_progress
                     
@@ -1466,13 +1466,13 @@ def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str,
         
         if new_course:
             # Add Chapter 1
-            chapter1 = Chapter("1")
+            chapter1 = new_course.create_chapter("1")
             chapter1.add_lesson("1", ch1_l1_name, ch1_l1_content, "", "")
             chapter1.add_lesson("2", ch1_l2_name, ch1_l2_content, "", "")
             new_course.add_chapter(chapter1)
 
             # Add Chapter 2
-            chapter2 = Chapter("2")
+            chapter2 = new_course.create_chapter("2")
             chapter2.add_lesson("1", ch2_l1_name, ch2_l1_content, "", "")
             chapter2.add_lesson("2", ch2_l2_name, ch2_l2_content, "", "")
             new_course.add_chapter(chapter2)
@@ -1525,7 +1525,7 @@ def viewprofile(account_id: str):
     account_obj = test.get_account(account_id)
     is_teacher = False
     
-    for teacher in test._OnlineCourseManagement__teacher_list:
+    for teacher in test.get_teacher_list():
         if teacher.get_account().check_account_id(account_id):
             is_teacher = True
             results = teacher

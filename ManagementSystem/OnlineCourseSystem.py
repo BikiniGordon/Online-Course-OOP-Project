@@ -169,6 +169,9 @@ class Course:
             return True
         return False
     
+    def create_chapter(self, chapter_id):
+        return Chapter(chapter_id)
+    
     def add_chapter(self, chapter):
         self.__chapter_list.append(chapter)
         return True
