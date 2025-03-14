@@ -12,12 +12,14 @@ class OnlineCourseManagement:
         student = Student(name, surname, age, account)
         self.__account_list.append(account)
         self.__student_list.append(student)
+        return True
 
     def add_teacher_list(self, id, name, surname, age, username, password, email):
         account = Account(id, username, password, email)
         teacher = Teacher(name, surname, age, account)
         self.__account_list.append(account)
         self.__teacher_list.append(teacher)
+        return True
 
     def add_course_list(self, id, name, detail, price, category, teacher=None):
         course = Course(id, name, detail, price, category, teacher)
@@ -28,6 +30,7 @@ class OnlineCourseManagement:
 
     def add_enrollment_list(self, enrollment):
         self.__enrollment_list.append(enrollment)
+        return True
 
     def create_card(self, payment_id, card_number):
         card = CreditCard(payment_id, card_number)
@@ -43,6 +46,10 @@ class OnlineCourseManagement:
 
     def add_faq_list(self, faq_id, faq_question):
         self.__faq_list.append(FAQ(faq_id, faq_question))
+        return True
+    
+    def get_teacher_list(self):
+        return self.__teacher_list
 
     def get_faq_list(self):
         return self.__faq_list
@@ -152,6 +159,7 @@ class Course:
     
     def set_creator(self, creator):
         self.__creator = creator
+        return True
 
     def get_creator(self):
         return self.__creator
@@ -163,6 +171,7 @@ class Course:
     
     def add_chapter(self, chapter):
         self.__chapter_list.append(chapter)
+        return True
 
     def get_chapter(self, chapter_id):
         for chapter in self.__chapter_list:
@@ -252,6 +261,7 @@ class Cart:
 
     def clear_item(self):
         self.__cart.clear()
+        return True
 
     def calculate_total(self):
         total_price = 0
@@ -280,6 +290,7 @@ class Account:
     def edit_username(self, username):
         if username:
             self.__account_name = username
+        return True
     
     def edit_password(self, password, confirm_password):
         if password and confirm_password:
@@ -326,6 +337,7 @@ class Account:
     
     def add_account_order(self, order):
         self.__account_order.append(order)
+        return True
 
     def get_account_order(self):
         return self.__account_order
@@ -370,6 +382,8 @@ class Person:
         if description:
             self.__description = description
 
+        return True
+
     def view_profile(self):
         return (self.__name, self.__surname, self.__age, self.__description)
 
@@ -408,10 +422,12 @@ class Enrollment:
     
     def set_progress(self, value):
         self.__progression = value
+        return True
     
     def mark_lesson_complete(self, lesson_id):
         self.__completed_lessons.add(lesson_id)
         self.__update_progress()
+        return True
     
     def is_lesson_completed(self, lesson_id):
         return lesson_id in self.__completed_lessons
@@ -459,12 +475,14 @@ class Notification:
 
     def add_notification(self, context):
         self.__noti.append(context)
+        return True
 
     def get_notification(self):
         return self.__noti
 
     def delete_notification(self):
         self.__noti.clear()
+        return True
 
 class FAQ:
     def __init__(self, faq_id, faq_question):
@@ -474,6 +492,7 @@ class FAQ:
 
     def add_faq_answer(self, answer):
         self.__faq_answer = answer
+        return True
 
     def get_faq_id(self):
         return self.__faq_id
