@@ -47,6 +47,9 @@ class OnlineCourseManagement:
     def add_faq_list(self, faq_id, faq_question):
         self.__faq_list.append(FAQ(faq_id, faq_question))
         return True
+    
+    def get_teacher_list(self):
+        return self.__teacher_list
 
     def get_faq_list(self):
         return self.__faq_list
