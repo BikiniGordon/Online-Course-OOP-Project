@@ -1448,7 +1448,7 @@ def post_addnewcourse(account_id: str, course_id: str, name: str, detail: str,
                      ch2_l2_name: str, ch2_l2_content: str):
     try:
         teacher = None
-        for t in test._OnlineCourseManagement__teacher_list:
+        for t in test.get_teacher_list():
             if t.get_account().check_account_id(account_id):
                 teacher = t
                 break
